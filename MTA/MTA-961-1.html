@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="chrometwo"><head><title>Release Notes</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"/><meta name="generator" content="publican v4.3.2"/><meta name="description" content="Migration Toolkit for Applications 7.0 accelerates large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. This solution provides insight throughout the adoption process, at both the portfolio and application levels: inventory, assess, analyze, and manage applications for faster migration to OpenShift through the user interface. The Release Notes provide new features and improvements, known issues, and resolved issues for the Migration Toolkit for Applications, version 7.0."/><link rel="next" href="#making-open-source-more-inclusive" title="Making open source more inclusive"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><script type="text/javascript" src="Common_Content/scripts/jquery-1.7.1.min.js"> </script><script type="text/javascript" src="Common_Content/scripts/utils.js"> </script><script type="text/javascript" src="Common_Content/scripts/highlight.js/highlight.pack.js"> </script></head><body><div id="chrometwo"><div id="main"><div xml:lang="en-US" class="book" id="idm46348155908848"><div class="titlepage"><div><div class="producttitle"><span class="productname">Migration Toolkit for Applications</span> <span class="productnumber">7.0</span></div><div><h1 class="title">Release Notes</h1></div><div><h2 class="subtitle">New features, known issues, and resolved issues</h2></div><div><div xml:lang="en-US" class="authorgroup"><span class="orgname">Red Hat Customer Content Services</span></div></div><div><a href="#idm46348138746768">Legal Notice</a></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+				Migration Toolkit for Applications 7.0 accelerates large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. This solution provides insight throughout the adoption process, at both the portfolio and application levels: inventory, assess, analyze, and manage applications for faster migration to OpenShift through the user interface.
+			</div><div class="para">
+				The Release Notes provide new features and improvements, known issues, and resolved issues for the Migration Toolkit for Applications, version 7.0.
+			</div></div></div></div><hr/></div><div class="toc"><ul class="toc"><li><span class="preface"><a href="#making-open-source-more-inclusive">Making open source more inclusive</a></span></li><li><span class="chapter"><a href="#release-notes-introduction">1. Introduction</a></span></li><li><span class="chapter"><a href="#mta-7-1-0">2. MTA 7.1.0</a></span><ul><li><span class="section"><a href="#new-features-7-1-0_release-notes">2.1. New features</a></span></li><li><span class="section"><a href="#upgrade-notes-7-1-0_release-notes">2.2. Upgrade notes</a></span></li></ul></li></ul></div><section class="preface" id="making-open-source-more-inclusive"><div class="titlepage"><div><div><h1 class="title">Making open source more inclusive</h1></div></div></div><p class="_abstract _abstract">
+			Red Hat is committed to replacing problematic language in our code, documentation, and web properties. We are beginning with these four terms: master, slave, blacklist, and whitelist. Because of the enormity of this endeavor, these changes will be implemented gradually over several upcoming releases. For more details, see <a class="link" href="https://www.redhat.com/en/blog/making-open-source-more-inclusive-eradicating-problematic-language">our CTO Chris Wright’s message</a>.
+		</p></section><section class="chapter" id="release-notes-introduction"><div class="titlepage"><div><div><h1 class="title">Chapter 1. Introduction</h1></div></div></div><p>
+			Migration Toolkit for Applications (MTA) 7.0 accelerates large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift Container Platform (RHOCP). This solution provides insight throughout the adoption process, at both the portfolio and application levels: inventory, assess, analyze, and manage applications for faster migration to OpenShift Container Platform through the user interface.
+		</p></section><section class="chapter" id="mta-7-1-0"><div class="titlepage"><div><div><h1 class="title">Chapter 2. MTA 7.1.0</h1></div></div></div><section class="section" id="new-features-7-1-0_release-notes"><div class="titlepage"><div><div><h2 class="title">2.1. New features</h2></div></div></div><p>
+				This section provides the new features and improvements of the Migration Toolkit for Applications (MTA) 7.1.0.
+			</p><div class="formalpara"><p class="title"><strong>Support for analyzing applications managed with Gradle has been added to MTA</strong></p><p>
+					Previously, you could use the Migration Toolkit for Applications (MTA) to analyze Java applications managed only with Maven. With this update, MTA can also extract dependencies from Gradle projects. As a result, you can now analyze applications that use Gradle instead of Maven.
+				</p></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Support for analyzing applications managed with Gradle is a Developer Preview feature only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+				</p></div></div><div class="formalpara"><p class="title"><strong>Support for analyzing .NET applications has been added to MTA</strong></p><p>
+					In Migration Toolkit for Applications (MTA) 7.1.0, you can use MTA to analyze Windows-only .NET framework applications to aid migration from version 4.5 or later to multi-platform .NET 8.0 running on OpenShift Container platform.
+				</p></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Support for analyzing .NET applications is a Developer Preview feature only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+				</p></div></div><div class="formalpara"><p class="title"><strong>Support for languages other than Java</strong></p><p>
+					In Migration Toolkit for Applications (MTA) 7.1.0, you can use MTA to analyze applications written in languages other than Java. To run analysis on applications written in languages other than Java, add a custom rule set and do not specify a target language.
+				</p></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Support for languages other than Java is a Developer Preview feature only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+				</p></div></div><div class="formalpara"><p class="title"><strong>Assessment and review statuses are now displayed in the MTA UI</strong></p><p>
+					In earlier releases of MTA, the status of the assessment and the review was only displayed for applications. With this update, the status of the archetype assessment and review processes is displayed in the Migration Toolkit for Applications (MTA) user interface (UI):
+				</p></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+						The assessment statuses are the following:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								Completed: All required assessments completed.
+							</li><li class="listitem">
+								InProgress: The assessment process is in progress.
+							</li><li class="listitem">
+								NotStarted: The assessment process has not been started.
+							</li></ul></div></li><li class="listitem"><p class="simpara">
+						The review statuses are the following:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								Completed: A review exists.
+							</li><li class="listitem">
+								NotStarted: The review process has not been started.
+							</li></ul></div></li></ul></div><div class="formalpara"><p class="title"><strong>New Insights feature has been added</strong></p><p>
+					Tagging rules that earlier generated tags and showed the presence of technology also generate insights now and show the location of code. While Insights do not impact the migration, they contain useful information about the technologies used in the application and their usage in the code. Insights do not have an effort and category assigned but might have a message and tag. You can view Insights in the Static report under the Insights tab.
+				</p></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Insights is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+				</p><p>
+					For more information about the support scope of Red Hat Technology Preview features, see <a class="link" href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.
+				</p></div></div><div class="formalpara"><p class="title"><strong>New MTA CLI options are available to select language providers when analyzing multi-language applications</strong></p><p>
+					Previously, you could not select specific language providers to run separately for the analysis of a multi-language application. With this update, you can use the new <code class="literal">--provider</code> MTA CLI option to explicitly set which language provider to run.
+				</p></div><p>
+				The following CLI options are also available with this update:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<code class="literal">--list-providers</code> to list language providers supported for the analysis.
+					</li><li class="listitem">
+						<code class="literal">--override-provider-settings</code> to override an existing supported language provider or to run your own unsupported provider.
+					</li></ul></div><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					You can now also configure supported language provider options in a provider’s configuration file.
+				</p></div></div><div class="formalpara"><p class="title"><strong>A new Task Manager page is now available in the MTA UI</strong></p><p>
+					In earlier releases of MTA, tasks that were being performed and the queue of pending tasks were not displayed in the Migration Toolkit for Applications (MTA) user interface (UI). With this update, a new Task Manager page is available to view the following information about the tasks that are queued:
+				</p></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<span class="strong strong"><strong>ID</strong></span>: The ID of the task.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Application</strong></span>: The application name associated with the task.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Status</strong></span>: The status of the task, for example, <span class="strong strong"><strong>Scheduled</strong></span>, <span class="strong strong"><strong>Pending</strong></span>, <span class="strong strong"><strong>In progress</strong></span>, <span class="strong strong"><strong>Succeeded</strong></span>, or <span class="strong strong"><strong>Failed</strong></span>.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Kind</strong></span>: The type of the task, for example, <span class="strong strong"><strong>analyzer</strong></span> or <span class="strong strong"><strong>discovery</strong></span>.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Priority</strong></span>: Priority of the task. The value is from zero to any positive integer. The higher the value in this column, the higher the priority of the task.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Preemption</strong></span>: It allows the scheduler to cancel a running task and free the resources for higher priority tasks. The values are <span class="strong strong"><strong>true</strong></span> or <span class="strong strong"><strong>false</strong></span>.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Created By</strong></span>: The name of the user who created the task.
+					</li></ul></div><div class="formalpara"><p class="title"><strong>Multiple applications can now be selected to filter the applications list in Application Inventory</strong></p><p>
+					Previously, you could select only one application to filter the results on the Application Inventory page. With this update, you can select multiple applications as a single filter to display the list of applications corresponding to this filter.
+				</p></div><div class="formalpara"><p class="title"><strong>Support for providing a single report when analyzing multiple applications on the CLI</strong></p><p>
+					mta-cli was designed to analyze a single application and produce a report about that application. With this update, you can use the <code class="literal">--bulk</code> option of the <code class="literal">analyze</code> command to analyze multiple applications, one <code class="literal">analyze</code> command per application, but with a common output file for all of the reports. As described in the CLI Guide, this results in mta-cli generating a single analysis report for all the applications, instead of generating a separate report for each application.
+				</p></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Support for providing a single report when analyzing multiple applications on the CLI is a Developer Preview feature only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+				</p></div></div></section><section class="section" id="upgrade-notes-7-1-0_release-notes"><div class="titlepage"><div><div><h2 class="title">2.2. Upgrade notes</h2></div></div></div><p>
+				This section provides upgrade notes for the Migration Toolkit for Applications (MTA) 7.1.0.
+			</p><div class="formalpara"><p class="title"><strong>PostgreSQL is migrated to version 15</strong></p><p>
+					In the Migration Toolkit for Applications (MTA) 7.1.0, the <code class="literal">postgresql</code> container image has been migrated to a new <code class="literal">postgresql-15</code> version to be compatible with support. Note that this migration occurs during the upgrade to 7.1.0 and might take some time. The upgrade is considered to be completed when the status of the Tackle CR is Successful. To check the status of the Tackle, enter:
+				</p></div><pre class="literallayout">$ <span class="strong strong"><strong>oc wait --for=condition=Successful --namespace=openshift-mta tackles.tackle.konveyor.io/tackle</strong></span>
+tackle.tackle.konveyor.io/tackle condition met</pre></section></section><div><div xml:lang="en-US" class="legalnotice" id="idm46348138746768"><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"/>© 2024 Red Hat, Inc.
+	</div><div class="para">
+		The text of and illustrations in this document are licensed by Red Hat under a Creative Commons Attribution–Share Alike 3.0 Unported license ("CC-BY-SA"). An explanation of CC-BY-SA is available at <a class="uri" href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>. In accordance with CC-BY-SA, if you distribute this document or an adaptation of it, you must provide the URL for the original version.
+	</div><div class="para">
+		Red Hat, as the licensor of this document, waives the right to enforce, and agrees not to assert, Section 4d of CC-BY-SA to the fullest extent permitted by applicable law.
+	</div><div class="para">
+		Red Hat, Red Hat Enterprise Linux, the Shadowman logo, the Red Hat logo, JBoss, OpenShift, Fedora, the Infinity logo, and RHCE are trademarks of Red Hat, Inc., registered in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Linux</span>® is the registered trademark of Linus Torvalds in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Java</span>® is a registered trademark of Oracle and/or its affiliates.
+	</div><div class="para">
+		<span class="trademark">XFS</span>® is a trademark of Silicon Graphics International Corp. or its subsidiaries in the United States and/or other countries.
+	</div><div class="para">
+		<span class="trademark">MySQL</span>® is a registered trademark of MySQL AB in the United States, the European Union and other countries.
+	</div><div class="para">
+		<span class="trademark">Node.js</span>® is an official trademark of Joyent. Red Hat is not formally related to or endorsed by the official Joyent Node.js open source or commercial project.
+	</div><div class="para">
+		The <span class="trademark">OpenStack</span>® Word Mark and OpenStack logo are either registered trademarks/service marks or trademarks/service marks of the OpenStack Foundation, in the United States and other countries and are used with the OpenStack Foundation's permission. We are not affiliated with, endorsed or sponsored by the OpenStack Foundation, or the OpenStack community.
+	</div><div class="para">
+		All other trademarks are the property of their respective owners.
+	</div></div></div></div></div></div><script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            initSwitchery();
+                            jQuery('pre[class*="language-"]').each(function(i, block){hljs.highlightBlock(block);});
+                        });
+                    </script></body></html>
