@@ -1,0 +1,2635 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="chrometwo"><head><title>CLI Guide</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"/><meta name="generator" content="publican v4.3.2"/><meta name="description" content="This guide describes how to use the Migration Toolkit for Applications CLI to simplify migration of Java applications."/><link rel="next" href="#making-open-source-more-inclusive" title="Making open source more inclusive"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><script type="text/javascript" src="Common_Content/scripts/jquery-1.7.1.min.js"> </script><script type="text/javascript" src="Common_Content/scripts/utils.js"> </script><script type="text/javascript" src="Common_Content/scripts/highlight.js/highlight.pack.js"> </script></head><body><div id="chrometwo"><div id="main"><div xml:lang="en-US" class="book" id="idm46521661001888"><div class="titlepage"><div><div class="producttitle"><span class="productname">Migration Toolkit for Applications</span> <span class="productnumber">7.2</span></div><div><h1 class="title">CLI Guide</h1></div><div><h2 class="subtitle">Learn how to use the Migration Toolkit for Applications CLI to migrate your applications.</h2></div><div><div xml:lang="en-US" class="authorgroup"><span class="orgname">Red Hat Customer Content Services</span></div></div><div><a href="#idm46521637587168">Legal Notice</a></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+				This guide describes how to use the Migration Toolkit for Applications CLI to simplify migration of Java applications.
+			</div></div></div></div><hr/></div><div class="toc"><ul class="toc"><li><span class="preface"><a href="#making-open-source-more-inclusive">Making open source more inclusive</a></span></li><li><span class="chapter"><a href="#introduction">1. Introduction</a></span><ul><li><span class="section"><a href="#about-cli-guide_cli-guide">1.1. About the CLI Guide</a></span></li><li><span class="section"><a href="#mta-what-is-the-toolkit_cli-guide">1.2. About the Migration Toolkit for Applications</a></span><ul><li><span class="section"><a href="#migration-paths_cli-guide">1.2.1. Supported Migration Toolkit for Applications migration paths</a></span></li></ul></li><li><span class="section"><a href="#about-cli_cli-guide">1.3. The MTA CLI</a></span></li></ul></li><li><span class="chapter"><a href="#installing_and_running_the_cli">2. Installing and Running the CLI</a></span><ul><li><span class="section"><a href="#installing-cli-tool_cli-guide">2.1. Installing the CLI</a></span><ul><li><span class="section"><a href="#installing-downloadable-cli-zip_cli-guide">2.1.1. Installing the CLI <code class="literal">.zip</code> file</a></span></li><li><span class="section"><a href="#installing-using-podman_cli-guide">2.1.2. Installing the CLI by using Podman</a></span></li><li><span class="section"><a href="#installing-using-docker_cli-guide">2.1.3. Installing the CLI for use with Docker on Windows (Developer Preview)</a></span></li></ul></li><li><span class="section"><a href="#installing-mta-disconnected-environment_cli-guide">2.2. Installing MTA on a disconnected environment</a></span><ul><li><span class="section"><a href="#downloading_the_podman_images">2.2.1. Downloading the Podman images</a></span></li><li><span class="section"><a href="#cli-tool-known-issues_cli-guide">2.2.2. CLI known issues</a></span></li></ul></li><li><span class="section"><a href="#running-cli">2.3. Running the CLI</a></span><ul><li><span class="section"><a href="#mta-cli-run-single-app_cli-guide">2.3.1. Running the MTA CLI against an application</a></span></li><li><span class="section"><a href="#mta-cli-run-multiple-apps_cli-guide">2.3.2. Running the MTA CLI against multiple applications and generating a single report (Developer Preview)</a></span></li><li><span class="section"><a href="#mta-cli-analyze_cli-guide">2.3.3. Performing analysis using the command line</a></span></li><li><span class="section"><a href="#running-the-containerless-mta-cli_cli-guide">2.3.4. Running the containerless CLI</a></span></li><li><span class="section"><a href="#mta-cli-transform_cli-guide">2.3.5. Performing transformation by using the command line</a></span></li></ul></li><li><span class="section"><a href="#access-report_cli-guide">2.4. Accessing reports</a></span></li><li><span class="section"><a href="#mta-cli-analyze-multi-lang-apps_cli-guide">2.5. Analyzing multi-language applications with CLI</a></span><ul><li><span class="section"><a href="#selecting-language-providers-for-analysis_cli-guide">2.5.1. Analyzing a multi-language application for the selected supported language provider</a></span></li><li><span class="section"><a href="#mta-cli-analyze-unsupported-provider_cli-guide">2.5.2. Analyzing a multi-language application for an unsupported language provider</a></span></li></ul></li></ul></li><li><span class="chapter"><a href="#review-reports_cli-guide">3. Reviewing the reports</a></span><ul><li><span class="section"><a href="#review-application-report_cli-guide">3.1. Application report</a></span><ul><li><span class="section"><a href="#dashboard">3.1.1. Dashboard</a></span></li><li><span class="section"><a href="#issues-report_cli-guide">3.1.2. Issues report</a></span></li><li><span class="section"><a href="#insights">3.1.3. Insights</a></span></li><li><span class="section"><a href="#application_details_report">3.1.4. Application details report</a></span></li><li><span class="section"><a href="#technology-report-application_cli-guide">3.1.5. Technologies report</a></span></li><li><span class="section"><a href="#source_report">3.1.6. Source report</a></span></li></ul></li><li><span class="section"><a href="#technology-report_cli-guide">3.2. Technologies report</a></span></li></ul></li><li><span class="chapter"><a href="#optimize-performance_cli-guide">4. Optimizing MTA performance</a></span><ul><li><span class="section"><a href="#deploying_and_running_the_application">4.1. Deploying and running the application</a></span></li><li><span class="section"><a href="#upgrading_hardware">4.2. Upgrading hardware</a></span></li></ul></li><li><span class="appendix"><a href="#reference_material">A. Reference material</a></span><ul><li><span class="section"><a href="#cli-args_cli-guide">A.1. About MTA command-line arguments</a></span><ul><li><span class="section"><a href="#cli-input-argument_cli-guide">A.1.1. Specifying the input</a></span></li><li><span class="section"><a href="#cli-output-argument_cli-guide">A.1.2. Specifying the output directory</a></span></li><li><span class="section"><a href="#cli-source-argument_cli-guide">A.1.3. Setting the source technology</a></span></li><li><span class="section"><a href="#cli-target-argument_cli-guide">A.1.4. Setting the target technology</a></span></li></ul></li><li><span class="section"><a href="#tech-tags_cli-guide">A.2. Supported technology tags</a></span></li><li><span class="section"><a href="#about-story-points_cli-guide">A.3. About rule story points</a></span><ul><li><span class="section"><a href="#what_are_story_points">A.3.1. What are story points?</a></span></li><li><span class="section"><a href="#how_story_points_are_estimated_in_rules">A.3.2. How story points are estimated in rules</a></span></li><li><span class="section"><a href="#task_category">A.3.3. Task category</a></span></li></ul></li><li><span class="section"><a href="#additional_resources">A.4. Additional Resources</a></span><ul><li><span class="section"><a href="#get-involved_cli-guide">A.4.1. Contributing to the project</a></span></li><li><span class="section"><a href="#important-links_cli-guide">A.4.2. Migration Toolkit for Applications development resources</a></span></li><li><span class="section"><a href="#reporting_issues">A.4.3. Reporting issues</a></span></li></ul></li></ul></li></ul></div><section class="preface" id="making-open-source-more-inclusive"><div class="titlepage"><div><div><h1 class="title">Making open source more inclusive</h1></div></div></div><p class="_abstract _abstract">
+			Red Hat is committed to replacing problematic language in our code, documentation, and web properties. We are beginning with these four terms: master, slave, blacklist, and whitelist. Because of the enormity of this endeavor, these changes will be implemented gradually over several upcoming releases. For more details, see <a class="link" href="https://www.redhat.com/en/blog/making-open-source-more-inclusive-eradicating-problematic-language">our CTO Chris Wright’s message</a>.
+		</p></section><section class="chapter" id="introduction"><div class="titlepage"><div><div><h1 class="title">Chapter 1. Introduction</h1></div></div></div><section class="section" id="about-cli-guide_cli-guide"><div class="titlepage"><div><div><h2 class="title">1.1. About the CLI Guide</h2></div></div></div><p>
+				This guide is for engineers, consultants, and others who want to use the Migration Toolkit for Applications (MTA) to migrate Java applications, .NET applications, or other components. In MTA 7.1 and later, you can use MTA to analyze applications written in languages other than Java. To run analysis on applications written in languages other than Java, add a custom rule set and do not specify a target language. This guide describes how to install and run the CLI, review the generated reports, and take advantage of additional features.
+			</p><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					.NET migration is a Developer Preview feature only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+				</p></div></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Analyzing applications written in a language other than Java is a Developer Preview feature only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+				</p></div></div></section><section class="section" id="mta-what-is-the-toolkit_cli-guide"><div class="titlepage"><div><div><h2 class="title">1.2. About the Migration Toolkit for Applications</h2></div></div></div><h4 id="what_is_the_migration_toolkit_for_applications">What is the Migration Toolkit for Applications?</h4><p>
+				Migration Toolkit for Applications (MTA) accelerates large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. This solution provides insight throughout the adoption process, at both the portfolio and application levels: inventory, assess, analyze, and manage applications for faster migration to OpenShift via the user interface.
+			</p><p>
+				In MTA 7.1 and later, when you add an application to the <span class="strong strong"><strong>Application Inventory</strong></span>, MTA automatically creates and executes language and technology discovery tasks. Language discovery identifies the programming languages used in the application. Technology discovery identifies technologies, such as Enterprise Java Beans (EJB), Spring, etc. Then, each task assigns appropriate tags to the application, reducing the time and effort you spend manually tagging the application.
+			</p><p>
+				MTA uses an extensive default questionnaire as the basis for assessing your applications, or you can create your own custom questionnaire, enabling you to estimate the difficulty, time, and other resources needed to prepare an application for containerization. You can use the results of an assessment as the basis for discussions between stakeholders to determine which applications are good candidates for containerization, which require significant work first, and which are not suitable for containerization.
+			</p><p>
+				MTA analyzes applications by applying one or more rulesets to each application considered to determine which specific lines of that application must be modified before it can be modernized.
+			</p><p>
+				MTA examines application artifacts, including project source directories and application archives, and then produces an HTML report highlighting areas needing changes.
+			</p><h4 id="how_does_the_migration_toolkit_for_applications_simplify_migration">How does the Migration Toolkit for Applications simplify migration?</h4><p>
+				The Migration Toolkit for Applications looks for common resources and known trouble spots when migrating applications. It provides a high-level view of the technologies used by the application.
+			</p><p>
+				MTA generates a detailed report evaluating a migration or modernization path. This report can help you to estimate the effort required for large-scale projects and to reduce the work involved.
+			</p><section class="section" id="migration-paths_cli-guide"><div class="titlepage"><div><div><h3 class="title">1.2.1. Supported Migration Toolkit for Applications migration paths</h3></div></div></div><p>
+					The Migration Toolkit for Applications (MTA) supports the following migrations:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							Migrating from third-party enterprise application servers, such as Oracle WebLogic Server, to JBoss Enterprise Application Platform (JBoss EAP).
+						</li><li class="listitem">
+							Upgrading to the latest release of JBoss EAP.
+						</li><li class="listitem">
+							Migrating from a Windows-only .NET 4.5+ Framework to cross-platform .NET 8.0. (Developer Preview)
+						</li></ul></div><p>
+					MTA provides a comprehensive set of rules to assess the suitability of your applications for containerization and deployment on Red Hat OpenShift Container Platform (RHOCP). You can run an MTA analysis to assess your applications' suitability for migration to multiple target platforms.
+				</p><div class="table" id="idm46521640866944"><p class="title"><strong>Table 1.1. Supported Java migration paths: Source platform ⇒ Target platform</strong></p><div class="table-contents"><table class="gt-8-cols lt-7-rows"><colgroup><col style="width: 19%; " class="col_1"/><col style="width: 10%; " class="col_2"/><col style="width: 10%; " class="col_3"/><col style="width: 10%; " class="col_4"/><col style="width: 10%; " class="col_5"/><col style="width: 10%; " class="col_6"/><col style="width: 10%; " class="col_7"/><col style="width: 10%; " class="col_8"/><col style="width: 10%; " class="col_9"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521637842368" scope="col">Source platform ⇒</th><th align="left" valign="top" id="idm46521637841248" scope="col">Migration to JBoss EAP 7 &amp; 8</th><th align="left" valign="top" id="idm46521637840128" scope="col">OpenShift (cloud readiness)</th><th align="left" valign="top" id="idm46521639922880" scope="col">OpenJDK 11, 17, and 21</th><th align="left" valign="top" id="idm46521639921792" scope="col">Jakarta EE 9</th><th align="left" valign="top" id="idm46521639920704" scope="col">Camel 3 &amp; 4</th><th align="left" valign="top" id="idm46521639919616" scope="col">Spring Boot in Red Hat Runtimes</th><th align="left" valign="top" id="idm46521639918512" scope="col">Quarkus</th><th align="left" valign="top" id="idm46521639917424" scope="col">Open Liberty</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									Oracle WebLogic Server
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									IBM WebSphere Application Server
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									✔
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									JBoss EAP 4
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									✘ <a href="#ftn.note2" class="footnote"><sup class="footnote" id="note2">[a]</sup></a>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									JBoss EAP 5
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									JBoss EAP 6
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									JBoss EAP 7
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									Thorntail
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									✔ <a href="#ftn.note3" class="footnote"><sup class="footnote" id="note3">[b]</sup></a>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									Oracle JDK
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									Camel 2
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									Spring Boot
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									Any Java application
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521637842368">
+								<p>
+									Any Java EE application
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637841248">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637840128">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639922880">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639921792">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639920704">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639919616">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639918512">
+								<p>
+									-
+								</p>
+								</td><td align="left" valign="top" headers="idm46521639917424">
+								<p>
+									-
+								</p>
+								</td></tr></tbody><tbody class="footnotes"><tr><td colspan="9"><div id="ftn.note2" class="footnote"><div class="para"><a href="#note2" class="simpara"><sup class="simpara">[a] </sup></a>
+										Although MTA does not currently provide rules for this migration path, Red Hat Consulting can assist with migration from any source platform to JBoss EAP 7.
+									</div></div><div id="ftn.note3" class="footnote"><div class="para"><a href="#note3" class="simpara"><sup class="simpara">[b] </sup></a>
+										Requires JBoss Enterprise Application Platform expansion pack 2 (EAP XP 2)
+									</div></div></td></tr></tbody></table></div></div><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+							.NET migration paths: Source platform ⇒ Target platform (Developer Preview)
+						</li></ol></div><div class="informaltable"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 33%; " class="col_1"/><col style="width: 33%; " class="col_2"/><col style="width: 33%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521636263024" scope="col">Source platform ⇒</th><th align="left" valign="top" id="idm46521638991920" scope="col">OpenShift (cloud readiness)</th><th align="left" valign="top" id="idm46521638990816" scope="col">Migration to .NET 8.0</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521636263024">
+								<p>
+									.NET Framework 4.5+ (Windows only)
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638991920">
+								<p>
+									✔
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638990816">
+								<p>
+									✔
+								</p>
+								</td></tr></tbody></table></div><p>
+					For more information about use cases and migration paths, see the <a class="link" href="https://developers.redhat.com/products/mta/use-cases">MTA for developers</a> web page.
+				</p></section></section><section class="section" id="about-cli_cli-guide"><div class="titlepage"><div><div><h2 class="title">1.3. The MTA CLI</h2></div></div></div><p>
+				The CLI is a command-line tool in the Migration Toolkit for Applications that you can use to assess and prioritize migration and modernization efforts for applications. It provides numerous reports that highlight the analysis without using the other tools. The CLI includes a wide array of customization options. By using the CLI, you can tune MTA analysis options or integrate with external automation tools.
+			</p></section></section><section class="chapter" id="installing_and_running_the_cli"><div class="titlepage"><div><div><h1 class="title">Chapter 2. Installing and Running the CLI</h1></div></div></div><section class="section" id="installing-cli-tool_cli-guide"><div class="titlepage"><div><div><h2 class="title">2.1. Installing the CLI</h2></div></div></div><p>
+				You can install the CLI on Linux, Windows, or macOS operating systems using the downloadable <code class="literal">.zip</code> file.
+			</p><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Starting from MTA 7.2.0, you can run the application analysis for Java applications in the containerless mode.
+				</p><p>
+					The containerless mode is set by default and is used automatically if all requirements are met. For more information, see <a class="link" href="#running-the-containerless-mta-cli_cli-guide" title="2.3.4. Running the containerless CLI">Running the containerless CLI</a>.
+				</p><p>
+					However, if you want to analyze applications in languages other than Java or, for example, use <a class="link" href="#mta-cli-transform_cli-guide" title="2.3.5. Performing transformation by using the command line">transformation commands</a>, you still need to use containers.
+				</p></div></div><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						Red Hat Container Registry Authentication for <code class="literal">registry.redhat.io</code>. Red Hat distributes container images from <code class="literal">registry.redhat.io</code>, which requires authentication. For more details, see <a class="link" href="https://access.redhat.com/RegistryAuthentication">Red Hat Container Registry Authentication</a>.
+					</li></ul></div><section class="section" id="installing-downloadable-cli-zip_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.1.1. Installing the CLI <code class="literal">.zip</code> file</h3></div></div></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Navigate to the <a class="link" href="https://developers.redhat.com/products/mta/download">MTA Download page</a> and download the OS-specific CLI file or the <code class="literal">src</code> file:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									mta-7.2.0-cli-linux.zip
+								</li><li class="listitem">
+									mta-7.2.0-cli-macos.zip
+								</li><li class="listitem">
+									mta-7.2.0-cli-windows.zip
+								</li><li class="listitem">
+									mta-7.2.0-cli-src.zip
+								</li></ul></div></li><li class="listitem"><p class="simpara">
+							Extract the <code class="literal">.zip</code> file to the <code class="literal">.kantra</code> directory inside your <code class="literal">$HOME</code> directory. The <code class="literal">.zip</code> file extracts the <span class="strong strong"><strong>mta-cli</strong></span> binary, along with other required directories and files.
+						</p><p class="simpara">
+							When you encounter <code class="literal">&lt;MTA_HOME&gt;</code> in this guide, replace it with the actual path to your MTA installation.
+						</p></li></ol></div></section><section class="section" id="installing-using-podman_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.1.2. Installing the CLI by using Podman</h3></div></div></div><p>
+					You can install the CLI using <code class="literal">podman pull</code>.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Red Hat Container Registry Authentication for <code class="literal">registry.redhat.io</code>. Red Hat distributes container images from <code class="literal">registry.redhat.io</code>, which requires authentication. See <a class="link" href="https://access.redhat.com/RegistryAuthentication">Red Hat Container Registry Authentication</a> for additional details.
+						</li><li class="listitem">
+							Podman must be installed.
+						</li></ul></div><div class="admonition note"><div class="admonition_header">Podman</div><div><p>
+						Podman is a daemonless, open source, Linux-native tool designed to make it easy to find, run, build, share, and deploy applications using Open Containers Initiative (OCI) Containers and Container Images. Podman provides a command-line interface (CLI) familiar to anyone who has used the Docker Container Engine. For more information on installing and using Podman, see <a class="link" href="https://podman.io/docs/installation">Podman installation instructions</a>.
+					</p></div></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Use Podman to authenticate to <code class="literal">registry.redhat.io</code> by running the following command:
+						</p><pre class="programlisting language-terminal">$ podman login registry.redhat.io</pre><p class="simpara">
+							Enter the user name and password:
+						</p><pre class="programlisting language-terminal">Username: &lt;username&gt;
+Password: &lt;***********&gt;</pre></li><li class="listitem"><p class="simpara">
+							Copy the binary <code class="literal">PATH</code> to enable system-wide use by running the following command:
+						</p><pre class="programlisting language-terminal">$ podman cp $(podman create registry.redhat.com/mta-toolkit/mta-mta-cli-rhel9:{ProductVersion}):/usr/local/bin/mta-cli ./</pre><div class="admonition warning"><div class="admonition_header">Warning</div><div><p>
+								Although installation using Podman is possible, downloading and installing the <code class="literal">.zip</code> file is the preferred installation.
+							</p></div></div></li></ol></div></section><section class="section" id="installing-using-docker_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.1.3. Installing the CLI for use with Docker on Windows (Developer Preview)</h3></div></div></div><p>
+					You can install the CLI for use with Docker on Windows. This is the required approach when migrating applications built with .NET framework 4.5 or later on Windows to cross-platform .NET 8.0.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							A host with Windows 11+ 64-bit version 21H2 or higher.
+						</li><li class="listitem">
+							You have download the Docker Desktop for Windows installer. See <a class="link" href="https://docs.docker.com/desktop/install/windows-install/">Install Docker Desktop on Windows</a> for additional details.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Open a PowerShell with Administrator privileges.
+						</li><li class="listitem"><p class="simpara">
+							Ensure Hyper-V is installed and enabled:
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; Enable-WindowsOptionalFeature -Online `
+   -FeatureName Microsoft-Hyper-V-All</pre><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; Enable-WindowsOptionalFeature -Online `
+   -FeatureName Containers</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+								You may need to reboot Windows.
+							</p></div></div></li><li class="listitem"><p class="simpara">
+							Install Docker Desktop on Windows.
+						</p><div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+									Double-click <code class="literal">Docker_Desktop_Installer.exe</code> to run the installer. By default, Docker Desktop is installed at <code class="literal">C:\Program Files\Docker\Docker</code>.
+								</li><li class="listitem">
+									Deselect the <span class="strong strong"><strong>Use WSL 2 instead of Hyper-V</strong></span> option on the Configuration page to ensure that Docker will run Windows containers as the backend instead of Linux containers.
+								</li></ol></div></li><li class="listitem"><p class="simpara">
+							In PowerShell, create a folder for MTA:
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; mkdir C:\Users\&lt;your_user_name&gt;\MTA</pre><p class="simpara">
+							Replace <code class="literal">&lt;your_user_name&gt;</code> with the username for your home directory.
+						</p></li><li class="listitem"><p class="simpara">
+							Extract the <code class="literal">mta-7.2.0-cli-windows.zip</code> file to the <code class="literal">MTA</code> folder:
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; cd C:\Users\&lt;your_user_name&gt;\Downloads</pre><p class="simpara">
+							Replace <code class="literal">&lt;your_user_name&gt;</code> with the username for your home directory.
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; Expand-Archive `
+   -Path "{ProductShortNameLower}-{ProductVersion}-cli-windows.zip" `
+   -DestinationPath "C:\Users\&lt;your_user_name&gt;\MTA"</pre><p class="simpara">
+							Replace <code class="literal">&lt;your_user_name&gt;</code> with the username for your home directory.
+						</p></li><li class="listitem"><p class="simpara">
+							Ensure Docker is running Windows containers:
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; docker version</pre><pre class="programlisting language-powershell">Client:
+ Version:           27.0.3
+ API version:       1.46
+ Go version:        go1.21.11
+ Git commit:        7d4bcd8
+ Built:             Sat Jun 29 00:03:32 2024
+ OS/Arch:           windows/amd64 <span id="CO1-1"/><span class="callout">1</span>
+ Context:           desktop-windows
+Server: Docker Desktop 4.32.0 (157355)
+ Engine:
+  Version:          27.0.3
+  API version:      1.46 (minimum version 1.24)
+  Go version:       go1.21.11
+  Git commit:       662f78c
+  Built:            Sat Jun 29 00:02:13 2024
+  OS/Arch:          windows/amd64 <span id="CO1-2"/><span class="callout">2</span>
+  Experimental:     false</pre><div class="calloutlist"><dl class="calloutlist"><dt><a href="#CO1-1"><span class="callout">1</span></a> <a href="#CO1-2"><span class="callout">2</span></a> </dt><dd><div class="para">
+									Ensure the <code class="literal">OS/Arch</code> setting is <code class="literal">windows/amd64</code>.
+								</div></dd></dl></div></li><li class="listitem"><p class="simpara">
+							Set the <code class="literal">PODMAN_BIN</code> environment variable to use Docker:
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; $env:PODMAN_BIN="C:\Windows\system32\docker.exe"</pre></li><li class="listitem"><p class="simpara">
+							Set the <code class="literal">DOTNET_PROVIDER_IMG</code> environment variable to use the upstream <code class="literal">dotnet-external-provider</code>:
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; $env:DOTNET_PROVIDER_IMG="quay.io/konveyor/dotnet-external-provider:v0.5.0"</pre></li><li class="listitem"><p class="simpara">
+							Set the <code class="literal">RUNNER_IMG</code> environment variable to use the upstream image:
+						</p><pre class="programlisting language-powershell">PS C:\Users\&lt;your_user_name&gt;&gt; $env:RUNNER_IMG="quay.io/konveyor/kantra:v0.5.0"</pre></li></ol></div></section></section><section class="section" id="installing-mta-disconnected-environment_cli-guide"><div class="titlepage"><div><div><h2 class="title">2.2. Installing MTA on a disconnected environment</h2></div></div></div><p>
+				Starting from MTA 7.2.0, you can run the application analysis for Java applications in the containerless mode.
+			</p><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					The containerless mode is set by default and is used automatically if all requirements are met. For more information, see <a class="link" href="#running-the-containerless-mta-cli_cli-guide" title="2.3.4. Running the containerless CLI">Running the containerless CLI</a>.
+				</p></div></div><p>
+				However, if you want to analyze applications in languages other than Java or, for example, use <a class="link" href="#mta-cli-transform_cli-guide" title="2.3.5. Performing transformation by using the command line">transformation commands</a>, you still need to use containers.
+			</p><p>
+				On a connected device, first download and save the MTA binary. Then download and save the Podman images, the MTA CLI image and the provider image that you need.
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+						Download the required MTA CLI binary from the <a class="link" href="https://developers.redhat.com/products/mta/download">Migration Toolkit for Applications Red Hat Developer page</a>:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								CLI for Linux x86_64
+							</li><li class="listitem">
+								CLI for Linux aarch64
+							</li><li class="listitem">
+								CLI for MacOS x86_64
+							</li><li class="listitem">
+								CLI for MacOS aarch64
+							</li><li class="listitem">
+								CLI for Windows x86_64
+							</li><li class="listitem">
+								CLI for Windows aarch64
+							</li></ul></div></li><li class="listitem">
+						On a connected device, download and save the images.
+					</li><li class="listitem">
+						Copy the binary to the disconnected device.
+					</li><li class="listitem">
+						In addition, you must save and import the associated container images by using Podman.
+					</li></ul></div><section class="section" id="downloading_the_podman_images"><div class="titlepage"><div><div><h3 class="title">2.2.1. Downloading the Podman images</h3></div></div></div><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Podman installed. For more information, see <a class="link" href="https://podman.io/">Podman</a>.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Use Podman to authenticate to <a class="link" href="registry.redhat.io">registry.redhat.io</a>:
+						</p><pre class="programlisting language-terminal">$ podman login registry.redhat.io</pre></li><li class="listitem"><p class="simpara">
+							Enter your username and then your password for registry.redhat.io:
+						</p><pre class="programlisting language-terminal">Username: &lt;registry_service_account_username&gt;
+Password: &lt;registry_service_account_password&gt;</pre><p class="simpara">
+							You should see the following output:
+						</p><pre class="programlisting language-terminal">Login Succeeded!</pre></li><li class="listitem"><p class="simpara">
+							Use Podman to pull the image from the registry:
+						</p><pre class="programlisting language-terminal">$ podman pull registry.redhat.io/mta/mta-cli-rhel9:7.1.0</pre></li><li class="listitem"><p class="simpara">
+							Use Podman to pull the provider image that you need from the registry:
+						</p><div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem"><p class="simpara">
+									For Java, run:
+								</p><pre class="programlisting language-terminal">$ podman pull registry.redhat.io/mta/mta-java-external-provider-rhel9:7.1.0</pre></li><li class="listitem"><p class="simpara">
+									For .NET, run:
+								</p><pre class="programlisting language-terminal">$ podman pull registry.redhat.io/mta/mta-dotnet-external-provider-rhel9:7.1.0</pre></li></ol></div></li><li class="listitem"><p class="simpara">
+							Save the images:
+						</p><pre class="programlisting language-terminal">$ podman save &lt;image&gt; -o &lt;my_image.image&gt;</pre></li><li class="listitem">
+							Copy the <code class="literal">.image</code> file and the binary onto a USB or directly to the file system of the disconnected device.
+						</li><li class="listitem"><p class="simpara">
+							On the disconnected device, run
+						</p><pre class="programlisting language-terminal">$ podman load --input &lt;my_image.image&gt;</pre></li></ol></div></section><section class="section" id="cli-tool-known-issues_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.2.2. CLI known issues</h3></div></div></div><div class="formalpara"><p class="title"><strong>Limitations with Podman on Microsoft Windows</strong></p><p>
+						The CLI is built and distributed with support for Microsoft Windows.
+					</p></div><p>
+					However, when running any container image based on Red Hat Enterprise Linux 9 (RHEL9) or Universal Base Image 9 (UBI9), the following error can be returned when starting the container:
+				</p><pre class="programlisting language-terminal">Fatal glibc error: CPU does not support x86-64-v2</pre><p>
+					This error is caused because Red Hat Enterprise Linux 9 or Universal Base Image 9 container images must be run on a CPU architecture that supports <code class="literal">x86-64-v2</code>.
+				</p><p>
+					For more details, see <a class="link" href="https://access.redhat.com/solutions/7057314">(Running Red Hat Enterprise Linux 9 (RHEL) or Universal Base Image (UBI) 9 container images fail with "Fatal glibc error: CPU does not support x86-64-v2")</a>.
+				</p><p>
+					CLI runs the container runtime correctly. However, different container runtime configurations are not supported.
+				</p><p>
+					Although unsupported, you can run CLI with <span class="strong strong"><strong>Docker</strong></span> instead of <span class="strong strong"><strong>Podman</strong></span>, which would resolve this issue.
+				</p><p>
+					To achieve this, you replace the <code class="literal">PODMAN_BIN</code> path with the path to Docker.
+				</p><p>
+					For example, if you experience this issue, instead of issuing:
+				</p><pre class="programlisting language-terminal">PODMAN_BIN=/usr/local/bin/docker mta-cli analyze</pre><p>
+					You replace <code class="literal">PODMAN_BIN</code> with the path to Docker:
+				</p><pre class="programlisting language-terminal">&lt;Docker Root Dir&gt;=/usr/local/bin/docker mta-cli analyze</pre><p>
+					While this is not supported, it would allow you to explore CLI while you work to upgrade your hardware or move to hardware that supports <code class="literal">x86_64-v2</code>.
+				</p></section></section><section class="section" id="running-cli"><div class="titlepage"><div><div><h2 class="title">2.3. Running the CLI</h2></div></div></div><p>
+				Depending on your scenario, you can use the Migration Toolkit for Applications (MTA) CLI to run the analysis in the following ways:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						Run the analysis against a single application.
+					</li><li class="listitem"><p class="simpara">
+						Run the analysis against multiple applications:
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+								In MTA versions earlier than 7.1.0, you can enter a series of <code class="literal">--analyze</code> commands, each against an application and each generating a separate report. For more information, see <a class="link" href="#mta-cli-run-single-app_cli-guide" title="2.3.1. Running the MTA CLI against an application">Running the MTA CLI against an application</a>.
+							</li><li class="listitem">
+								In MTA 7.1.0 and later, you can use the <code class="literal">--bulk</code> option to analyze multiple applications at once and generate a single report. Note that this feature is a Developer Preview feature only. For more information, see <a class="link" href="#mta-cli-run-multiple-apps_cli-guide" title="2.3.2. Running the MTA CLI against multiple applications and generating a single report (Developer Preview)">Running the MTA CLI against multiple applications and generating a single report (Developer Preview)</a>.
+							</li></ul></div></li></ul></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					Starting from MTA 7.2.0, you can run the application analysis in the containerless mode. Note that this option is set by default and is used automatically if all requirements are met. For more information, see <a class="link" href="#running-the-containerless-mta-cli_cli-guide" title="2.3.4. Running the containerless CLI">Running the containerless CLI</a>.
+				</p></div></div><section class="section" id="mta-cli-run-single-app_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.3.1. Running the MTA CLI against an application</h3></div></div></div><p>
+					You can run the Migration Toolkit for Applications (MTA) CLI against an application.
+				</p><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Open a terminal and navigate to the <code class="literal">&lt;MTA_HOME&gt;/</code> directory.
+						</li><li class="listitem"><p class="simpara">
+							Run the <code class="literal">mta-cli</code> script, or <code class="literal">mta-cli.exe</code> for Windows, and specify the appropriate arguments:
+						</p><pre class="programlisting language-terminal">$ ./mta-cli analyze --input &lt;path_to_input&gt; \
+    --output &lt;path_to_output&gt; --source &lt;source_name&gt; --target &lt;target_source&gt; \</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									<code class="literal">--input</code>: The application to be evaluated.
+								</li><li class="listitem">
+									<code class="literal">--output</code>: The output directory for the generated reports.
+								</li><li class="listitem">
+									<code class="literal">--source</code>: The source technology for the application migration. For example, <code class="literal">weblogic</code>.
+								</li><li class="listitem">
+									<code class="literal">--target</code>: The target technology for the application migration. For example, <code class="literal">eap8</code>.
+								</li></ul></div></li><li class="listitem">
+							Access the report.
+						</li></ol></div><section class="section" id="command-examples_cli-guide"><div class="titlepage"><div><div><h4 class="title">2.3.1.1. MTA command examples</h4></div></div></div><h6 id="running_mta_on_an_application_archive">Running MTA on an application archive</h6><p>
+						The following command analyzes the example EAR archive named <code class="literal">jee-example-app-1.0.0.ear</code> for migrating from JBoss EAP 5 to JBoss EAP 7:
+					</p><pre class="programlisting language-terminal">$ &lt;MTA_HOME&gt;/mta-cli analyze \
+    --input &lt;path_to_jee-example-app-1.0.0.ear&gt; \
+    --output &lt;path_to_report_output&gt; --source eap5 --target eap7 \</pre><h6 id="running_mta_on_source_code">Running MTA on source code</h6><p>
+						The following command analyzes the source code of an example application called <code class="literal">customer-management</code> for migrating to JBoss EAP 8.
+					</p><pre class="programlisting language-terminal">$ &lt;MTA_HOME&gt;/mta-cli analyze --mode source-only --input &lt;path_to_customer-management&gt;
+--output &lt;path_to_report_output&gt; --target eap8</pre><h6 id="running_cloud_readiness_rules">Running cloud-readiness rules</h6><p>
+						The following command analyzes the example EAR archive named <code class="literal">jee-example-app-1.0.0.ear</code> for migrating to JBoss EAP 7. It also evaluates the archive for cloud readiness:
+					</p><pre class="programlisting language-terminal">$ &lt;MTA_HOME&gt;/mta-cli analyze --input &lt;path_to_jee-example-app-1.0.0.ear&gt; \
+    --output &lt;path_to_report_output&gt; \
+    --target eap7</pre></section></section><section class="section" id="mta-cli-run-multiple-apps_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.3.2. Running the MTA CLI against multiple applications and generating a single report (Developer Preview)</h3></div></div></div><p>
+					You can now run the Migration Toolkit for Applications (MTA) CLI against multiple applications and generate a combined report. This can save you time and give you a better idea of how to prepare a set of applications for migration.
+				</p><p>
+					This feature is currently a Developer Preview feature.
+				</p><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+						Running the CLI against one or more applications is a Developer Preview feature only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+					</p></div></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Open a terminal and navigate to the <code class="literal">&lt;MTA_HOME&gt;/</code> directory.
+						</li><li class="listitem"><p class="simpara">
+							Run the <code class="literal">mta-cli</code> script, or <code class="literal">mta-cli.exe</code> for Windows, and specify the appropriate arguments, entering one input per <code class="literal">analyze</code> command, but entering the same output directory for all inputs. For example, to analyze applications A, B, and C:
+						</p><div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem"><p class="simpara">
+									Enter the following command for input A:
+								</p><pre class="programlisting language-terminal">$ ./mta-cli analyze --bulk --input=&lt;path_to_input_A&gt; --output=&lt;path_to_output_ABC&gt; --source &lt;source_A&gt; --target &lt;target_A&gt;</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+											<code class="literal">--input</code>: The application to be evaluated.
+										</li><li class="listitem">
+											<code class="literal">--output</code>: The output directory for the generated reports.
+										</li><li class="listitem">
+											<code class="literal">--source</code>: The source technology for the application migration. For example, <code class="literal">weblogic</code>.
+										</li><li class="listitem">
+											<code class="literal">--target</code>: The target technology for the application migration. For example, <code class="literal">eap8</code>.
+										</li></ul></div></li><li class="listitem"><p class="simpara">
+									Enter the following command for input B:
+								</p><pre class="programlisting language-terminal">$ ./mta-cli analyze --bulk --input=&lt;path_to_input_B&gt; --output=&lt;path_to_output_ABC&gt;  --source &lt;source_B&gt; --target &lt;target_B&gt;</pre></li><li class="listitem"><p class="simpara">
+									Enter the following command for input C:
+								</p><pre class="programlisting language-terminal">$ ./mta-cli analyze --bulk --input=&lt;path_to_input_C&gt; --output=&lt;path_to_output_ABC&gt;  --source &lt;source_C&gt; --target &lt;target_C&gt;</pre><p class="simpara">
+									MTA generates a single report, listing all issues that need to be resolved before the applications can be migrated.
+								</p></li></ol></div></li><li class="listitem">
+							Access the report.
+						</li></ol></div></section><section class="section" id="mta-cli-analyze_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.3.3. Performing analysis using the command line</h3></div></div></div><p>
+					<code class="literal">Analyze</code> supports running source code and binary analysis by using the <code class="literal">analyzer-lsp</code> tool. <code class="literal">analyzer-lsp</code> evaluates the rules for the providers and determines rule matches.
+				</p><div class="formalpara"><p class="title"><strong>To run analysis on application source code, run the following command:</strong></p><p>
+						
+<pre class="programlisting language-terminal">mta-cli analyze --input=&lt;path_to_source_code&gt; --output=&lt;path_to_output_directory&gt;</pre>
+					</p></div><p>
+					All flags:
+				</p><pre class="programlisting language-terminal">Analyze application source code
+
+Usage:
+  mta-cli analyze [flags]
+
+Flags:
+
+      --analyze-known-libraries           Analyze known open-source libraries.
+      --context-lines (int)               Number of lines of source code to
+                                          include in the output for each
+                                          incident (default: `100`).
+  -d, --dependency-folders (stringArray)  Directory for dependencies.
+      --enable-default-rulesets           Run default rulesets with analysis
+                                          (default: `true`).
+  -h, --help                              Help for analyze.
+      --http-proxy (string)               HTTP proxy string URL.
+      --https-proxy (string)              HTTPS proxy string URL.
+      --incident-selector (string)        An expression to select incidents
+                                          based on custom variables.
+                                          Example:
+                                          !package=io.demo.config-utils
+  -i, --input (string)                    Path to application source code or
+                                          a binary.
+      --jaeger-endpoint (string)          Jaeger endpoint to collect traces.
+      --json-output                       Create analysis and dependency
+                                          output as JSON.
+      --list-sources                      List available migration sources.
+      --list-targets                      List available migration targets.
+  -l, --label-selector (string)           Run rules based on specified label
+                                          selector expression.
+      --maven-settings (string)           Path to the custom maven
+                                          settings file to use.
+      --overwrite                         Overwrite output directory.
+      --skip-static-report                Do not generate the static report.
+  -m, --mode (string)                     Analysis mode, must be one of
+                                          `full` or `source-only`
+                                          (default: `full`).
+      --no-proxy (string)                 Proxy-excluded URLs
+                                          (relevant only with proxy).
+  -o, --output (string)                   Path to the directory for analysis
+                                          output.
+      --overwrite                         Overwrite output directory.
+      --rules (stringArray)               Filename or directory containing
+                                          rule files.
+      --run-local                         Run analysis directly on
+                                          local system without containers
+                                          (for Java and Maven).
+                                          Starting from MTA 7.2.0,
+                                          containerless CLI is the default
+                                          mode (`--run-local=true`).
+                                          You can enable container runtime
+                                          usage by setting `--run-local` to `false`.
+      --skip-static-report                Do not generate the static report.
+  -s, --source (string)                   Source technology to consider
+                                          for analysis.
+                                          To specify multiple sources,
+                                          repeat the parameter:
+                                          `--source &lt;source_1&gt;
+                                          --source &lt;source_2&gt;` etc.
+  -t, --target (string)                   Target technology to consider
+                                          for analysis.
+                                          To specify multiple targets,
+                                          repeat the parameter:
+                                          `--target &lt;target_1&gt;
+                                          --target &lt;target_2&gt;` etc.
+
+
+Global Flags:
+      --log-level uint32                  Log level (default: 4).
+      --no-cleanup                        Do not cleanup temporary resources.</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+						The list of flags above does not include the <code class="literal">--bulk</code> flag because this flag is only offered as part of a Developer Preview feature. That feature is described in <a class="link" href="#mta-cli-run-multiple-apps_cli-guide" title="2.3.2. Running the MTA CLI against multiple applications and generating a single report (Developer Preview)">Support for providing a single report when analyzing multiple applications on the CLI</a>.
+					</p></div></div><div class="orderedlist"><p class="title"><strong>Usage example</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Get an example application to run analysis on.
+						</li><li class="listitem"><p class="simpara">
+							List available target technologies.
+						</p><pre class="programlisting language-terminal">mta-cli analyze --list-targets</pre></li><li class="listitem"><p class="simpara">
+							Run an analysis with a specified target technology, for example <code class="literal">cloud-readiness</code>.
+						</p><pre class="programlisting language-terminal">mta-cli analyze --input=&lt;path-to/example-applications/example-1&gt; --output=&lt;path-to-output-dir&gt; --target=cloud-readiness</pre></li><li class="listitem"><p class="simpara">
+							Several analysis reports are created in your specified output path:
+						</p><pre class="programlisting language-terminal">$ ls ./output/ -1
+analysis.log
+dependencies.yaml
+dependency.log
+output.yaml
+static-report</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									<code class="literal">output.yaml</code> is the file that contains the issues report.
+								</li><li class="listitem">
+									<code class="literal">static-report</code> contains the static HTML report.
+								</li><li class="listitem">
+									<code class="literal">dependencies.yaml</code> contains the dependencies report.
+								</li></ul></div></li></ol></div></section><section class="section" id="running-the-containerless-mta-cli_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.3.4. Running the containerless CLI</h3></div></div></div><p>
+					Starting from MTA 7.2.0, you can perform an application analysis for Java applications by using the MTA CLI that does not require installation of a container runtime.
+				</p><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+						In MTA 7.2.0 and later, containerless CLI is a default mode. To enable container runtime usage, you must set the <code class="literal">--run-local</code> flag to <code class="literal">false</code>:
+					</p><pre class="screen">--run-local=false</pre></div></div><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have OpenJDK version 17 or later installed on your system.
+						</li><li class="listitem">
+							You have Maven installed on your system.
+						</li><li class="listitem"><p class="simpara">
+							The CLI assumes that a path to the <code class="literal">mvn</code> binary is correctly registered in the system variable. Therefore, ensure that you added <code class="literal">mvn</code> to the following variable:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+									<code class="literal">Path</code> for Windows.
+								</li><li class="listitem">
+									<code class="literal">PATH</code> for Linux and macOS.
+								</li></ul></div></li><li class="listitem">
+							You have the <code class="literal">JAVA_HOME</code> environmental variable set.
+						</li><li class="listitem"><p class="simpara">
+							You have the <code class="literal">JVM_MAX_MEM</code> system variable set.
+						</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+								If you do not set <code class="literal">JVM_MAX_MEM</code>, the analysis might hang.
+							</p></div></div></li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Move the installed MTA CLI <code class="literal">.zip</code> file to your <code class="literal">$PATH</code>:
+						</p><pre class="programlisting language-terminal">$ mv &lt;mta_cli_zip&gt;/&lt;os&gt;-kantra /usr/bin</pre></li><li class="listitem"><p class="simpara">
+							Move the requirements to the <code class="literal">.kantra</code> directory:
+						</p><pre class="programlisting language-terminal">$ mv $HOME/kantra.&lt;os&gt;.&lt;arch&gt; $HOME/.kantra</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+								The CLI can run with the requirements moved to the directory from which you run an analysis. During the analysis, the CLI checks for the requirements in this directory first, and if it does not find the requirements, it searches for them in the <code class="literal">$HOME/.kantra</code> directory.
+							</p></div></div></li><li class="listitem"><p class="simpara">
+							Optional: Display all <code class="literal">mta-cli analyze</code> command options:
+						</p><pre class="programlisting language-terminal">mta-cli analyze --help</pre></li><li class="listitem"><p class="simpara">
+							Run the application analysis:
+						</p><pre class="programlisting language-terminal">$ mta-cli analyze --overwrite --input &lt;path_to_input&gt;  --output &lt;path_to_output&gt; --target &lt;target_source&gt;</pre><p class="simpara">
+							The command arguments represent the following:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									<code class="literal">--overwrite</code>: Overwrites the output folder if it exists.
+								</li><li class="listitem">
+									<code class="literal">--input</code>: The application to be analyzed.
+								</li><li class="listitem">
+									<code class="literal">--output</code>: The output directory for the generated reports.
+								</li><li class="listitem">
+									<code class="literal">--target</code>: The target technology for the application migration, for example, <code class="literal">eap8</code>.
+								</li></ul></div></li></ol></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+							<a class="link" href="#installing-downloadable-cli-zip_cli-guide" title="2.1.1. Installing the CLI .zip file">Installing the CLI .zip file</a>
+						</li></ul></div></section><section class="section" id="mta-cli-transform_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.3.5. Performing transformation by using the command line</h3></div></div></div><p>
+					You can use transformation to perform the following actions:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							Transform Java applications source code by using the <code class="literal">transform openrewrite</code> command.
+						</li><li class="listitem">
+							Convert XML rules to YAML rules by using the <code class="literal">transform rules</code> command.
+						</li></ul></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+						Performing transformation requires the container runtime to be configured. For more information, see <a class="link" href="#installing-using-podman_cli-guide" title="2.1.2. Installing the CLI by using Podman">Installing the CLI by using Podman</a>.
+					</p></div></div><pre class="programlisting language-terminal">Transform application source code or mta XML rules
+
+Usage:
+  mta-cli transform [flags]
+  mta-cli transform [command]
+
+Available Commands:
+  openrewrite Transform application source code using OpenRewrite recipes
+  rules       Convert XML rules to YAML
+
+Flags:
+  -h, --help   help for transform
+
+Global Flags:
+      --log-level uint32   log level (default 4)
+      --no-cleanup         do not clean up temporary resources
+
+Use "mta-cli transform [command] --help" for more information about a command.</pre><section class="section" id="literal_openrewrite_literal"><div class="titlepage"><div><div><h4 class="title">2.3.5.1. <code class="literal">OpenRewrite</code></h4></div></div></div><p>
+						The <code class="literal">openrewrite</code> subcommand allows running <code class="literal">OpenRewrite</code> recipes on source code.
+					</p><pre class="programlisting language-terminal">Transform application source code using OpenRewrite recipes
+
+Usage:
+  mta-cli transform openrewrite [flags]
+
+Flags:
+  -g, --goal string     target goal (default "dryRun")
+  -h, --help            help for openrewrite
+  -i, --input string    path to application source code directory
+  -l, --list-targets    list all available OpenRewrite recipes
+  -s, --maven-settings string   path to a custom maven settings file to use
+  -t, --target string   target openrewrite recipe to use. Run --list-targets to get a list of packaged recipes.
+
+Global Flags:
+      --log-level uint32   log level (default 4)
+      --no-cleanup         do not clean up temporary resources</pre><div class="formalpara"><p class="title"><strong>To run <code class="literal">transform openrewrite</code> on application source code, run the following command:</strong></p><p>
+							
+<pre class="programlisting language-terminal">mta-cli transform openrewrite --input=&lt;path/to/source/code&gt; --target=&lt;exactly_one_target_from_the_list&gt;</pre>
+						</p></div><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+							You can only use a single target to run the <code class="literal">transform overwrite</code> command.
+						</p></div></div></section><section class="section" id="literal_rules_literal"><div class="titlepage"><div><div><h4 class="title">2.3.5.2. <code class="literal">Rules</code></h4></div></div></div><p>
+						You can use the <code class="literal">rules</code> subcommand of the <code class="literal">transform</code> command to convert mta XML rules to <code class="literal">analyzer-lsp</code> YAML rules. To covert rules, the <code class="literal">rules</code> subcommand uses the <code class="literal">windup-shim</code> tool.
+					</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+							<code class="literal">analyzer-lsp</code> evaluates the rules for the providers and determines rule matches.
+						</p></div></div><pre class="programlisting language-terminal">Convert XML rules to YAML
+
+Usage:
+  mta-cli transform rules [flags]
+
+Flags:
+  -h, --help                help for rules
+  -i, --input stringArray   path to XML rule file(s) or directory
+  -o, --output string       path to output directory
+
+Global Flags:
+      --log-level int   log level (default 5)</pre><div class="formalpara"><p class="title"><strong>To run <code class="literal">transform rules</code> on application source code, run the following:</strong></p><p>
+							
+<pre class="programlisting language-terminal">mta-cli transform rules --input=&lt;path/to/xmlrules&gt; --output=&lt;path/to/output/dir&gt;</pre>
+						</p></div><div class="orderedlist"><p class="title"><strong>Usage example</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+								Get an example application to transform source code.
+							</li><li class="listitem"><p class="simpara">
+								View the available OpenRewrite recipes.
+							</p><pre class="programlisting language-terminal">mta-cli transform openrewrite --list-targets</pre></li><li class="listitem"><p class="simpara">
+								Run a recipe on the example application.
+							</p><pre class="programlisting language-terminal">mta-cli transform openrewrite --input=&lt;path-to/jakartaee-duke&gt; --target=jakarta-imports</pre><p class="simpara">
+								Inspect the <code class="literal">jakartaee-duke</code> application source code diff to see the transformation.
+							</p></li></ol></div></section><section class="section" id="available-openrewrite-recipes_cli-guide"><div class="titlepage"><div><div><h4 class="title">2.3.5.3. Available OpenRewrite recipes</h4></div></div></div><div class="table" id="idm46521637995472"><p class="title"><strong>Table 2.1. Available OpenRewrite recipes</strong></p><div class="table-contents"><table class="gt-4-cols lt-7-rows"><colgroup><col style="width: 22%; " class="col_1"/><col style="width: 26%; " class="col_2"/><col style="width: 26%; " class="col_3"/><col style="width: 26%; " class="col_4"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521637988768" scope="col">Migration path</th><th align="left" valign="top" id="idm46521637987680" scope="col">Purpose</th><th align="left" valign="top" id="idm46521637986592" scope="col">rewrite.configLocation</th><th align="left" valign="top" id="idm46521637985504" scope="col">activeRecipes</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521637988768">
+									<p>
+										Java EE to Jakarta EE
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637987680">
+									<p>
+										Replace import of <code class="literal">javax</code> packages with equivalent <code class="literal">jakarta</code> packages
+									</p>
+									<p>
+										Replace <code class="literal">javax</code> artifacts, declared within <code class="literal">pom.xml</code> files, with the <code class="literal">jakarta</code> equivalents
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637986592">
+									<p>
+										<code class="literal">&lt;MTA_HOME&gt;/rules/openrewrite/jakarta \ /javax/imports/rewrite.yml</code>
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637985504">
+									<p>
+										<code class="literal">org.jboss.windup.JavaxToJakarta</code>
+									</p>
+									</td></tr><tr><td align="left" valign="top" headers="idm46521637988768">
+									<p>
+										Java EE to Jakarta EE
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637987680">
+									<p>
+										Rename bootstrapping files
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637986592">
+									<p>
+										<code class="literal">&lt;MTA_HOME&gt;/rules/openrewrite/jakarta \ /javax/bootstrapping/rewrite.yml</code>
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637985504">
+									<p>
+										<code class="literal">org.jboss.windup.jakarta.javax. \ BootstrappingFiles</code>
+									</p>
+									</td></tr><tr><td align="left" valign="top" headers="idm46521637988768">
+									<p>
+										Java EE to Jakarta EE
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637987680">
+									<p>
+										Transform <code class="literal">persistence.xml</code> configuration
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637986592">
+									<p>
+										<code class="literal">&lt;MTA_HOME&gt;/rules/openrewrite/jakarta \ /javax/xml/rewrite.yml</code>
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637985504">
+									<p>
+										<code class="literal">org.jboss.windup.javax-jakarta. \ PersistenceXML</code>
+									</p>
+									</td></tr><tr><td align="left" valign="top" headers="idm46521637988768">
+									<p>
+										Spring Boot to Quarkus
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637987680">
+									<p>
+										Replace <code class="literal">spring.jpa.hibernate.ddl-auto</code> property within files matching <code class="literal">application*.properties</code>
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637986592">
+									<p>
+										<code class="literal">&lt;MTA_HOME&gt;/rules/openrewrite/quarkus \ /springboot/properties/rewrite.yml</code>
+									</p>
+									</td><td align="left" valign="top" headers="idm46521637985504">
+									<p>
+										<code class="literal">org.jboss.windup.sb-quarkus.Properties</code>
+									</p>
+									</td></tr></tbody></table></div></div></section></section></section><section class="section" id="access-report_cli-guide"><div class="titlepage"><div><div><h2 class="title">2.4. Accessing reports</h2></div></div></div><p>
+				When you run the Migration Toolkit for Applications, a report is generated in the <code class="literal">&lt;OUTPUT_REPORT_DIRECTORY&gt;</code> that you specify using the <code class="literal">--output</code> argument in the command line.
+			</p><p>
+				The output directory contains the following files and subdirectories:
+			</p><pre class="screen">&lt;OUTPUT_REPORT_DIRECTORY&gt;/
+├── index.html          // Landing page for the report
+├── &lt;EXPORT_FILE&gt;.csv   // Optional export of data in CSV format
+├── archives/           // Archives extracted from the application
+├── mavenized/          // Optional Maven project structure
+├── reports/            // Generated HTML reports
+├── stats/              // Performance statistics</pre><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+						Obtain the path of the <code class="literal">index.html</code> file of your report from the output that appears after you run MTA:
+					</p><pre class="screen">Report created: &lt;OUTPUT_REPORT_DIRECTORY&gt;/index.html
+              Access it at this URL: file:///&lt;OUTPUT_REPORT_DIRECTORY&gt;/index.html</pre></li><li class="listitem"><p class="simpara">
+						Open the <code class="literal">index.html</code> file by using a browser.
+					</p><p class="simpara">
+						The generated report is displayed.
+					</p></li></ol></div></section><section class="section" id="mta-cli-analyze-multi-lang-apps_cli-guide"><div class="titlepage"><div><div><h2 class="title">2.5. Analyzing multi-language applications with CLI</h2></div></div></div><p>
+				Starting from MTA 7.1.0, you can run the application analysis on applications written in multiple languages. You can perform the analysis either of the following ways:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						Select the supported language provider to run the analysis for.
+					</li><li class="listitem">
+						Override the existing supported language provider with your own unsupported language provider and run the analysis for this unsupported provider.
+					</li></ul></div><section class="section" id="selecting-language-providers-for-analysis_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.5.1. Analyzing a multi-language application for the selected supported language provider</h3></div></div></div><p>
+					When analyzing a multi-language application with Migration Toolkit for Applications (MTA) CLI, you can explicitly set a supported language provider according to your application language to run the analysis for.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You are running the latest version of MTA CLI.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							List language providers supported for the analysis:
+						</p><pre class="programlisting language-terminal">$ mta-cli analyze --list-providers</pre></li><li class="listitem"><p class="simpara">
+							Run the application analysis for the selected language provider:
+						</p><pre class="programlisting language-terminal">$ mta-cli analyze --input &lt;_path_to_the_source_repository_&gt; --output &lt;_path_to_the_output_directory_&gt; --provider &lt;_language_provider_&gt; --rules &lt;_path_to_custom_rules_&gt;</pre><p class="simpara">
+							Note that if you do not set the <code class="literal">--provider</code> option, the analysis might fail because it detects unsupported providers. The analysis will complete without <code class="literal">--provider</code> only if all discovered providers are supported.
+						</p></li></ol></div></section><section class="section" id="mta-cli-analyze-unsupported-provider_cli-guide"><div class="titlepage"><div><div><h3 class="title">2.5.2. Analyzing a multi-language application for an unsupported language provider</h3></div></div></div><p>
+					When analyzing a multi-language application with Migration Toolkit for Applications (MTA) CLI, you can run the analysis for an unsupported language provider. To do so, you must override an existing supported language provider with your own unsupported language provider by using the <code class="literal">--override-provider-settings</code> option.
+				</p><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+						You must create a configuration file for your unsupported language provider before overriding the supported provider.
+					</p></div></div><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You created a configuration file for your unsupported language provider.
+						</li></ul></div><div class="itemizedlist"><p class="title"><strong>Procedure</strong></p><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+							Override an existing supported language provider with your unsupported provider:
+						</p><pre class="programlisting language-terminal">$ mta-cli analyze --provider-override &lt;path_to_configuration_file&gt; --output=&lt;path_to_the_output_directory&gt; --rules &lt;path_to_custom_rules&gt;</pre></li></ul></div></section></section></section><section class="chapter" id="review-reports_cli-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 3. Reviewing the reports</h1></div></div></div><p>
+			Use a browser to open the <code class="literal">index.html</code> file located in the report output directory. This opens a landing page that lists the applications that were processed. Each row contains a high-level overview of the story points, number of incidents, and technologies encountered in that application.
+		</p><div class="figure" id="idm46521638017872"><p class="title"><strong>Figure 3.1. Application list</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-1-applications.png" alt="Application list"/></div></div></div><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+				The incidents and estimated story points change as new rules are added to MTA. The values here may not match what you see when you test this application.
+			</p></div></div><p>
+			The following table lists all of the reports and pages that can be accessed from this main MTA landing page. Click the name of the application, <span class="strong strong"><strong>jee-example-app-1.0.0.ear</strong></span>, to view the application report.
+		</p><div class="informaltable"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 30%; " class="col_1"/><col style="width: 70%; " class="col_2"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521638497520" scope="col">Page</th><th align="left" valign="top" id="idm46521638496432" scope="col">How to Access</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521638497520">
+						<p>
+							Application
+						</p>
+						</td><td align="left" valign="top" headers="idm46521638496432">
+						<p>
+							Click the name of the application.
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46521638497520">
+						<p>
+							Technologies report
+						</p>
+						</td><td align="left" valign="top" headers="idm46521638496432">
+						<p>
+							Click the <span class="strong strong"><strong>Technologies</strong></span> link at the top of the page.
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46521638497520">
+						<p>
+							Archives shared by multiple applications
+						</p>
+						</td><td align="left" valign="top" headers="idm46521638496432">
+						<p>
+							Click the <span class="strong strong"><strong>Archives shared by multiple applications</strong></span> link. Note that this link is only available when there are shared archives across multiple applications.
+						</p>
+						</td></tr><tr><td align="left" valign="top" headers="idm46521638497520">
+						<p>
+							Rule providers execution overview
+						</p>
+						</td><td align="left" valign="top" headers="idm46521638496432">
+						<p>
+							Click the <span class="strong strong"><strong>Rule providers execution overview</strong></span> link at the bottom of the page.
+						</p>
+						</td></tr></tbody></table></div><p>
+			Note that if an application shares archives with other analyzed applications, you will see a breakdown of how many story points are from shared archives and how many are unique to this application.
+		</p><div class="figure" id="idm46521640083824"><p class="title"><strong>Figure 3.2. Shared archives</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-2-shared-archives.png" alt="Shared archives"/></div></div></div><p>
+			Information about the archives that are shared among applications can be found in the Archives Shared by Multiple Applications reports.
+		</p><section class="section" id="review-application-report_cli-guide"><div class="titlepage"><div><div><h2 class="title">3.1. Application report</h2></div></div></div><section class="section" id="dashboard"><div class="titlepage"><div><div><h3 class="title">3.1.1. Dashboard</h3></div></div></div><p>
+					Access this report from the report landing page by clicking on the application name in the <span class="strong strong"><strong>Application List</strong></span>.
+				</p><p>
+					The dashboard gives an overview of the entire application migration effort. It summarizes:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							The incidents and story points by category
+						</li><li class="listitem">
+							The incidents and story points by level of effort of the suggested changes
+						</li><li class="listitem">
+							The incidents by package
+						</li></ul></div><div class="figure" id="idm46521636196960"><p class="title"><strong>Figure 3.3. Dashboard</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-3-dashboard.png" alt="Dashboard"/></div></div></div><p>
+					The top navigation bar lists the various reports that contain additional details about the migration of this application. Note that only those reports that are applicable to the current application will be available.
+				</p><div class="informaltable"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 30%; " class="col_1"/><col style="width: 70%; " class="col_2"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521636188336" scope="col">Report</th><th align="left" valign="top" id="idm46521636187248" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Issues
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Provides a concise summary of all issues that require attention.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Insights
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Provides information about the technologies used in the application and their usage in the code. However, these Insights do not impact the migration.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Application details
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Provides a detailed overview of all resources found within the application that may need attention during the migration.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Technologies
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Displays all embedded libraries grouped by functionality, allowing you to quickly view the technologies used in each application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Dependencies
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Displays all Java-packaged dependencies found within the application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Unparsable
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Shows all files that MTA could not parse in the expected format. For instance, a file with a <code class="literal">.xml</code> or <code class="literal">.wsdl</code> suffix is assumed to be an XML file. If the XML parser fails, the issue is reported here and also where the individual file is listed.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Remote services
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Displays all remote services references that were found within the application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									EJBs
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Contains a list of EJBs found within the application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									JBPM
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Contains all of the JBPM-related resources that were discovered during analysis.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									JPA
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Contains details on all JPA-related resources that were found in the application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Hibernate
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Contains details on all Hibernate-related resources that were found in the application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Server resources
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Displays all server resources (for example, JNDI resources) in the input application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Spring Beans
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Contains a list of Spring Beans found during the analysis.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Hard-coded IP addresses
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Provides a list of all hard-coded IP addresses that were found in the application.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									Ignored files
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Lists the files found in the application that, based on certain rules and MTA configuration, were not processed. See the <code class="literal">--userIgnorePath</code> option for more information.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521636188336">
+								<p>
+									About
+								</p>
+								</td><td align="left" valign="top" headers="idm46521636187248">
+								<p>
+									Describes the current version of MTA and provides helpful links for further assistance.
+								</p>
+								</td></tr></tbody></table></div></section><section class="section" id="issues-report_cli-guide"><div class="titlepage"><div><div><h3 class="title">3.1.2. Issues report</h3></div></div></div><p>
+					Access this report from the dashboard by clicking the <span class="strong strong"><strong>Issues</strong></span> link.
+				</p><p>
+					This report includes details about every issue that was raised by the selected migration paths. The following information is provided for each issue encountered:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							A title to summarize the issue.
+						</li><li class="listitem">
+							The total number of incidents, or times the issue was encountered.
+						</li><li class="listitem">
+							The rule story points to resolve a single instance of the issue.
+						</li><li class="listitem">
+							The estimated level of effort to resolve the issue.
+						</li><li class="listitem">
+							The total story points to resolve every instance encountered. This is calculated by multiplying the number of incidents found by the story points per incident.
+						</li></ul></div><div class="figure" id="idm46521637080144"><p class="title"><strong>Figure 3.4. Issues report</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-4-issues-report.png" alt="Issues report"/></div></div></div><p>
+					Each reported issue may be expanded, by clicking on the title, to obtain additional details. The following information is provided.
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							A list of files where the incidents occurred, along with the number of incidents within each file. If the file is a Java source file, then clicking the filename will direct you to the corresponding Source report.
+						</li><li class="listitem">
+							A detailed description of the issue. This description outlines the problem, provides any known solutions, and references supporting documentation regarding either the issue or resolution.
+						</li><li class="listitem">
+							A direct link, entitled <span class="strong strong"><strong>Show Rule</strong></span>, to the rule that generated the issue.
+						</li></ul></div><div class="figure" id="idm46521637071744"><p class="title"><strong>Figure 3.5. Expanded issue</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-5-expanded-issue.png" alt="Expanded rule in the issues report"/></div></div></div><p>
+					Issues are sorted into four categories by default. Information on these categories is available at ask Category.
+				</p></section><section class="section" id="insights"><div class="titlepage"><div><div><h3 class="title">3.1.3. Insights</h3></div></div></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+						Insights is a Technology Preview feature only. Technology Preview features are not supported with Red Hat production service level agreements (SLAs) and might not be functionally complete. Red Hat does not recommend using them in production. These features provide early access to upcoming product features, enabling customers to test functionality and provide feedback during the development process.
+					</p><p>
+						For more information about the support scope of Red Hat Technology Preview features, see <a class="link" href="https://access.redhat.com/support/offerings/techpreview/">Technology Preview Features Support Scope</a>.
+					</p></div></div><p>
+					Previously, a violation generated by a rule with zero effort was listed as an issue in the static report. This is now listed as an insight instead. Issues are generated by general rules, whereas string tags are generated by tagging rules. String tags indicate the presence of a technology but do not show the code location. With the introduction of Insights, you can see the technology used in the application along with its usage in the code.
+				</p><p>
+					For example, a rule searching for deprecated API usage in the code that does not impact the current migration but can be tracked and fixed when needed in the future.
+				</p><p>
+					Unlike issues, insights do not need to be fixed for a successful migration. They are generated by any rule that doesn’t have a positive effort value and category assigned. They might have a message and tag.
+				</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+						Insights are generated automatically if applicable or present. Currently, MTA supports generating Insights when application anaylsis is done using CLI.
+					</p></div></div><p>
+					You can view Insights under the <span class="strong strong"><strong>Insights</strong></span> tab in the static report.
+				</p><div class="informalfigure"><div class="mediaobject"><img src="images/topics/images/mta-cli-guide-app-insights.png" alt="Insights tab in the Static report"/></div></div><div class="formalpara"><p class="title"><strong>Example: Insights generated by a tagging rule with undefined effort</strong></p><p>
+						
+<pre class="programlisting language-terminal">- customVariables: []
+  description: Embedded library - Apache Wicket
+  labels:
+  - konveyor.io/include=always
+  links: []
+  ruleID: mvc-01000
+  tag:
+  - Apache Wicket
+  - Embedded library - Apache Wicket
+  when:
+    builtin.file:
+      pattern: .*wicket.*\.jar</pre>
+					</p></div><div class="formalpara"><p class="title"><strong>Example: Insights generated by a non-tagging rule with zero effort</strong></p><p>
+						
+<pre class="programlisting language-terminal">- category: potential
+  customVariables: []
+  description: RESTful Web Services @Context annotation has been deprecated
+  effort: 0
+  message: Future versions of this API will no longer support `@Context` and related
+    types such as `ContextResolver`.
+  ruleID: jakarta-ws-rs-00001
+  when:
+    java.referenced:
+      location: ANNOTATION
+      pattern: jakarta.ws.rs.core.Context</pre>
+					</p></div></section><section class="section" id="application_details_report"><div class="titlepage"><div><div><h3 class="title">3.1.4. Application details report</h3></div></div></div><p>
+					Access this report from the dashboard by clicking the <span class="strong strong"><strong>Application Details</strong></span> link.
+				</p><p>
+					The report lists the story points, the Java incidents by package, and a count of the occurrences of the technologies found in the application. Next is a display of application messages generated during the migration process. Finally, there is a breakdown of this information for each archive analyzed during the process.
+				</p><div class="figure" id="idm46521634654480"><p class="title"><strong>Figure 3.6. Application Details report</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-6-application-details-report.png" alt="Application Details report"/></div></div></div><p>
+					Expand the <code class="literal">jee-example-app-1.0.0.ear/jee-example-services.jar</code> to review the story points, Java incidents by package, and a count of the occurrences of the technologies found in this archive. This summary begins with a total of the story points assigned to its migration, followed by a table detailing the changes required for each file in the archive. The report contains the following columns.
+				</p><div class="informaltable"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 25%; " class="col_1"/><col style="width: 75%; " class="col_2"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521634645424" scope="col">Column Name</th><th align="left" valign="top" id="idm46521634644336" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521634645424">
+								<p>
+									Name
+								</p>
+								</td><td align="left" valign="top" headers="idm46521634644336">
+								<p>
+									The name of the file being analyzed.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521634645424">
+								<p>
+									Technology
+								</p>
+								</td><td align="left" valign="top" headers="idm46521634644336">
+								<p>
+									The type of file being analyzed, for example, <span class="strong strong"><strong>Decompiled Java File</strong></span> or <span class="strong strong"><strong>Properties</strong></span>.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521634645424">
+								<p>
+									Issues
+								</p>
+								</td><td align="left" valign="top" headers="idm46521634644336">
+								<p>
+									Warnings about areas of code that need review or changes.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521634645424">
+								<p>
+									Story Points
+								</p>
+								</td><td align="left" valign="top" headers="idm46521634644336">
+								<p>
+									Level of effort required to migrate the file.
+								</p>
+								</td></tr></tbody></table></div><p>
+					Note that if an archive is duplicated several times in an application, it will be listed just once in the report and will be tagged with <code class="literal">[Included multiple times]</code>.
+				</p><div class="figure" id="idm46521634560224"><p class="title"><strong>Figure 3.7. Duplicate archive in an application</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-7-duplicate-archive-in-application.png" alt="Duplicate archive"/></div></div></div><p>
+					The story points for archives that are duplicated within an application will be counted only once in the total story point count for that application.
+				</p></section><section class="section" id="technology-report-application_cli-guide"><div class="titlepage"><div><div><h3 class="title">3.1.5. Technologies report</h3></div></div></div><p>
+					Access this report from the dashboard by clicking the <span class="strong strong"><strong>Technologies</strong></span> link.
+				</p><p>
+					The report lists the occurrences of technologies, grouped by function, in the analyzed application. It is an overview of the technologies found in the application, and is designed to assist users in quickly understanding each application’s purpose.
+				</p><p>
+					The image below shows the technologies used in the <code class="literal">jee-example-app</code>.
+				</p><div class="figure" id="idm46521637861568"><p class="title"><strong>Figure 3.8. Technologies in an application</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-8-technologies-in-application.png" alt="Technology report Application view"/></div></div></div></section><section class="section" id="source_report"><div class="titlepage"><div><div><h3 class="title">3.1.6. Source report</h3></div></div></div><p>
+					The Source report displays the migration issues in the context of the source file in which they were discovered.
+				</p><div class="figure" id="idm46521637855504"><p class="title"><strong>Figure 3.9. Source report</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-10-source-report.png" alt="Source Report"/></div></div></div></section></section><section class="section" id="technology-report_cli-guide"><div class="titlepage"><div><div><h2 class="title">3.2. Technologies report</h2></div></div></div><p>
+				Access this report from the report landing page by clicking the <span class="strong strong"><strong>Technologies</strong></span> link.
+			</p><p>
+				This report provides an aggregate listing of the technologies used, grouped by function, for the analyzed applications. It shows how the technologies are distributed, and is typically reviewed after analyzing a large number of applications to group the applications and identify patterns. It also shows the size, number of libraries, and story point totals of each application.
+			</p><p>
+				Clicking any of the headers, such as <span class="strong strong"><strong>Markup</strong></span>, sorts the results in descending order. Selecting the same header again will resort the results in ascending order. The currently selected header is identified in bold, next to a directional arrow, indicating the direction of the sort.
+			</p><div class="figure" id="idm46521637698192"><p class="title"><strong>Figure 3.10. Technologies used across multiple applications</strong></p><div class="figure-contents"><div class="mediaobject"><img src="images/topics/images/3-11-technologies-used-across-multiple-applications.png" alt="Technologies used across multiple applications"/></div></div></div></section></section><section class="chapter" id="optimize-performance_cli-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 4. Optimizing MTA performance</h1></div></div></div><p>
+			MTA performance depends on a number of factors, including hardware configuration, the number and types of files in the application, the size and number of applications to be evaluated, and whether the application contains source or compiled code. For example, a file that is larger than 10 MB may need a lot of time to process.
+		</p><p>
+			In general, MTA spends about 40% of the time decompiling classes, 40% of the time executing rules, and the remainder of the time processing other tasks and generating reports. This section describes what you can do to improve the performance of MTA.
+		</p><section class="section" id="deploying_and_running_the_application"><div class="titlepage"><div><div><h2 class="title">4.1. Deploying and running the application</h2></div></div></div><p>
+				Try these suggestions first before upgrading hardware.
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						If possible, run MTA against the source code instead of the archives. This eliminates the need to decompile additional JARs and archives.
+					</li><li class="listitem">
+						Increase your ulimit when analyzing large applications. See <a class="link" href="https://access.redhat.com/solutions/60746">this Red Hat Knowledgebase article</a> for instructions on how to do this for Red Hat Enterprise Linux.
+					</li><li class="listitem">
+						If you have access to a server that has better resources than your laptop or desktop machine, you may want to consider running MTA on that server.
+					</li></ul></div></section><section class="section" id="upgrading_hardware"><div class="titlepage"><div><div><h2 class="title">4.2. Upgrading hardware</h2></div></div></div><p>
+				If the application and command-line suggestions above do not improve performance, you may need to upgrade your hardware.
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						If you have access to a server that has better resources than your laptop/desktop, then you may want to consider running MTA on that server.
+					</li><li class="listitem">
+						Very large applications that require decompilation have large memory requirements. 8 GB RAM is recommended. This allows 3 - 4 GB RAM for use by the JVM.
+					</li><li class="listitem">
+						An upgrade from a single or dual-core to a quad-core CPU processor provides better performance.
+					</li><li class="listitem">
+						Disk space and fragmentation can impact performance. A fast disk, especially a solid-state drive (SSD), with greater than 4 GB of defragmented disk space should improve performance.
+					</li></ul></div></section></section><section class="appendix" id="reference_material"><div class="titlepage"><div><div><h1 class="title">Appendix A. Reference material</h1></div></div></div><section class="section" id="cli-args_cli-guide"><div class="titlepage"><div><div><h2 class="title">A.1. About MTA command-line arguments</h2></div></div></div><p>
+				The following is a detailed description of the available MTA command line arguments.
+			</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					To run the MTA command without prompting, for example when executing from a script, you must use the following arguments:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<code class="literal">--overwrite</code>
+						</li><li class="listitem">
+							<code class="literal">--input</code>
+						</li><li class="listitem">
+							<code class="literal">--target</code>
+						</li></ul></div></div></div><div class="example" id="idm46521640042880"><p class="title"><strong>Example A.1. MTA CLI arguments</strong></p><div class="example-contents"><div class="informaltable"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 24%; " class="col_1"/><col style="width: 24%; " class="col_2"/><col style="width: 52%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521640036064" scope="col">Command</th><th align="left" valign="top" id="idm46521640034976" scope="col">Type</th><th align="left" valign="top" id="idm46521637573504" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--analyze-known-libraries</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to analyze known open-source libraries.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--bulk</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for running multiple analyze commands in bulk, which result in a combined static report.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--context-lines</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									Integer
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to define the number of lines of source code to include in the output for each incident (default: <code class="literal">100</code>).
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-d</code>, <code class="literal">--dependency-folders</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String Array
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for the directory for dependencies.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--enable-default-rulesets</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									Boolean
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to run default rulesets with analysis (default: <code class="literal">true</code>).
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-h</code>, <code class="literal">--help</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to output help for analyze
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--http-proxy</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for Hyper Text Transfer Protocol (HTTP) proxy string URL
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--https-proxy</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for Hypertext Transfer Protocol Secure (HTTPS) proxy string URL
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--incident-selector</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to select incidents based on custom variables, for example, <code class="literal">!package=io.konveyor.demo.config-utils</code>
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-i</code>, <code class="literal">--input</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for the path to application source code or a binary. For more details, see <a class="link" href="#cli-input-argument_cli-guide" title="A.1.1. Specifying the input">Specifying the input</a>.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--jaeger-endpoint</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for the jaeger endpoint to collect traces.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--json-output</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to create analysis and dependency output as JSON.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-l</code>, <code class="literal">--label-selector</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to run rules based on a specified label selector expression.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--list-providers</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to list available supported providers.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--list-sources</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to list rules for available migration sources.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--list-targets</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to list rules for available migration targets.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--maven-settings</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									string
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag path to a custom Maven settings file to use
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-m</code>, <code class="literal">--mode</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for analysis mode, this must be one of <code class="literal">full</code>, for <code class="literal">source</code> and <code class="literal">dependencies</code>, or <code class="literal">source-only</code> (default <code class="literal">full</code>).
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--no-proxy</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to excluded URLs from passing through any proxy (relevant only with proxy)
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-o</code>, <code class="literal">--output</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for the path to the directory for analysis output. For more details, see <a class="link" href="#cli-output-argument_cli-guide" title="A.1.2. Specifying the output directory">Specifying the output directory</a>.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--override-provider-settings</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to override the provider settings. The analysis pod runs on the host network, and no providers are started.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--overwrite</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to overwrite the output directory. If you do not specify this argument and the <code class="literal">--output</code> directory exists, you are prompted to choose whether to overwrite the contents.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--provider</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String Array
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to specify which provider or providers to run.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--rules</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String Array
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to specify the filename or directory containing rule files. Use multiple times for additional rules, for example, <code class="literal">--rules --rules …</code>.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--run-local</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Local flag to run analysis directly on local system without containers (for Java and Maven)
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">--skip-static-report</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976"> </td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag to not generate static report.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-s</code>, <code class="literal">--source</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String Array
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for the source technology to consider for analysis. Use multiple times for additional sources, for example, <code class="literal">--source --source …</code>. For more details, see <a class="link" href="#cli-source-argument_cli-guide" title="A.1.3. Setting the source technology">Setting the source technology</a>.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521640036064">
+								<p>
+									<code class="literal">-t</code>, <code class="literal">--target</code>
+								</p>
+								</td><td align="left" valign="top" headers="idm46521640034976">
+								<p>
+									String Array
+								</p>
+								</td><td align="left" valign="top" headers="idm46521637573504">
+								<p>
+									Flag for the target technology to consider for analysis. Use multiple times for additional targets, for example, <code class="literal">--target --target …</code>. For more details, see <a class="link" href="#cli-target-argument_cli-guide" title="A.1.4. Setting the target technology">Setting the target technology</a>.
+								</p>
+								</td></tr></tbody></table></div></div></div><section class="section" id="cli-input-argument_cli-guide"><div class="titlepage"><div><div><h3 class="title">A.1.1. Specifying the input</h3></div></div></div><p>
+					A space-delimited list of the path to the file or directory containing one or more applications to be analyzed. This argument is required.
+				</p><div class="formalpara"><p class="title"><strong>Usage</strong></p><p>
+						
+<pre class="screen">--input &lt;INPUT_ARCHIVE_OR_DIRECTORY&gt; [...]</pre>
+					</p></div><p>
+					Depending on whether the input file type provided to the <code class="literal">--input</code> argument is a file or directory, it will be evaluated as follows depending on the additional arguments provided.
+				</p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Directory</span></dt><dd><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+										<code class="literal">--sourceMode</code>: The directory is evaluated as a single application.
+									</li></ul></div></dd><dt><span class="term">File</span></dt><dd><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+										<code class="literal">--sourceMode</code>: The file is evaluated as a compressed project.
+									</li></ul></div></dd></dl></div></section><section class="section" id="cli-output-argument_cli-guide"><div class="titlepage"><div><div><h3 class="title">A.1.2. Specifying the output directory</h3></div></div></div><p>
+					Specify the path to the directory to output the report information generated by MTA.
+				</p><div class="formalpara"><p class="title"><strong>Usage</strong></p><p>
+						
+<pre class="screen">--output &lt;OUTPUT_REPORT_DIRECTORY&gt;</pre>
+					</p></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							If omitted, the report will be generated in an <code class="literal">&lt;INPUT_ARCHIVE_OR_DIRECTORY&gt;.report</code> directory.
+						</li><li class="listitem"><p class="simpara">
+							If the output directory exists, you will be prompted with the following question with a default answer of <code class="literal">N</code>:
+						</p><pre class="screen">Overwrite all contents of "/home/username/&lt;OUTPUT_REPORT_DIRECTORY&gt;" (anything already in the directory will be deleted)? [y,N]</pre></li></ul></div><p>
+					However, if you specify the <code class="literal">--overwrite</code> argument, MTA will proceed to delete and recreate the directory. See the description of this argument for more information.
+				</p></section><section class="section" id="cli-source-argument_cli-guide"><div class="titlepage"><div><div><h3 class="title">A.1.3. Setting the source technology</h3></div></div></div><p>
+					A space-delimited list of one or more source technologies, servers, platforms, or frameworks to migrate from. You can use this argument, in conjunction with the <code class="literal">--target</code> argument, to determine which rulesets are used. Use the <code class="literal">--listSourceTechnologies</code> argument to list all available sources.
+				</p><div class="formalpara"><p class="title"><strong>Usage</strong></p><p>
+						
+<pre class="screen">--source &lt;SOURCE_1&gt; &lt;SOURCE_2&gt;</pre>
+					</p></div><p>
+					The <code class="literal">--source</code> argument now provides version support, which follows the <a class="link" href="http://maven.apache.org/enforcer/enforcer-rules/versionRanges.html">Maven version range syntax</a>. This instructs MTA to only run the rulesets matching the specified versions, for example, <code class="literal">--source eap:5</code>.
+				</p><div class="admonition warning"><div class="admonition_header">Warning</div><div><p>
+						When migrating to JBoss EAP, be sure to specify the version, for example, <code class="literal">eap:6</code>. Specifying only <code class="literal">eap</code> will run rulesets for all versions of JBoss EAP, including those not relevant to your migration path.
+					</p><p>
+						See <a class="link" href="https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/7.2/html-single/introduction_to_the_migration_toolkit_for_applications/index#migration_paths_getting-started-guide">Supported migration paths</a> in <span class="emphasis"><em>Introduction to the Migration Toolkit for Applications</em></span> for the appropriate JBoss EAP version.
+					</p></div></div></section><section class="section" id="cli-target-argument_cli-guide"><div class="titlepage"><div><div><h3 class="title">A.1.4. Setting the target technology</h3></div></div></div><p>
+					A space-delimited list of one or more target technologies, servers, platforms, or frameworks to migrate to. You can use this argument, in conjunction with the <code class="literal">--source</code> argument, to determine which rulesets are used. If you do not specify this option, you are prompted to select a target. Use the <code class="literal">--listTargetTechnologies</code> argument to list all available targets.
+				</p><div class="formalpara"><p class="title"><strong>Usage</strong></p><p>
+						
+<pre class="screen">--target &lt;TARGET_1&gt; &lt;TARGET_2&gt;</pre>
+					</p></div><p>
+					The <code class="literal">--target</code> argument now provides version support, which follows the <a class="link" href="http://maven.apache.org/enforcer/enforcer-rules/versionRanges.html">Maven version range syntax</a>. This instructs MTA to only run the rulesets matching the specified versions, for example, <code class="literal">--target eap:7</code>.
+				</p></section></section><section class="section" id="tech-tags_cli-guide"><div class="titlepage"><div><div><h2 class="title">A.2. Supported technology tags</h2></div></div></div><p>
+				The following technology tags are supported in MTA 7.2.0:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						0MQ Client
+					</li><li class="listitem">
+						3scale
+					</li><li class="listitem">
+						Acegi Security
+					</li><li class="listitem">
+						AcrIS Security
+					</li><li class="listitem">
+						ActiveMQ library
+					</li><li class="listitem">
+						Airframe
+					</li><li class="listitem">
+						Airlift Log Manager
+					</li><li class="listitem">
+						AKKA JTA
+					</li><li class="listitem">
+						Akka Testkit
+					</li><li class="listitem">
+						Amazon SQS Client
+					</li><li class="listitem">
+						AMQP Client
+					</li><li class="listitem">
+						Anakia
+					</li><li class="listitem">
+						AngularFaces
+					</li><li class="listitem">
+						ANTLR StringTemplate
+					</li><li class="listitem">
+						AOP Alliance
+					</li><li class="listitem">
+						Apache Accumulo Client
+					</li><li class="listitem">
+						Apache Aries
+					</li><li class="listitem">
+						Apache Commons JCS
+					</li><li class="listitem">
+						Apache Commons Validator
+					</li><li class="listitem">
+						Apache Flume
+					</li><li class="listitem">
+						Apache Geronimo
+					</li><li class="listitem">
+						Apache Hadoop
+					</li><li class="listitem">
+						Apache HBase Client
+					</li><li class="listitem">
+						Apache Ignite
+					</li><li class="listitem">
+						Apache Karaf
+					</li><li class="listitem">
+						Apache Mahout
+					</li><li class="listitem">
+						Apache Meecrowave JTA
+					</li><li class="listitem">
+						Apache Sirona JTA
+					</li><li class="listitem">
+						Apache Synapse
+					</li><li class="listitem">
+						Apache Tapestry
+					</li><li class="listitem">
+						Apiman
+					</li><li class="listitem">
+						Applet
+					</li><li class="listitem">
+						Arquillian
+					</li><li class="listitem">
+						AspectJ
+					</li><li class="listitem">
+						Atomikos JTA
+					</li><li class="listitem">
+						Avalon Logkit
+					</li><li class="listitem">
+						Axion Driver
+					</li><li class="listitem">
+						Axis
+					</li><li class="listitem">
+						Axis2
+					</li><li class="listitem">
+						BabbageFaces
+					</li><li class="listitem">
+						Bean Validation
+					</li><li class="listitem">
+						BeanInject
+					</li><li class="listitem">
+						Blaze
+					</li><li class="listitem">
+						Blitz4j
+					</li><li class="listitem">
+						BootsFaces
+					</li><li class="listitem">
+						Bouncy Castle
+					</li><li class="listitem">
+						ButterFaces
+					</li><li class="listitem">
+						Cache API
+					</li><li class="listitem">
+						Cactus
+					</li><li class="listitem">
+						Camel
+					</li><li class="listitem">
+						Camel Messaging Client
+					</li><li class="listitem">
+						Camunda
+					</li><li class="listitem">
+						Cassandra Client
+					</li><li class="listitem">
+						CDI
+					</li><li class="listitem">
+						Cfg Engine
+					</li><li class="listitem">
+						Chunk Templates
+					</li><li class="listitem">
+						Cloudera
+					</li><li class="listitem">
+						Coherence
+					</li><li class="listitem">
+						Common Annotations
+					</li><li class="listitem">
+						Composite Logging
+					</li><li class="listitem">
+						Composite Logging JCL
+					</li><li class="listitem">
+						Concordion
+					</li><li class="listitem">
+						CSS
+					</li><li class="listitem">
+						Cucumber
+					</li><li class="listitem">
+						Dagger
+					</li><li class="listitem">
+						DbUnit
+					</li><li class="listitem">
+						Demoiselle JTA
+					</li><li class="listitem">
+						Derby Driver
+					</li><li class="listitem">
+						Drools
+					</li><li class="listitem">
+						DVSL
+					</li><li class="listitem">
+						Dynacache
+					</li><li class="listitem">
+						EAR Deployment
+					</li><li class="listitem">
+						Easy Rules
+					</li><li class="listitem">
+						EasyMock
+					</li><li class="listitem">
+						Eclipse RCP
+					</li><li class="listitem">
+						EclipseLink
+					</li><li class="listitem">
+						Ehcache
+					</li><li class="listitem">
+						EJB
+					</li><li class="listitem">
+						EJB XML
+					</li><li class="listitem">
+						Elasticsearch
+					</li><li class="listitem">
+						Entity Bean
+					</li><li class="listitem">
+						EtlUnit
+					</li><li class="listitem">
+						Eureka
+					</li><li class="listitem">
+						Everit JTA
+					</li><li class="listitem">
+						Evo JTA
+					</li><li class="listitem">
+						Feign
+					</li><li class="listitem">
+						File system Logging
+					</li><li class="listitem">
+						FormLayoutMaker
+					</li><li class="listitem">
+						FreeMarker
+					</li><li class="listitem">
+						Geronimo JTA
+					</li><li class="listitem">
+						GFC Logging
+					</li><li class="listitem">
+						GIN
+					</li><li class="listitem">
+						GlassFish JTA
+					</li><li class="listitem">
+						Google Guice
+					</li><li class="listitem">
+						Grails
+					</li><li class="listitem">
+						Grapht DI
+					</li><li class="listitem">
+						Guava Testing
+					</li><li class="listitem">
+						GWT
+					</li><li class="listitem">
+						H2 Driver
+					</li><li class="listitem">
+						Hamcrest
+					</li><li class="listitem">
+						Handlebars
+					</li><li class="listitem">
+						HavaRunner
+					</li><li class="listitem">
+						Hazelcast
+					</li><li class="listitem">
+						Hdiv
+					</li><li class="listitem">
+						Hibernate
+					</li><li class="listitem">
+						Hibernate Cfg
+					</li><li class="listitem">
+						Hibernate Mapping
+					</li><li class="listitem">
+						Hibernate OGM
+					</li><li class="listitem">
+						HighFaces
+					</li><li class="listitem">
+						HornetQ Client
+					</li><li class="listitem">
+						HSQLDB Driver
+					</li><li class="listitem">
+						HTTP Client
+					</li><li class="listitem">
+						HttpUnit
+					</li><li class="listitem">
+						ICEfaces
+					</li><li class="listitem">
+						Ickenham
+					</li><li class="listitem">
+						Ignite JTA
+					</li><li class="listitem">
+						Ikasan
+					</li><li class="listitem">
+						iLog
+					</li><li class="listitem">
+						Infinispan
+					</li><li class="listitem">
+						Injekt for Kotlin
+					</li><li class="listitem">
+						Iroh
+					</li><li class="listitem">
+						Istio
+					</li><li class="listitem">
+						Jamon
+					</li><li class="listitem">
+						Jasypt
+					</li><li class="listitem">
+						Java EE Batch
+					</li><li class="listitem">
+						Java EE Batch API
+					</li><li class="listitem">
+						Java EE JACC
+					</li><li class="listitem">
+						Java EE JAXB
+					</li><li class="listitem">
+						Java EE JAXR
+					</li><li class="listitem">
+						Java EE JSON-P
+					</li><li class="listitem">
+						Java Transaction API
+					</li><li class="listitem">
+						JavaFX
+					</li><li class="listitem">
+						JavaScript
+					</li><li class="listitem">
+						Javax Inject
+					</li><li class="listitem">
+						JAX-RS
+					</li><li class="listitem">
+						JAX-WS
+					</li><li class="listitem">
+						JayWire
+					</li><li class="listitem">
+						JBehave
+					</li><li class="listitem">
+						JBoss Cache
+					</li><li class="listitem">
+						JBoss EJB XML
+					</li><li class="listitem">
+						JBoss logging
+					</li><li class="listitem">
+						JBoss Transactions
+					</li><li class="listitem">
+						JBoss Web XML
+					</li><li class="listitem">
+						JBossMQ Client
+					</li><li class="listitem">
+						JBPM
+					</li><li class="listitem">
+						JCA
+					</li><li class="listitem">
+						Jcabi Log
+					</li><li class="listitem">
+						JCache
+					</li><li class="listitem">
+						JCunit
+					</li><li class="listitem">
+						JDBC
+					</li><li class="listitem">
+						JDBC datasources
+					</li><li class="listitem">
+						JDBC XA datasources
+					</li><li class="listitem">
+						Jersey
+					</li><li class="listitem">
+						Jetbrick Template
+					</li><li class="listitem">
+						Jetty
+					</li><li class="listitem">
+						JFreeChart
+					</li><li class="listitem">
+						JFunk
+					</li><li class="listitem">
+						JGoodies
+					</li><li class="listitem">
+						JMock
+					</li><li class="listitem">
+						JMockit
+					</li><li class="listitem">
+						JMS Connection Factory
+					</li><li class="listitem">
+						JMS Queue
+					</li><li class="listitem">
+						JMS Topic
+					</li><li class="listitem">
+						JMustache
+					</li><li class="listitem">
+						JNA
+					</li><li class="listitem">
+						JNI
+					</li><li class="listitem">
+						JNLP
+					</li><li class="listitem">
+						JPA entities
+					</li><li class="listitem">
+						JPA Matchers
+					</li><li class="listitem">
+						JPA named queries
+					</li><li class="listitem">
+						JPA XML
+					</li><li class="listitem">
+						JSecurity
+					</li><li class="listitem">
+						JSF
+					</li><li class="listitem">
+						JSF Page
+					</li><li class="listitem">
+						JSilver
+					</li><li class="listitem">
+						JSON-B
+					</li><li class="listitem">
+						JSP Page
+					</li><li class="listitem">
+						JSTL
+					</li><li class="listitem">
+						JTA
+					</li><li class="listitem">
+						Jukito
+					</li><li class="listitem">
+						JUnit
+					</li><li class="listitem">
+						Ka DI
+					</li><li class="listitem">
+						Keyczar
+					</li><li class="listitem">
+						Kibana
+					</li><li class="listitem">
+						KLogger
+					</li><li class="listitem">
+						Kodein
+					</li><li class="listitem">
+						Kotlin Logging
+					</li><li class="listitem">
+						KouInject
+					</li><li class="listitem">
+						KumuluzEE JTA
+					</li><li class="listitem">
+						LevelDB Client
+					</li><li class="listitem">
+						Liferay
+					</li><li class="listitem">
+						LiferayFaces
+					</li><li class="listitem">
+						Lift JTA
+					</li><li class="listitem">
+						Log.io
+					</li><li class="listitem">
+						Log4J
+					</li><li class="listitem">
+						Log4s
+					</li><li class="listitem">
+						Logback
+					</li><li class="listitem">
+						Logging Utils
+					</li><li class="listitem">
+						Logstash
+					</li><li class="listitem">
+						Lumberjack
+					</li><li class="listitem">
+						Macros
+					</li><li class="listitem">
+						Magicgrouplayout
+					</li><li class="listitem">
+						Mail
+					</li><li class="listitem">
+						Management EJB
+					</li><li class="listitem">
+						MapR
+					</li><li class="listitem">
+						MckoiSQLDB Driver
+					</li><li class="listitem">
+						Memcached
+					</li><li class="listitem">
+						Message (MDB)
+					</li><li class="listitem">
+						Micro DI
+					</li><li class="listitem">
+						Micrometer
+					</li><li class="listitem">
+						Microsoft SQL Driver
+					</li><li class="listitem">
+						MiGLayout
+					</li><li class="listitem">
+						MinLog
+					</li><li class="listitem">
+						Mixer
+					</li><li class="listitem">
+						Mockito
+					</li><li class="listitem">
+						MongoDB Client
+					</li><li class="listitem">
+						Monolog
+					</li><li class="listitem">
+						Morphia
+					</li><li class="listitem">
+						MRules
+					</li><li class="listitem">
+						Mule
+					</li><li class="listitem">
+						Mule Functional Test Framework
+					</li><li class="listitem">
+						MultithreadedTC
+					</li><li class="listitem">
+						Mycontainer JTA
+					</li><li class="listitem">
+						MyFaces
+					</li><li class="listitem">
+						MySQL Driver
+					</li><li class="listitem">
+						Narayana Arjuna
+					</li><li class="listitem">
+						Needle
+					</li><li class="listitem">
+						Neo4j
+					</li><li class="listitem">
+						NLOG4J
+					</li><li class="listitem">
+						Nuxeo JTA/JCA
+					</li><li class="listitem">
+						OACC
+					</li><li class="listitem">
+						OAUTH
+					</li><li class="listitem">
+						OCPsoft Logging Utils
+					</li><li class="listitem">
+						OmniFaces
+					</li><li class="listitem">
+						OpenFaces
+					</li><li class="listitem">
+						OpenPojo
+					</li><li class="listitem">
+						OpenSAML
+					</li><li class="listitem">
+						OpenWS
+					</li><li class="listitem">
+						OPS4J Pax Logging Service
+					</li><li class="listitem">
+						Oracle ADF
+					</li><li class="listitem">
+						Oracle DB Driver
+					</li><li class="listitem">
+						Oracle Forms
+					</li><li class="listitem">
+						Orion EJB XML
+					</li><li class="listitem">
+						Orion Web XML
+					</li><li class="listitem">
+						Oscache
+					</li><li class="listitem">
+						OTR4J
+					</li><li class="listitem">
+						OW2 JTA
+					</li><li class="listitem">
+						OW2 Log Util
+					</li><li class="listitem">
+						OWASP CSRF Guard
+					</li><li class="listitem">
+						OWASP ESAPI
+					</li><li class="listitem">
+						Peaberry
+					</li><li class="listitem">
+						Pega
+					</li><li class="listitem">
+						Persistence units
+					</li><li class="listitem">
+						Petals EIP
+					</li><li class="listitem">
+						PicketBox
+					</li><li class="listitem">
+						PicketLink
+					</li><li class="listitem">
+						PicoContainer
+					</li><li class="listitem">
+						Play
+					</li><li class="listitem">
+						Play Test
+					</li><li class="listitem">
+						Plexus Container
+					</li><li class="listitem">
+						Polyforms DI
+					</li><li class="listitem">
+						Portlet
+					</li><li class="listitem">
+						PostgreSQL Driver
+					</li><li class="listitem">
+						PowerMock
+					</li><li class="listitem">
+						PrimeFaces
+					</li><li class="listitem">
+						Properties
+					</li><li class="listitem">
+						Qpid Client
+					</li><li class="listitem">
+						RabbitMQ Client
+					</li><li class="listitem">
+						RandomizedTesting Runner
+					</li><li class="listitem">
+						Resource Adapter
+					</li><li class="listitem">
+						REST Assured
+					</li><li class="listitem">
+						Restito
+					</li><li class="listitem">
+						RichFaces
+					</li><li class="listitem">
+						RMI
+					</li><li class="listitem">
+						RocketMQ Client
+					</li><li class="listitem">
+						Rythm Template Engine
+					</li><li class="listitem">
+						SAML
+					</li><li class="listitem">
+						Santuario
+					</li><li class="listitem">
+						Scalate
+					</li><li class="listitem">
+						Scaldi
+					</li><li class="listitem">
+						Scribe
+					</li><li class="listitem">
+						Seam
+					</li><li class="listitem">
+						Security Realm
+					</li><li class="listitem">
+						ServiceMix
+					</li><li class="listitem">
+						Servlet
+					</li><li class="listitem">
+						ShiftOne
+					</li><li class="listitem">
+						Shiro
+					</li><li class="listitem">
+						Silk DI
+					</li><li class="listitem">
+						SLF4J
+					</li><li class="listitem">
+						Snippetory Template Engine
+					</li><li class="listitem">
+						SNMP4J
+					</li><li class="listitem">
+						Socket handler logging
+					</li><li class="listitem">
+						Spark
+					</li><li class="listitem">
+						Specsy
+					</li><li class="listitem">
+						Spock
+					</li><li class="listitem">
+						Spring
+					</li><li class="listitem">
+						Spring Batch
+					</li><li class="listitem">
+						Spring Boot
+					</li><li class="listitem">
+						Spring Boot Actuator
+					</li><li class="listitem">
+						Spring Boot Cache
+					</li><li class="listitem">
+						Spring Boot Flo
+					</li><li class="listitem">
+						Spring Cloud Config
+					</li><li class="listitem">
+						Spring Cloud Function
+					</li><li class="listitem">
+						Spring Data
+					</li><li class="listitem">
+						Spring Data JPA
+					</li><li class="listitem">
+						spring DI
+					</li><li class="listitem">
+						Spring Integration
+					</li><li class="listitem">
+						Spring JMX
+					</li><li class="listitem">
+						Spring Messaging Client
+					</li><li class="listitem">
+						Spring MVC
+					</li><li class="listitem">
+						Spring Properties
+					</li><li class="listitem">
+						Spring Scheduled
+					</li><li class="listitem">
+						Spring Security
+					</li><li class="listitem">
+						Spring Shell
+					</li><li class="listitem">
+						Spring Test
+					</li><li class="listitem">
+						Spring Transactions
+					</li><li class="listitem">
+						Spring Web
+					</li><li class="listitem">
+						SQLite Driver
+					</li><li class="listitem">
+						SSL
+					</li><li class="listitem">
+						Standard Widget Toolkit (SWT)
+					</li><li class="listitem">
+						Stateful (SFSB)
+					</li><li class="listitem">
+						Stateless (SLSB)
+					</li><li class="listitem">
+						Sticky Configured
+					</li><li class="listitem">
+						Stripes
+					</li><li class="listitem">
+						Struts
+					</li><li class="listitem">
+						SubCut
+					</li><li class="listitem">
+						Swagger
+					</li><li class="listitem">
+						SwarmCache
+					</li><li class="listitem">
+						Swing
+					</li><li class="listitem">
+						SwitchYard
+					</li><li class="listitem">
+						Syringe
+					</li><li class="listitem">
+						Talend ESB
+					</li><li class="listitem">
+						Teiid
+					</li><li class="listitem">
+						TensorFlow
+					</li><li class="listitem">
+						Test Interface
+					</li><li class="listitem">
+						TestNG
+					</li><li class="listitem">
+						Thymeleaf
+					</li><li class="listitem">
+						TieFaces
+					</li><li class="listitem">
+						tinylog
+					</li><li class="listitem">
+						Tomcat
+					</li><li class="listitem">
+						Tornado Inject
+					</li><li class="listitem">
+						Trimou
+					</li><li class="listitem">
+						Trunk JGuard
+					</li><li class="listitem">
+						Twirl
+					</li><li class="listitem">
+						Twitter Util Logging
+					</li><li class="listitem">
+						UberFire
+					</li><li class="listitem">
+						Unirest
+					</li><li class="listitem">
+						Unitils
+					</li><li class="listitem">
+						Vaadin
+					</li><li class="listitem">
+						Velocity
+					</li><li class="listitem">
+						Vlad
+					</li><li class="listitem">
+						Water Template Engine
+					</li><li class="listitem">
+						Web Services Metadata
+					</li><li class="listitem">
+						Web Session
+					</li><li class="listitem">
+						Web XML File
+					</li><li class="listitem">
+						WebLogic Web XML
+					</li><li class="listitem">
+						Webmacro
+					</li><li class="listitem">
+						WebSocket
+					</li><li class="listitem">
+						WebSphere EJB
+					</li><li class="listitem">
+						WebSphere EJB Ext
+					</li><li class="listitem">
+						WebSphere Web XML
+					</li><li class="listitem">
+						WebSphere WS Binding
+					</li><li class="listitem">
+						WebSphere WS Extension
+					</li><li class="listitem">
+						Weka
+					</li><li class="listitem">
+						Weld
+					</li><li class="listitem">
+						WF Core JTA
+					</li><li class="listitem">
+						Wicket
+					</li><li class="listitem">
+						Winter
+					</li><li class="listitem">
+						WSDL
+					</li><li class="listitem">
+						WSO2
+					</li><li class="listitem">
+						WSS4J
+					</li><li class="listitem">
+						XACML
+					</li><li class="listitem">
+						XFire
+					</li><li class="listitem">
+						XMLUnit
+					</li><li class="listitem">
+						Zbus Client
+					</li><li class="listitem">
+						Zipkin
+					</li></ul></div></section><section class="section" id="about-story-points_cli-guide"><div class="titlepage"><div><div><h2 class="title">A.3. About rule story points</h2></div></div></div><section class="section" id="what_are_story_points"><div class="titlepage"><div><div><h3 class="title">A.3.1. What are story points?</h3></div></div></div><p>
+					<span class="emphasis"><em>Story points</em></span> are an abstract metric commonly used in Agile software development to estimate the <span class="emphasis"><em>level of effort</em></span> needed to implement a feature or change.
+				</p><p>
+					The Migration Toolkit for Applications uses story points to express the level of effort needed to migrate particular application constructs, and the application as a whole. It does not necessarily translate to man-hours, but the value should be consistent across tasks.
+				</p></section><section class="section" id="how_story_points_are_estimated_in_rules"><div class="titlepage"><div><div><h3 class="title">A.3.2. How story points are estimated in rules</h3></div></div></div><p>
+					Estimating the level of effort for the story points for a rule can be tricky. The following are the general guidelines MTA uses when estimating the level of effort required for a rule.
+				</p><div class="informaltable"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 25%; " class="col_1"/><col style="width: 15%; " class="col_2"/><col style="width: 60%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm46521638774896" scope="col">Level of Effort</th><th align="left" valign="top" id="idm46521638773808" scope="col">Story Points</th><th align="left" valign="top" id="idm46521638772720" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46521638774896">
+								<p>
+									Information
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638773808">
+								<p>
+									0
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638772720">
+								<p>
+									An informational warning with very low or no priority for migration.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521638774896">
+								<p>
+									Trivial
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638773808">
+								<p>
+									1
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638772720">
+								<p>
+									The migration is a trivial change or a simple library swap with no or minimal API changes.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521638774896">
+								<p>
+									Complex
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638773808">
+								<p>
+									3
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638772720">
+								<p>
+									The changes required for the migration task are complex, but have a documented solution.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521638774896">
+								<p>
+									Redesign
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638773808">
+								<p>
+									5
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638772720">
+								<p>
+									The migration task requires a redesign or a complete library change, with significant API changes.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521638774896">
+								<p>
+									Rearchitecture
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638773808">
+								<p>
+									7
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638772720">
+								<p>
+									The migration requires a complete rearchitecture of the component or subsystem.
+								</p>
+								</td></tr><tr><td align="left" valign="top" headers="idm46521638774896">
+								<p>
+									Unknown
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638773808">
+								<p>
+									13
+								</p>
+								</td><td align="left" valign="top" headers="idm46521638772720">
+								<p>
+									The migration solution is not known and may need a complete rewrite.
+								</p>
+								</td></tr></tbody></table></div></section><section class="section" id="task_category"><div class="titlepage"><div><div><h3 class="title">A.3.3. Task category</h3></div></div></div><p>
+					In addition to the level of effort, you can categorize migration tasks to indicate the severity of the task. The following categories are used to group issues to help prioritize the migration effort.
+				</p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Mandatory</span></dt><dd>
+								The task must be completed for a successful migration. If the changes are not made, the resulting application will not build or run successfully. Examples include replacement of proprietary APIs that are not supported in the target platform.
+							</dd><dt><span class="term">Optional</span></dt><dd>
+								If the migration task is not completed, the application should work, but the results may not be optimal. If the change is not made at the time of migration, it is recommended to put it on the schedule soon after your migration is completed.
+							</dd><dt><span class="term">Potential</span></dt><dd>
+								The task should be examined during the migration process, but there is not enough detailed information to determine if the task is mandatory for the migration to succeed. An example of this would be migrating a third-party proprietary type where there is no directly compatible type.
+							</dd><dt><span class="term">Information</span></dt><dd>
+								The task is included to inform you of the existence of certain files. These may need to be examined or modified as part of the modernization effort, but changes are typically not required.
+							</dd></dl></div><p>
+					For more information on categorizing tasks, see <a class="link" href="https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/7.2/html-single/rules_development_guide/rule_categories_rules-development-guide#rule_categories_rules-development-guide">Using custom rule categories</a>.
+				</p></section></section><section class="section" id="additional_resources"><div class="titlepage"><div><div><h2 class="title">A.4. Additional Resources</h2></div></div></div><section class="section" id="get-involved_cli-guide"><div class="titlepage"><div><div><h3 class="title">A.4.1. Contributing to the project</h3></div></div></div><p>
+					To help the Migration Toolkit for Applications cover most application constructs and server configurations, including yours, you can help with any of the following items:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							Send an email to <a class="link" href="mailto:jboss-migration-feedback@redhat.com">jboss-migration-feedback@redhat.com</a> and let us know what MTA migration rules must cover.
+						</li><li class="listitem">
+							Provide example applications to test migration rules.
+						</li><li class="listitem"><p class="simpara">
+							Identify application components and problem areas that might be difficult to migrate:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+									Write a short description of the problem migration areas.
+								</li><li class="listitem">
+									Write a brief overview describing how to solve the problem in migration areas.
+								</li></ul></div></li><li class="listitem">
+							Try Migration Toolkit for Applications on your application. Make sure to report any issues you meet.
+						</li><li class="listitem"><p class="simpara">
+							Contribute to the Migration Toolkit for Applications rules repository:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+									Write a Migration Toolkit for Applications rule to identify or automate a migration process.
+								</li><li class="listitem">
+									Create a test for the new rule.
+								</li></ul></div><p class="simpara">
+							For more information, see <a class="link" href="https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/7.2/html-single/rules_development_guide"><span class="emphasis"><em>Rule Development Guide</em></span></a>.
+						</p></li><li class="listitem"><p class="simpara">
+							Contribute to the project source code:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+									Create a core rule.
+								</li><li class="listitem">
+									Improve MTA performance or efficiency.
+								</li></ul></div></li></ul></div><p>
+					Any level of involvement is greatly appreciated!
+				</p></section><section class="section" id="important-links_cli-guide"><div class="titlepage"><div><div><h3 class="title">A.4.2. Migration Toolkit for Applications development resources</h3></div></div></div><p>
+					Use the following resources to learn and contribute to the Migration Toolkit for Applications development:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							MTA forums: <a class="link" href="https://developer.jboss.org/en/windup">https://developer.jboss.org/en/windup</a>
+						</li><li class="listitem">
+							Jira issue tracker: <a class="link" href="https://issues.redhat.com/projects/MTA/issues">https://issues.redhat.com/projects/MTA/issues</a>
+						</li><li class="listitem">
+							MTA mailing list: <a class="link" href="mailto:jboss-migration-feedback@redhat.com">jboss-migration-feedback@redhat.com</a>
+						</li></ul></div></section><section class="section" id="reporting_issues"><div class="titlepage"><div><div><h3 class="title">A.4.3. Reporting issues</h3></div></div></div><p>
+					MTA uses Jira as its issue tracking system. If you encounter an issue executing MTA, submit a <a class="link" href="https://issues.redhat.com/projects/MTA/issues">Jira issue</a>.
+				</p><p>
+					<br/>
+				</p><p>
+					<span class="emphasis"><em><span class="right right">Revised on 2025-02-18 10:43:52 UTC</span></em></span>
+				</p></section></section></section><div><div xml:lang="en-US" class="legalnotice" id="idm46521637587168"><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"/>© 2025 Red Hat, Inc.
+	</div><div class="para">
+		The text of and illustrations in this document are licensed by Red Hat under a Creative Commons Attribution–Share Alike 3.0 Unported license ("CC-BY-SA"). An explanation of CC-BY-SA is available at <a class="uri" href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>. In accordance with CC-BY-SA, if you distribute this document or an adaptation of it, you must provide the URL for the original version.
+	</div><div class="para">
+		Red Hat, as the licensor of this document, waives the right to enforce, and agrees not to assert, Section 4d of CC-BY-SA to the fullest extent permitted by applicable law.
+	</div><div class="para">
+		Red Hat, Red Hat Enterprise Linux, the Shadowman logo, the Red Hat logo, JBoss, OpenShift, Fedora, the Infinity logo, and RHCE are trademarks of Red Hat, Inc., registered in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Linux</span>® is the registered trademark of Linus Torvalds in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Java</span>® is a registered trademark of Oracle and/or its affiliates.
+	</div><div class="para">
+		<span class="trademark">XFS</span>® is a trademark of Silicon Graphics International Corp. or its subsidiaries in the United States and/or other countries.
+	</div><div class="para">
+		<span class="trademark">MySQL</span>® is a registered trademark of MySQL AB in the United States, the European Union and other countries.
+	</div><div class="para">
+		<span class="trademark">Node.js</span>® is an official trademark of Joyent. Red Hat is not formally related to or endorsed by the official Joyent Node.js open source or commercial project.
+	</div><div class="para">
+		The <span class="trademark">OpenStack</span>® Word Mark and OpenStack logo are either registered trademarks/service marks or trademarks/service marks of the OpenStack Foundation, in the United States and other countries and are used with the OpenStack Foundation's permission. We are not affiliated with, endorsed or sponsored by the OpenStack Foundation, or the OpenStack community.
+	</div><div class="para">
+		All other trademarks are the property of their respective owners.
+	</div></div></div></div></div></div><script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            initSwitchery();
+                            jQuery('pre[class*="language-"]').each(function(i, block){hljs.highlightBlock(block);});
+                        });
+                    </script></body></html>
