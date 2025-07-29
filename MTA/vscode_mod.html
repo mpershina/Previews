@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="chrometwo"><head><title>Visual Studio Code Extension Guide</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"/><meta name="generator" content="publican v4.3.2"/><meta name="description" content="You can use the Migration Toolkit for Applications extension for Visual Studio Code to accelerate large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. You can analyze your applications and identify and resolve issues to prepare these applications for a successful migration."/><link rel="next" href="#making-open-source-more-inclusive" title="Making open source more inclusive"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><script type="text/javascript" src="Common_Content/scripts/jquery-1.7.1.min.js"> </script><script type="text/javascript" src="Common_Content/scripts/utils.js"> </script><script type="text/javascript" src="Common_Content/scripts/highlight.js/highlight.pack.js"> </script></head><body><div id="chrometwo"><div id="main"><div xml:lang="en-US" class="book" id="idm45207690719888"><div class="titlepage"><div><div class="producttitle"><span class="productname">Migration Toolkit for Applications</span> <span class="productnumber">7.3</span></div><div><h1 class="title">Visual Studio Code Extension Guide</h1></div><div><h2 class="subtitle">Using the Migration Toolkit for Applications extension for Visual Studio Code to identify and resolve migration issues.</h2></div><div><div xml:lang="en-US" class="authorgroup"><span class="orgname">Red Hat Customer Content Services</span></div></div><div><a href="#idm45207693388464">Legal Notice</a></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+				You can use the Migration Toolkit for Applications extension for Visual Studio Code to accelerate large-scale application modernization efforts across hybrid cloud environments on Red Hat OpenShift. You can analyze your applications and identify and resolve issues to prepare these applications for a successful migration.
+			</div></div></div></div><hr/></div><div class="toc"><ul class="toc"><li><span class="preface"><a href="#making-open-source-more-inclusive">Making open source more inclusive</a></span></li><li><span class="chapter"><a href="#intro-to-vscode-for-mta_vsc-extension-guide">1. Introduction to the MTA extension for Microsoft Visual Code</a></span></li><li><span class="chapter"><a href="#installing-vscode-extension_vsc-extension-guide">2. Installing the MTA extension for Visual Studio Code</a></span></li><li><span class="chapter"><a href="#configuring-kantra-directory_vsc-extension-guide">3. Configuring the .kantra directory</a></span></li><li><span class="chapter"><a href="#vscode-extension-interface_vsc-extension-guide">4. MTA Visual Studio Code extension interface</a></span></li><li><span class="chapter"><a href="#vscode-analyzing-application_vsc-extension-guide">5. Configuring and running an application analysis</a></span></li><li><span class="chapter"><a href="#vscode-reviewing-and-resolving-issues_vsc-extension-guide">6. Reviewing and resolving migration issues</a></span></li></ul></div><section class="preface" id="making-open-source-more-inclusive"><div class="titlepage"><div><div><h1 class="title">Making open source more inclusive</h1></div></div></div><p class="_abstract _abstract">
+			Red Hat is committed to replacing problematic language in our code, documentation, and web properties. We are beginning with these four terms: master, slave, blacklist, and whitelist. Because of the enormity of this endeavor, these changes will be implemented gradually over several upcoming releases. For more details, see <a class="link" href="https://www.redhat.com/en/blog/making-open-source-more-inclusive-eradicating-problematic-language">our CTO Chris Wright’s message</a>.
+		</p></section><section class="chapter" id="intro-to-vscode-for-mta_vsc-extension-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 1. Introduction to the MTA extension for Microsoft Visual Code</h1></div></div></div><p>
+			You can migrate and modernize applications by using the Migration Toolkit for Applications (MTA) extension for Microsoft Visual Studio Code.
+		</p><p>
+			The MTA extension can perform the following actions:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Analyze your projects with customizable rulesets.
+				</li><li class="listitem">
+					Mark issues in the source code.
+				</li><li class="listitem">
+					Provide guidance to fix the issues.
+				</li><li class="listitem">
+					Perform automatic code replacement, if possible.
+				</li></ul></div><p>
+			The MTA extension is also compatible with Visual Studio Codespaces, the Microsoft cloud-hosted development environment.
+		</p></section><section class="chapter" id="installing-vscode-extension_vsc-extension-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 2. Installing the MTA extension for Visual Studio Code</h1></div></div></div><p>
+			You can install the MTA extension for Visual Studio Code (VS Code).
+		</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+					You installed the Java Development Kit (JDK). MTA supports the following JDKs:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+							Oracle JDK 17 or later.
+						</li><li class="listitem">
+							Eclipse Temurin™ JDK 17 or later.
+						</li><li class="listitem">
+							OpenJDK 17 or later.
+						</li></ul></div></li><li class="listitem">
+					You have 8 GB of RAM available.
+				</li><li class="listitem">
+					For macOS installation, you have the value of <code class="literal">maxproc</code> set to <code class="literal">2048</code> or greater.
+				</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+					Set the <code class="literal">JAVA_HOME</code> environmental variable:
+				</p><pre class="literallayout">$ <span class="strong strong"><strong>export JAVA_HOME=jdk11</strong></span></pre></li><li class="listitem">
+					In VS Code, click the <span class="strong strong"><strong>Extensions</strong></span> icon on the Activity bar to open the <span class="strong strong"><strong>Extensions</strong></span> view.
+				</li><li class="listitem">
+					Enter <code class="literal">Migration Toolkit for Applications</code> in the Search field.
+				</li><li class="listitem"><p class="simpara">
+					Select the <span class="strong strong"><strong>Migration Toolkit for Applications</strong></span> extension and click <span class="strong strong"><strong>Install</strong></span>.
+				</p><p class="simpara">
+					The MTA extension icon (
+					<span class="inlinemediaobject"><img src="images/topics/images/vs_extension_icon.png" alt="MTA code extension"/></span>
+					) is displayed on the Activity bar.
+				</p></li></ol></div></section><section class="chapter" id="configuring-kantra-directory_vsc-extension-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 3. Configuring the .kantra directory</h1></div></div></div><p>
+			Starting from Migration Toolkit for Applications (MTA) 7.2.0, you can perform an application analysis in the containerless mode. Before running the analysis, you must create and configure the <code class="literal">.kantra</code> directory.
+		</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+					You installed the MTA extension version 7.2.0 or later on your system. For more information, see <a class="link" href="#installing-vscode-extension_vsc-extension-guide" title="Chapter 2. Installing the MTA extension for Visual Studio Code">Installing the MTA extension for Visual Studio Code</a>.
+				</li><li class="listitem">
+					You installed the MTA distribution version 7.2.0 or later. For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/7.2/html/cli_guide/installing_and_running_the_cli#installing-downloadable-cli-zip_cli-guide">Installing the CLI .zip file</a>.
+				</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+					Create a directory named <code class="literal">.kantra</code> in your <code class="literal">$HOME</code> directory:
+				</p><pre class="literallayout">$ <span class="strong strong"><strong>mkdir ~/.kantra/</strong></span></pre></li><li class="listitem"><p class="simpara">
+					Move all the files from the <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/7.2/html/cli_guide/installing_and_running_the_cli#installing-downloadable-cli-zip_cli-guide">extracted MTA directory</a>, except the <code class="literal">mta-cli</code> binary, into the <code class="literal">~/.kantra</code> directory.
+				</p><pre class="literallayout">$ <span class="strong strong"><strong>mv !(mta-cli) ~/.kantra/</strong></span></pre></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+					Verify that you created and configured the <code class="literal">.kantra</code> directory correctly by running the application analysis. For more information, see <a class="link" href="#vscode-analyzing-application_vsc-extension-guide" title="Chapter 5. Configuring and running an application analysis">Configuring and running an application analysis</a>.
+				</li></ul></div></section><section class="chapter" id="vscode-extension-interface_vsc-extension-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 4. MTA Visual Studio Code extension interface</h1></div></div></div><p>
+			The interface of the Migration Toolkit for Applications (MTA) extension for Visual Studio Code is designed to make it easier for you to find information and perform the required actions:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+					In the left pane, you can see the <span class="strong strong"><strong>Analysis Results</strong></span> directory tree that includes the following elements:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+							A report icon. You can click the icon to open the MTA report in your browser.
+						</li><li class="listitem">
+							The applications analyzed by MTA.
+						</li><li class="listitem">
+							The rulesets used for the analysis.
+						</li><li class="listitem">
+							The issues discovered by the analysis.
+						</li></ul></div></li><li class="listitem">
+					In the upper right pane, you can configure an analysis.
+				</li><li class="listitem">
+					In the lower right pane, you can see the settings of the configuration, including source, target, and advanced options. You can view the progress of an analysis in this pane. When the analysis is completed, you can click the <span class="strong strong"><strong>Open Report</strong></span> button to open the MTA report, which describes any issues you need to address before you migrate or modernize your application. For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/7.3/html-single/cli_guide/index#reviewing-analysis-reports_cli-guide">Reviewing an analysis report</a>.
+				</li></ul></div></section><section class="chapter" id="vscode-analyzing-application_vsc-extension-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 5. Configuring and running an application analysis</h1></div></div></div><p>
+			To analyze an application with the MTA extension for Visual Studio Code, you must create a run configuration first. You can configure multiple run configurations to run against each project you import to Visual Studio Code.
+		</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+					You installed the <code class="literal">mta-cli</code> executable. You can download <code class="literal">mta-cli</code> from the <a class="link" href="https://developers.redhat.com/products/mta/download">MTA download page</a>.
+				</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+					In <span class="strong strong"><strong>Extensions</strong></span> view, click the Migration Toolkit for Applications icon (
+					<span class="inlinemediaobject"><img src="images/topics/images/vs_extension_icon.png" alt="MTA code extension"/></span>
+					) on the <span class="strong strong"><strong>Activity</strong></span> bar.
+				</li><li class="listitem">
+					Click the plus sign (<span class="strong strong"><strong>+</strong></span>) next to <span class="strong strong"><strong>Migration Toolkit for Applications</strong></span> to add a run configuration.
+				</li><li class="listitem"><p class="simpara">
+					Specify the following configuration fields:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<span class="strong strong"><strong>Name</strong></span>: Enter a name for the analysis configuration or accept the default suggestion.
+						</li><li class="listitem">
+							<span class="strong strong"><strong>cli</strong></span>: Enter the path to the <code class="literal">mta-cli</code> executable, for example: <code class="literal">$HOME/mta-cli-7.3.1.GA-redhat/bin/mta-cli</code>.
+						</li><li class="listitem"><p class="simpara">
+							<span class="strong strong"><strong>Input</strong></span>: Set to the path of the project that you have open within your IDE:
+						</p><div class="orderedlist"><ol class="orderedlist" type="i"><li class="listitem">
+									Click <span class="strong strong"><strong>Add</strong></span>.
+								</li><li class="listitem"><p class="simpara">
+									Perform one of the following actions:
+								</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+											Enter the input file or directory and press <span class="strong strong"><strong>Enter</strong></span>.
+										</li><li class="listitem">
+											Click <span class="strong strong"><strong>Open File Explorer</strong></span> and select the directory.
+										</li></ul></div></li></ol></div></li><li class="listitem">
+							<span class="strong strong"><strong>Target</strong></span>: Select one or more target migration paths.
+						</li></ul></div></li><li class="listitem"><p class="simpara">
+					Right-click the run configuration and select <span class="strong strong"><strong>Run</strong></span>.
+				</p><p class="simpara">
+					When the analysis is completed, you can click the <span class="strong strong"><strong>Open Report</strong></span> button to open the MTA report, which describes the issues you need to address before you migrate or modernize your application. For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/7.3/html-single/cli_guide/index#reviewing-analysis-reports_cli-guide">Reviewing an analysis report</a>.
+				</p></li></ol></div></section><section class="chapter" id="vscode-reviewing-and-resolving-issues_vsc-extension-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 6. Reviewing and resolving migration issues</h1></div></div></div><p>
+			You can use the MTA extension icons to prioritize issues based on their severity.
+		</p><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+					Select a run configuration directory on the left pane.
+				</li><li class="listitem">
+					Expand its folders to view the <span class="strong strong"><strong>Hints</strong></span> generated for each application file.
+				</li><li class="listitem">
+					Select a hint to view the source code.
+				</li><li class="listitem">
+					Right-click a hint and select <span class="strong strong"><strong>View Details</strong></span> to view the Rule ID and other information.
+				</li><li class="listitem"><p class="simpara">
+					Prioritize issues based on the following icons, which are displayed next to each hint:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<span class="inlinemediaobject"><img src="images/topics/images/vs_mandatory.png" alt="Mandatory"/></span>
+							: You must fix the issue for a successful migration.
+						</li><li class="listitem">
+							<span class="inlinemediaobject"><img src="images/topics/images/vs_potential.png" alt="Warning"/></span>
+							: You might need to address the issue during the migration.
+						</li></ul></div></li><li class="listitem"><p class="simpara">
+					Resolve issues by editing the code of a file with a hint:
+				</p><div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+							In the left pane, right-click an issue and select <span class="strong strong"><strong>Open Code</strong></span>.
+						</li><li class="listitem">
+							Make any changes needed to the code and save the file.
+						</li><li class="listitem">
+							Optional: Right-click the issue and select <span class="strong strong"><strong>Mark as Complete</strong></span> or <span class="strong strong"><strong>Delete</strong></span>.
+						</li></ol></div></li></ol></div></section><div><div xml:lang="en-US" class="legalnotice" id="idm45207693388464"><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"/>© 2025 Red Hat, Inc.
+	</div><div class="para">
+		The text of and illustrations in this document are licensed by Red Hat under a Creative Commons Attribution–Share Alike 3.0 Unported license ("CC-BY-SA"). An explanation of CC-BY-SA is available at <a class="uri" href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>. In accordance with CC-BY-SA, if you distribute this document or an adaptation of it, you must provide the URL for the original version.
+	</div><div class="para">
+		Red Hat, as the licensor of this document, waives the right to enforce, and agrees not to assert, Section 4d of CC-BY-SA to the fullest extent permitted by applicable law.
+	</div><div class="para">
+		Red Hat, Red Hat Enterprise Linux, the Shadowman logo, the Red Hat logo, JBoss, OpenShift, Fedora, the Infinity logo, and RHCE are trademarks of Red Hat, Inc., registered in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Linux</span>® is the registered trademark of Linus Torvalds in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Java</span>® is a registered trademark of Oracle and/or its affiliates.
+	</div><div class="para">
+		<span class="trademark">XFS</span>® is a trademark of Silicon Graphics International Corp. or its subsidiaries in the United States and/or other countries.
+	</div><div class="para">
+		<span class="trademark">MySQL</span>® is a registered trademark of MySQL AB in the United States, the European Union and other countries.
+	</div><div class="para">
+		<span class="trademark">Node.js</span>® is an official trademark of Joyent. Red Hat is not formally related to or endorsed by the official Joyent Node.js open source or commercial project.
+	</div><div class="para">
+		The <span class="trademark">OpenStack</span>® Word Mark and OpenStack logo are either registered trademarks/service marks or trademarks/service marks of the OpenStack Foundation, in the United States and other countries and are used with the OpenStack Foundation's permission. We are not affiliated with, endorsed or sponsored by the OpenStack Foundation, or the OpenStack community.
+	</div><div class="para">
+		All other trademarks are the property of their respective owners.
+	</div></div></div></div></div></div><script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            initSwitchery();
+                            jQuery('pre[class*="language-"]').each(function(i, block){hljs.highlightBlock(block);});
+                        });
+                    </script></body></html>
