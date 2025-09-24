@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="chrometwo"><head><title>Release Notes</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"/><meta name="generator" content="publican v4.3.2"/><meta name="description" content="The Release Notes provide high-level coverage of the improvements and additions that have been implemented in Migration Toolkit for Applications 8.0 and document known issues, notable fixed issues, Technology Previews, and other details in MTA 8.0."/><link rel="next" href="#new-features-and-enhancements-8-0_release-notes" title="Chapter 1. New features and enhancements"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><script type="text/javascript" src="Common_Content/scripts/jquery-1.7.1.min.js"> </script><script type="text/javascript" src="Common_Content/scripts/utils.js"> </script><script type="text/javascript" src="Common_Content/scripts/highlight.js/highlight.pack.js"> </script></head><body><div id="chrometwo"><div id="main"><div xml:lang="en-US" class="book" id="idm44959908144160"><div class="titlepage"><div><div class="producttitle"><span class="productname">Migration Toolkit for Applications</span> <span class="productnumber">8.0</span></div><div><h1 class="title">Release Notes</h1></div><div><h2 class="subtitle">Release Notes for Migration Toolkit for Applications 8.0</h2></div><div><div xml:lang="en-US" class="authorgroup"><span class="orgname">Red Hat Customer Content Services</span></div></div><div><a href="#idm44959892285408">Legal Notice</a></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+				The Release Notes provide high-level coverage of the improvements and additions that have been implemented in Migration Toolkit for Applications 8.0 and document known issues, notable fixed issues, Technology Previews, and other details in MTA 8.0.
+			</div></div></div></div><hr/></div><div class="toc"><ul class="toc"><li><span class="chapter"><a href="#new-features-and-enhancements-8-0_release-notes">1. New features and enhancements</a></span></li><li><span class="chapter"><a href="#removed-features-8-0_release-notes">2. Removed features</a></span></li><li><span class="chapter"><a href="#known-issues-8-0_release-notes">3. Known issues</a></span></li><li><span class="chapter"><a href="#fixed-issues-8-0_release-notes">4. Fixed issues</a></span></li></ul></div><section class="chapter" id="new-features-and-enhancements-8-0_release-notes"><div class="titlepage"><div><div><h1 class="title">Chapter 1. New features and enhancements</h1></div></div></div><p class="_abstract _abstract">
+			Migration Toolkit for Applications (MTA) version 8.0.0 provides the following major new features and enhancements.
+		</p><div class="formalpara"><p class="title"><strong>Developer Lightspeed for MTA is available in the VS Code extension</strong></p><p>
+				Starting with MTA 8.0.0, you can opt to use Developer Lightspeed for MTA features in the VS Code extension. The Developer Lightspeed feature enables you to use a large language model of your choice to request code changes for resolving the issues found through a static code analysis of your Java application.
+			</p></div><p>
+			The core features of Developer Lightspeed for MTA are:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+					RAG solution: The Developer Lightspeed for MTA uses Retrieval Augmented Generation for context-based resolutions of issues in code. Developer Lightspeed improves the context shared with the LLM to generate more accurate suggestions to fix the issue in the code.
+				</p><p class="simpara">
+					The context is a combination of the source code, the issue description, and solved examples. Solved examples contain code changes accepted by users for other migrations, code modified by the user manually, and a pattern of resolution for an issue that can be used in future.
+				</p></li><li class="listitem"><p class="simpara">
+					Solution Server: Solution server is a component that allows Developer Lightspeed for MTA to build a collective memory of code changes from all analysis performed in an organization. It also works with the LLM to improve the pattern of resolutions from solved examples for future analysis.
+				</p><p class="simpara">
+					The Solution Server delivers two primary benefits to users:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+							Contextual Hints: It surfaces examples of past migration solutions — including successful user modifications and accepted fixes — offering actionable hints for difficult or previously unsolved migration problems.
+						</li><li class="listitem">
+							Migration Success Metrics: It exposes detailed success metrics for each migration rule, derived from real-world usage data. These metrics can be used by IDEs or automation tools to present users with a “confidence level” or likelihood of Developer Lightspeed for MTA successfully resolving a given migration issue or incident.
+						</li></ul></div></li><li class="listitem">
+					Agentic AI: In the agent mode, Developer Lightspeed for MTA makes iterative resolutions to issues in code. If you accept the suggested resolutions, Developer Lightspeed scans the code for diagnostic or linting issues that can be created due to the accepted solution and fixes those issues.
+				</li></ul></div><p>
+			<a class="link" href="https://issues.redhat.com/browse/MTA-5378(">MTA-5738</a>)
+		</p><div class="formalpara"><p class="title"><strong>MTA supports platform awareness to import applications from source platform instances</strong></p><p>
+				Starting with MTA 8.0.0, you can use platform awareness to discover applications from a source platform and import them into the MTA application inventory. MTA discovers the applications by their coordinates in the source platform where they are deployed. Platform awareness enables you to use the platform and runtime configurations of applications to create a discovery manifest that can be used to generate other deployment assets. In MTA 8.0.0, you can discover applications deployed in the Cloud Foundry platform. <a class="link" href="https://issues.redhat.com/browse/MTA-4846(">MTA-4846</a>)
+			</p></div><div class="formalpara"><p class="title"><strong>MTA supports asset generation for application migration in the web console</strong></p><p>
+				Starting with MTA 8.0.0, you can use the discovery manifest to generate assets in the web console to deploy applications in OpenShift Container Platform or Kubernetes. The asset generation workflow includes generators, target profiles, and the archetypes. Generators parse the application manifest configurations to create the deployment assets for a specific kind of target platform. In the target profiles, you can run one or more generators in sequence for a given archetype. <a class="link" href="https://issues.redhat.com/browse/MTA-4847(">MTA-4847</a>)
+			</p></div><div class="formalpara"><p class="title"><strong>MTA CLI supports running a live discovery in a remote CF instance</strong></p><p>
+				With this update, you can perform a live discovery if you want to determine what is deployed in a certain Cloud Foundry (CF) cluster. For example, you can determine how many applications are in the cluster. You can also use the live discovery if you do not have access to manifest YAML files.
+			</p></div><p>
+			For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.0/html/cli_guide/generating-assets_cli-guide#performing-a-live-discovery_generating-assets">Performing a live discovery in a remote CF instance</a>.
+		</p><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-4847">MTA-4847</a>)
+		</p><div class="formalpara"><p class="title"><strong>MTA CLI supports concealing sensitive information in a discovery manifest</strong></p><p>
+				You can conceal sensitive information, for example, services and Docker credentials, in a Cloud Foundry (CF) discovery manifest by using the <code class="literal">mta-cli discover cloud-foundry --conceal-sensitive-data</code> command. This command generates the following files:
+			</p></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					A discovery manifest
+				</li><li class="listitem">
+					A file with concealed data
+				</li></ul></div><p>
+			For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.0/html/cli_guide/generating-assets_cli-guide#concealing-sensitive-information_generating-assets">Concealing sensitive information in a discovery manifest</a>.
+		</p><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-4847">MTA-4847</a>)
+		</p><div class="formalpara"><p class="title"><strong>MTA supports accessing analysis insights from the dynamic report</strong></p><p>
+				Analysis insights contain information about the technologies used in the application and their usage in the code. Before this update, insights were only available in the analysis output and a static report after you ran an application analysis. With this enhancement, you can access analysis insights also from a dynamic report.
+			</p></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-5420">MTA-5420</a>)
+		</p><div class="formalpara"><p class="title"><strong>A new VS Code IDE plug-in for application analysis</strong></p><p>
+				With this enhancement, you can use a new Visual Studio Code (VS Code) IDE plug-in that has the following features:
+			</p></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Standard application analysis and issue detection
+				</li><li class="listitem"><p class="simpara">
+					Generative AI (GenAI) feature:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+							When enabled, you can use GenAI to find solutions for the analysis incidents. Note that GenAI is enabled by default.
+						</li><li class="listitem">
+							When disabled, you can run a standard application analysis.
+						</li></ul></div><p class="simpara">
+					NOTE: You must restart your server after changing the Gen AI settings for the change to take effect.
+				</p></li></ul></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-5360">MTA-5360</a>)
+		</p><div class="formalpara"><p class="title"><strong>Setting default credentials is supported in the {ProductShotName} UI</strong></p><p>
+				Before this update, you could only assign credentials to an application manually once you added or imported this application to the Migration Toolkit for Applications (MTA) user interface (UI). However, you might need to import a large set of applications, each of these applications requiring credentials for language and technology discovery tasks. With this update, instead of manually defining credentials, you can define credentials that will be used by default for an application that does not have any credentials assigned to it.
+			</p></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+				You can only set Maven or source control credentials as default credentials. You can only define one default set of credentials per credential type.
+			</p></div></div><p>
+			For more information, see <a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.0/html/user_interface_guide/index#setting-default-credentials_managing-applications-mta-ui">Setting default credentials</a>.
+		</p><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-5254">MTA-5254</a>)
+		</p></section><section class="chapter" id="removed-features-8-0_release-notes"><div class="titlepage"><div><div><h1 class="title">Chapter 2. Removed features</h1></div></div></div><p class="_abstract _abstract">
+			This section provides a list of all features removed in Migration Toolkit for Applications (MTA) 8.0.0. All removed features were deprecated in earlier releases and are no longer supported.
+		</p><div class="formalpara"><p class="title"><strong>XML rules are removed</strong></p><p>
+				In Migration Toolkit for Applications (MTA) 8.0.0, XML rules are removed and are no longer supported both in the MTA user interface (UI) and command-line interface (CLI).
+			</p></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-5357">MTA-5357</a>)
+		</p><div class="formalpara"><p class="title"><strong>The Eclipse IDE plugin is removed</strong></p><p>
+				The Eclipse IDE plugin for Migration Toolkit for Applications (MTA), which you could use to analyze the effort for migrating and modernizing your applications, is removed and is no longer supported. As an alternative, you can use the Migration Toolkit for Applications extension for Visual Studio Code (VS Code).
+			</p></div></section><section class="chapter" id="known-issues-8-0_release-notes"><div class="titlepage"><div><div><h1 class="title">Chapter 3. Known issues</h1></div></div></div><p>
+			Migration Toolkit for Applications (MTA) version 8.0.0 is affected by the following newly identified and previously known issues. A known issue is listed in all future release notes until resolved, at which point it is published as a fixed issue.
+		</p><div class="formalpara"><p class="title"><strong>Application analysis with MTA CLI might fail with the "invalid header line" error</strong></p><p>
+				An application analysis by using the Migration Toolkit for Applications (MTA) command-line interface (CLI) might fail with the following error message:
+			</p></div><pre class="screen">level=error msg="initialize failed" error="context canceled" provider=java
+error="invalid header line "An error has occurred. See the log file"</pre><p>
+			To work around this problem, clean up metadata and cache:
+		</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+					Clear the <code class="literal">.metadata</code> subdirectory under the directory from which you ran the <code class="literal">mta-cli analyze</code> command.
+				</li><li class="listitem">
+					Clear the Maven cache.
+				</li></ol></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-6125">MTA-6125</a>)
+		</p><div class="formalpara"><p class="title"><strong>MTA analysis result does not change if you add or remove a custom rule</strong></p><p>
+				When you use Developer Lightspeed for MTA, the analysis results do not change if you include or remove a custom rule but do not restart the analyzer process.
+			</p></div><p>
+			To work around this problem, restart the analyzer process by clicking the Start/Stop button after making a configuration change.
+		</p><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-6129">MTA-6129</a>)
+		</p></section><section class="chapter" id="fixed-issues-8-0_release-notes"><div class="titlepage"><div><div><h1 class="title">Chapter 4. Fixed issues</h1></div></div></div><p class="_abstract _abstract">
+			Migration Toolkit for Applications (MTA) version 8.0.0 provides the following fixed issues and other problems that have a significant impact.
+		</p><div class="formalpara"><p class="title"><strong>The default <code class="literal">values.yaml</code> file is merged with the discover <code class="literal">values.yaml</code> file when generating a deployment manifest</strong></p><p>
+				Before this update, when you generated a deployment manifest by using the Helm template, the default values in the`values.yaml` file, packaged with the Helm chart, were ignored. Consequently, only the values from the <code class="literal">values.yaml</code> file created after running the <code class="literal">mta-cli discover</code> command were used. With this update, the default <code class="literal">values.yaml</code> file is merged with the discover <code class="literal">values.yaml</code> file.
+			</p></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-5793">MTA-5793</a>)
+		</p><div class="formalpara"><p class="title"><strong>MTA CLI no longer fails to detect dependencies for Gradle projects</strong></p><p>
+				Before this update, when you ran an application analysis for Gradle projects in containerless mode, Migration Toolkit for Applications (MTA) command-line interface (CLI) did not detect Gradle dependencies. As a consequence, the analysis report did not list the dependencies and displayed an error message in the analysis logs instead. With this update, the issue is fixed. As a result, MTA CLI detects Gradle dependencies after the analysis is complete.
+			</p></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-4033">MTA-5793</a>)
+		</p><div class="formalpara"><p class="title"><strong>MTA UI no longer fails to analyze projects built with Gradle version 7 and later</strong></p><p>
+				Before this update, when you analyzed an application built with Gradle in <code class="literal">Source code + dependencies</code> mode in the Migration Toolkit for Applications (MTA) user interface (UI), the analysis failed if you had Gradle version 7 or later installed. With this update, the issue is fixed.
+			</p></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-5907">MTA-5907</a>)
+		</p><div class="formalpara"><p class="title"><strong>The discovery manifest lists all defined web processes in the application</strong></p><p>
+				Before this update, the <code class="literal">mta-cli discover</code> command ignored implicit web processes and only listed web processes explicitly defined by using the <code class="literal">type: web</code> entry in the Cloud Foundry (CF) discovery manifest . With this update, <code class="literal">mta-cli discover</code> moves implicit web processes to the <code class="literal">processes</code> block in the discovery manifest along with explicit web processes. As a result, the discovery manifest lists all defined processes in the application.
+			</p></div><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+				If there are two web processes defined, one inline and the one in the processes block in the CF manifest, <code class="literal">mta-cli discover</code> only uses the web process defined in the processes to generate the discovery manifest.
+			</p></div></div><p>
+			(<a class="link" href="https://issues.redhat.com/browse/MTA-6030">MTA-6030</a>)
+		</p></section><div><div xml:lang="en-US" class="legalnotice" id="idm44959892285408"><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"/>© 2025 Red Hat, Inc.
+	</div><div class="para">
+		The text of and illustrations in this document are licensed by Red Hat under a Creative Commons Attribution–Share Alike 3.0 Unported license ("CC-BY-SA"). An explanation of CC-BY-SA is available at <a class="uri" href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>. In accordance with CC-BY-SA, if you distribute this document or an adaptation of it, you must provide the URL for the original version.
+	</div><div class="para">
+		Red Hat, as the licensor of this document, waives the right to enforce, and agrees not to assert, Section 4d of CC-BY-SA to the fullest extent permitted by applicable law.
+	</div><div class="para">
+		Red Hat, Red Hat Enterprise Linux, the Shadowman logo, the Red Hat logo, JBoss, OpenShift, Fedora, the Infinity logo, and RHCE are trademarks of Red Hat, Inc., registered in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Linux</span>® is the registered trademark of Linus Torvalds in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Java</span>® is a registered trademark of Oracle and/or its affiliates.
+	</div><div class="para">
+		<span class="trademark">XFS</span>® is a trademark of Silicon Graphics International Corp. or its subsidiaries in the United States and/or other countries.
+	</div><div class="para">
+		<span class="trademark">MySQL</span>® is a registered trademark of MySQL AB in the United States, the European Union and other countries.
+	</div><div class="para">
+		<span class="trademark">Node.js</span>® is an official trademark of Joyent. Red Hat is not formally related to or endorsed by the official Joyent Node.js open source or commercial project.
+	</div><div class="para">
+		The <span class="trademark">OpenStack</span>® Word Mark and OpenStack logo are either registered trademarks/service marks or trademarks/service marks of the OpenStack Foundation, in the United States and other countries and are used with the OpenStack Foundation's permission. We are not affiliated with, endorsed or sponsored by the OpenStack Foundation, or the OpenStack community.
+	</div><div class="para">
+		All other trademarks are the property of their respective owners.
+	</div></div></div></div></div></div><script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            initSwitchery();
+                            jQuery('pre[class*="language-"]').each(function(i, block){hljs.highlightBlock(block);});
+                        });
+                    </script></body></html>
