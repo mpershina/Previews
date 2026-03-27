@@ -1,0 +1,1809 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="chrometwo"><head><title>Configuring and using rules for an MTA analysis</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"/><meta name="generator" content="publican v4.3.2"/><meta name="description" content="This guide describes how to create custom XML rules for the migration toolkit for applications."/><link rel="next" href="#making-open-source-more-inclusive" title="Making open source more inclusive"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><script type="text/javascript" src="Common_Content/scripts/jquery-1.7.1.min.js"> </script><script type="text/javascript" src="Common_Content/scripts/utils.js"> </script><script type="text/javascript" src="Common_Content/scripts/highlight.js/highlight.pack.js"> </script></head><body><div id="chrometwo"><div id="main"><div xml:lang="en-US" class="book" id="idm46086945873152"><div class="titlepage"><div><div class="producttitle"><span class="productname">migration toolkit for applications</span> <span class="productnumber">8.1</span></div><div><h1 class="title">Configuring and using rules for an MTA analysis</h1></div><div><h2 class="subtitle">Create custom rules to enhance migration coverage.</h2></div><div><div xml:lang="en-US" class="authorgroup"><span class="orgname">Red Hat Customer Content Services</span></div></div><div><a href="#idm46086933676560">Legal Notice</a></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+				This guide describes how to create custom XML rules for the migration toolkit for applications.
+			</div></div></div></div><hr/></div><div class="toc"><ul class="toc"><li><span class="preface"><a href="#making-open-source-more-inclusive">Making open source more inclusive</a></span></li><li><span class="chapter"><a href="#rules-introduction_rules-development-guide">1. Introduction to rules</a></span><ul><li><span class="section"><a href="#about-rules_rules-introduction">1.1. The MTA rules</a></span></li><li><span class="section"><a href="#yaml-rule-structure-syntax_rules-introduction">1.2. YAML rule structure and syntax</a></span></li></ul></li><li><span class="chapter"><a href="#rule-yaml-metadata">2. Rule metadata</a></span><ul><li><span class="section"><a href="#yaml-rule-metadata-structure_rule-yaml-metadata">2.1. Rule metadata structure</a></span></li><li><span class="section"><a href="#yaml-rule-labels_rule-yaml-metadata">2.2. Rule labels</a></span></li><li><span class="section"><a href="#yaml-rule-categories_rule-yaml-metadata">2.3. Rule categories</a></span></li></ul></li><li><span class="chapter"><a href="#rules-prov-cond">3. Providers and rule conditions</a></span><ul><li><span class="section"><a href="#provider-capability-in-custom-rules_rules-prov-cond">3.1. Provider capabilities in custom rules</a></span></li><li><span class="section"><a href="#yaml-provider-conditions_rules-prov-cond">3.2. Provider condition</a></span></li><li><span class="section"><a href="#yaml-builtin-provider_rules-prov-cond">3.3. The builtin provider</a></span></li><li><span class="section"><a href="#yaml-java-provider_rules-prov-cond">3.4. Java provider</a></span></li><li><span class="section"><a href="#yaml-go-provider_rules-prov-cond">3.5. Go provider</a></span></li><li><span class="section"><a href="#yaml-dotnet-provider_rules-prov-cond">3.6. C# provider</a></span></li></ul></li><li><span class="chapter"><a href="#java-conditions-capabilities">4. Java condition and capabilities</a></span><ul><li><span class="section"><a href="#yaml-java-locations_java-conditions-capabilities">4.1. Java locations</a></span></li><li><span class="section"><a href="#yaml-annotation-inspection_java-conditions-capabilities">4.2. Annotation inspection</a></span></li><li><span class="section"><a href="#yaml-condition-patterns_java-conditions-capabilities">4.3. Condition patterns</a></span></li></ul></li><li><span class="chapter"><a href="#logical-chaining-custom-variables">5. Logical conditions, condition chaining, and custom variables</a></span><ul><li><span class="section"><a href="#yaml-logical-conditions_logical-chaining-custom-variables">5.1. Logical conditions</a></span></li><li><span class="section"><a href="#yaml-and-condition_logical-chaining-custom-variables">5.2. AND condition</a></span></li><li><span class="section"><a href="#yaml-or-condition_logical-chaining-custom-variables">5.3. OR condition</a></span></li><li><span class="section"><a href="#yaml-chaining-condition-variables_logical-chaining-custom-variables">5.4. Chaining Condition Variables</a></span></li><li><span class="section"><a href="#yaml-chaining-java-provider_logical-chaining-custom-variables">5.5. Chaining in the Java provider</a></span></li><li><span class="section"><a href="#yaml-nested-condition_logical-chaining-custom-variables">5.6. Nested conditions</a></span></li><li><span class="section"><a href="#yaml-custom-variables_logical-chaining-custom-variables">5.7. Custom variables</a></span></li></ul></li><li><span class="chapter"><a href="#rule-yaml-actions">6. Rule actions</a></span><ul><li><span class="section"><a href="#yaml-tag-actions_rule-yaml-actions">6.1. Tag actions</a></span></li><li><span class="section"><a href="#yaml-message-actions_rule-yaml-actions">6.2. Message action</a></span></li><li><span class="section"><a href="#yaml-rule-hyperlinks_rule-yaml-actions">6.3. Hyperlinks</a></span></li></ul></li><li><span class="chapter"><a href="#creating-rule">7. Creating custom rules</a></span><ul><li><span class="section"><a href="#create-basic-yaml-rule-template_creating-rule">7.1. Creating a YAML rule template</a></span></li><li><span class="section"><a href="#create-first-yaml-rule_creating-rule">7.2. Creating a YAML rule</a></span></li><li><span class="section"><a href="#create-go-custom-rule_creating-rule">7.3. Creating a custom Go rule</a></span></li><li><span class="section"><a href="#create-nodejs-custom-rule_creating-rule">7.4. Creating a custom Node.js rule</a></span></li><li><span class="section"><a href="#create-python-custom-rule_creating-rule">7.5. Creating custom Python rules</a></span></li><li><span class="section"><a href="#create-csharp-custom-rule_creating-rule">7.6. Creating a custom C# rule</a></span></li></ul></li><li><span class="chapter"><a href="#rule-rulesets">8. Rulesets</a></span><ul><li><span class="section"><a href="#yaml-rulesets_rule-rulesets">8.1. Creating and using a custom ruleset</a></span></li></ul></li><li><span class="chapter"><a href="#additional_resources">9. Additional resources</a></span></li></ul></div><section class="preface" id="making-open-source-more-inclusive"><div class="titlepage"><div><div><h1 class="title">Making open source more inclusive</h1></div></div></div><p class="_abstract _abstract">
+			Red Hat is committed to replacing problematic language in our code, documentation, and web properties. We are beginning with these four terms: master, slave, blacklist, and whitelist. Because of the enormity of this endeavor, these changes will be implemented gradually over several upcoming releases. For more details, see <a class="link" href="https://www.redhat.com/en/blog/making-open-source-more-inclusive-eradicating-problematic-language">our CTO Chris Wright’s message</a>.
+		</p></section><section class="chapter" id="rules-introduction_rules-development-guide"><div class="titlepage"><div><div><h1 class="title">Chapter 1. Introduction to rules</h1></div></div></div><p class="_abstract _abstract">
+			This guide is intended for software engineers who want to create custom YAML-based rules for migration toolkit for applications (MTA) tools.
+		</p><section class="section" id="about-rules_rules-introduction"><div class="titlepage"><div><div><h2 class="title">1.1. The MTA rules</h2></div></div></div><p class="_abstract _abstract">
+				The migration toolkit for applications (MTA) contains the analyzer that uses pluggable providers and rules to analyze static code, dependencies, and other files in your application.
+			</p><p>
+				The analyzer works with providers to detect issues that cause problems when you migrate the application to target technologies. The rule definition contains metadata description and condition patterns that describe a violation.
+			</p><p>
+				The analyzer runs a search query on the source code to match the violation described in the rule definition. The rule definition also contains a message that MTA displays when triggering an issue because of the violation. The analyzer uses default and user-provided (custom) rules during an analysis to identify issues.
+			</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					An MTA Architect can create custom rules. You can use custom rules to identify the use of custom libraries or other components in the source code that might not be covered by the standard migration rules.
+				</p></div></div><p>
+				A collection of one or more rules is called a ruleset. Creating rulesets provides a way of organizing multiple rules that analyze the source code for a specific target platform.
+			</p><p>
+				You can use rules or rulesets as input arguments in an analysis. You can perform a rule-based analysis in the MTA CLI, user interface, or by using one of the IDE plugins for MTA (Visual Studio Code or IntelliJ).
+			</p><p>
+				The rules can be used by Red Hat Developer Lightspeed for MTA to generate AI-assisted code resolutions. The issue description and metadata in rules are used by the Red Hat Developer Lightspeed for MTA to form well-defined contexts. These contexts generate AI-assisted suggestions to resolve issues in the code that are identified through an analysis.
+			</p><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="https://docs.redhat.com/en/documentation/migration_toolkit_for_applications/8.0/html/configuring_and_using_red_hat_developer_lightspeed_for_mta/index">Configuring and Using Red Hat Developer Lightspeed for MTA</a>
+					</li></ul></div></section><section class="section" id="yaml-rule-structure-syntax_rules-introduction"><div class="titlepage"><div><div><h2 class="title">1.2. YAML rule structure and syntax</h2></div></div></div><p class="_abstract _abstract">
+				Rules instruct the analyzer to take the specified actions when the given conditions match. In MTA, a rule file contains one or more rules.
+			</p><p>
+				Rules are written in YAML. They consist of:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						metadata
+					</li><li class="listitem">
+						conditions
+					</li><li class="listitem">
+						actions
+					</li></ul></div><p>
+				MTA analyzer rules have the following pattern:
+			</p><pre class="programlisting language-yaml">ruleID:
+labels:
+category:
+effort:
+description:
+when:
+ &lt;condition(s)&gt;
+message: "message"
+tag:
+ - tag_1, tag_2, tag_3
+ - key_1="value_1, value_2"</pre></section></section><section class="chapter" id="rule-yaml-metadata"><div class="titlepage"><div><div><h1 class="title">Chapter 2. Rule metadata</h1></div></div></div><p class="_abstract _abstract">
+			The rule metadata contains information about the migration defined by the Architect. You can use rule metadata to:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Estimate the total migration effort.
+				</li><li class="listitem">
+					Prioritize issues that must be resolved based on the effort.
+				</li><li class="listitem">
+					Evaluate if a resolution is mandatory through rule category before migrating the applications to the target technologies or platforms.
+				</li><li class="listitem">
+					Define labels used by MTA to filter rules for an analysis.
+				</li></ul></div><section class="section" id="yaml-rule-metadata-structure_rule-yaml-metadata"><div class="titlepage"><div><div><h2 class="title">2.1. Rule metadata structure</h2></div></div></div><p class="_abstract _abstract">
+				Rule metadata contains a unique rule ID, labels, effort, and category.
+			</p><pre class="programlisting language-yaml">ruleID: "unique_id"
+labels:
+  # key=value pair
+  - "label1=val1"
+  # valid label with value omitted
+  - "label2"
+  # valid label with empty value
+  - "label3="
+  # subdomain prefixed key
+  - "konveyor.io/label1=val1"
+effort: 1
+category: mandatory</pre><p>
+				where:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<code class="literal">ruleID</code> is a unique ID for the rule. It must be unique within the ruleset.
+					</li><li class="listitem">
+						<code class="literal">labels</code> is a list of string labels associated with the rule.
+					</li><li class="listitem">
+						<code class="literal">effort</code> is an integer value that indicates the level of effort needed to resolve this issue.
+					</li><li class="listitem">
+						<code class="literal">category</code> is the severity of the issue for migration. Values can be one of <code class="literal">mandatory</code>, <code class="literal">potential</code> or <code class="literal">optional</code>.
+					</li></ul></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="#yaml-rule-labels_rule-yaml-metadata" title="2.2. Rule labels">Rule labels</a>
+					</li><li class="listitem">
+						<a class="link" href="#yaml-rule-categories_rule-yaml-metadata" title="2.3. Rule categories">Rule categories</a>
+					</li></ul></div></section><section class="section" id="yaml-rule-labels_rule-yaml-metadata"><div class="titlepage"><div><div><h2 class="title">2.2. Rule labels</h2></div></div></div><p class="_abstract _abstract">
+				Labels are <code class="literal">key=val</code> pairs specified in rules to filter the rule by the label. During an analysis, you can use the <code class="literal">--label-selector</code> option to apply the filter for rules or rulesets and the <code class="literal">--dep-label-selector</code> option to apply the filter for dependencies.
+			</p><p>
+				For dependencies, a provider adds the labels to the dependencies when retrieving them. Labels on a ruleset are automatically inherited by all the rules that belong to it.
+			</p><div class="formalpara"><p class="title"><strong>Label format</strong></p><p>
+					Labels are specified under the <code class="literal">labels</code> field as a list of strings in <code class="literal">key=val</code> format as follows:
+				</p></div><pre class="programlisting language-yaml">labels:
+- "key1=val1"
+- "key2=val2"</pre><p>
+				The key of a label can be subdomain-prefixed:
+			</p><pre class="programlisting language-yaml">labels:
+- "konveyor.io/key1=val1"</pre><p>
+				The value of a label can be empty:
+			</p><pre class="programlisting language-yaml">labels:
+- "konveyor.io/key="</pre><p>
+				The value of a label can be omitted. In that case, it is treated as an empty value:
+			</p><pre class="programlisting language-yaml">labels:
+- "konveyor.io/key"</pre><div id="reserved-label_rule-yaml-metadata" class="formalpara"><p class="title"><strong>Reserved labels</strong></p><p>
+					The analyzer defines some labels that have special meaning as follows:
+				</p></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<code class="literal">konveyor.io/source</code>: Identifies the source technology to which a rule or a ruleset applies.
+					</li><li class="listitem">
+						<code class="literal">konveyor.io/target</code>: Identifies the target technology to which a rule or a ruleset applies.
+					</li><li class="listitem">
+						<code class="literal">konveyor.io/include</code>: Overrides filter behavior for a rule irrespective of the label selector used. The value can either be <code class="literal">always</code> or <code class="literal">never</code>. If you specify <code class="literal">always</code>, the analyzer always filters-in this rule, while for <code class="literal">never</code>, the analyzer excludes this rule.
+					</li></ul></div><div class="formalpara"><p class="title"><strong>Label selector</strong></p><p>
+					The analyzer CLI takes the <code class="literal">--label-selector</code> field as an option. It is a string expression that supports logical <code class="literal">AND</code>, <code class="literal">OR</code>, and <code class="literal">NOT</code> operations. You can use it to filter-in or filter-out rules by their labels.
+				</p></div><p>
+				<span class="emphasis"><em>Examples:</em></span>
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+						To filter-in all rules that have a label with the key <code class="literal">konveyor.io/source</code> and value <code class="literal">eap6</code>:
+					</p><p class="simpara">
+						<code class="literal">--label-selector="konveyor.io/source=eap6"</code>
+					</p></li><li class="listitem"><p class="simpara">
+						To filter-in all rules that have a label with the key <code class="literal">konveyor.io/source</code> and any value:
+					</p><p class="simpara">
+						<code class="literal">--label-selector="konveyor.io/source"</code>
+					</p></li><li class="listitem"><p class="simpara">
+						To perform logical AND operations on matches of multiple rules by using the <code class="literal">&amp;&amp;</code> operator:
+					</p><p class="simpara">
+						<code class="literal">--label-selector="key1=val1 &amp;&amp; key2"</code>
+					</p></li><li class="listitem"><p class="simpara">
+						To perform logical OR operations on matches of multiple rules by using the <code class="literal">||</code> operator:
+					</p><p class="simpara">
+						<code class="literal">--label-selector="key1=val1 || key2"</code>
+					</p></li><li class="listitem"><p class="simpara">
+						To perform a NOT operation to filter-out rules that have <code class="literal">key1=val1</code> label set by using the <code class="literal">!</code> operator:
+					</p><p class="simpara">
+						<code class="literal">--label-selector="!key1=val1"</code>
+					</p></li><li class="listitem"><p class="simpara">
+						To group sub-expressions and control precedence by using AND:
+					</p><p class="simpara">
+						<code class="literal">--label-selector="(key1=val1 || key2=val2) &amp;&amp; !val3"</code>
+					</p></li></ul></div><div class="formalpara"><p class="title"><strong>Dependency labels</strong></p><p>
+					The analyzer engine adds labels to dependencies. These labels provide additional information about a dependency, such as its programming language and whether the dependency is open source or internal.
+				</p></div><p>
+				Currently, the analyzer adds the following labels to dependencies:
+			</p><pre class="programlisting language-yaml">labels:
+- konveyor.io/dep-source=internal
+- konveyor.io/language=java</pre><div class="formalpara"><p class="title"><strong>Dependency label selector</strong></p><p>
+					The analyzer CLI accepts the <code class="literal">--dep-label-selector</code> option, which allows filtering-in or filtering-out incidents generated from a dependency by their labels.
+				</p></div><p>
+				For example, the analyzer adds a <code class="literal">konveyor.io/dep-source</code> label to dependencies with a value that indicates whether the dependency is a known open source dependency.
+			</p><p>
+				To exclude incidents for all such open source dependencies, you can use <code class="literal">--dep-label-selector</code> as follows:
+			</p><p>
+				<code class="literal">$ mta-cli …​ --dep-label-selector !konveyor.io/dep-source=open-source</code>
+			</p><p>
+				The Java provider in the analyzer can also add an exclude label to a list of packages. To exclude all such packages, you can use <code class="literal">--dep-label-selector</code> and the <code class="literal">!</code> operator as follows:
+			</p><p>
+				<code class="literal">konveyor-analyzer …​ --dep-label-selector !konveyor.io/exclude</code>
+			</p><p>
+				<code class="literal">mta-cli …​ --dep-label-selector !konveyor.io/exclude</code>
+			</p></section><section class="section" id="yaml-rule-categories_rule-yaml-metadata"><div class="titlepage"><div><div><h2 class="title">2.3. Rule categories</h2></div></div></div><p class="_abstract _abstract">
+				Rule categories are applied per rule. The Architect assigns one of the following rule categories to indicate the risk associated with not resolving an issue.
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<code class="literal">mandatory</code>: You must resolve the issue for a successful migration. If you do not make the changes, the resulting application will not build or run successfully. Examples include the replacement of proprietary APIs that are not supported in the target platform.
+					</li><li class="listitem">
+						<code class="literal">optional</code>: If you do not resolve the issue, the application should work, but the results might not be optimal. If you do not make the change at the time of migration, it is recommended to include it on the schedule soon after your migration is completed.
+					</li><li class="listitem">
+						<code class="literal">potential</code>: You need to examine the issue during the migration process, but there is not enough detailed information to determine if the task is mandatory for the migration to succeed. An example of such an issue is migrating a third-party proprietary type when there is no directly compatible type on the target platform.
+					</li></ul></div></section></section><section class="chapter" id="rules-prov-cond"><div class="titlepage"><div><div><h1 class="title">Chapter 3. Providers and rule conditions</h1></div></div></div><p class="_abstract _abstract">
+			The providers are the modular components in charge of analyzing a given language. The external providers, except <code class="literal">C#</code>, are able to analyze code by leveraging the Language Server Protocol (LSP). Through the LSP, all code analysis is abstracted away from the analysis engine and left to the specific LSP server to run the search query defined in the rule on the source code.
+		</p><p>
+			Additionally, MTA provides a built-in provider with abilities such as XML parsing, running regular expressions on files, and so on.
+		</p><p>
+			Currently, MTA supports the following providers:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					builtin
+				</li><li class="listitem">
+					Java
+				</li><li class="listitem">
+					C#
+				</li><li class="listitem">
+					External providers (for <code class="literal">Python</code>, <code class="literal">Go</code>, and <code class="literal">Node.js</code> applications) initialized by the generic provider binary
+				</li></ul></div><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+				You can use the generic provider binary to create an external provider for any language that is compliant with <a class="link" href="https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/">LSP 3.17 specifications</a>.
+			</p></div></div><section class="section" id="provider-capability-in-custom-rules_rules-prov-cond"><div class="titlepage"><div><div><h2 class="title">3.1. Provider capabilities in custom rules</h2></div></div></div><p class="_abstract _abstract">
+				In a rule, the when block is where the conditions for matching the rule are specified. Each provider offers a series of capabilities to do matching.
+			</p><p>
+				The search query in the rule condition can contain patterns, code locations, specific dependencies to be found, and so on, to evaluate the source code and dependencies. The provider sends the LSP server a request to check the search query against the application being analyzed. When the LSP server returns a match for the search in the source code, the analyzer triggers a violation.
+			</p><p>
+				The syntax for the when block is as follows: contains one condition, but that condition can have multiple conditions nested under it.
+			</p><pre class="screen">when:
+  &lt;condition&gt;
+    &lt;nested-condition&gt;</pre></section><section class="section" id="yaml-provider-conditions_rules-prov-cond"><div class="titlepage"><div><div><h2 class="title">3.2. Provider condition</h2></div></div></div><p class="_abstract _abstract">
+				The analyzer engine enables multi-language source code analysis by using <span class="strong strong"><strong>providers</strong></span>. The source code of a technology is analyzed by the provider.
+			</p><p>
+				The provider publishes what they can do with the source code in terms of capabilities.
+			</p><p>
+				The provider condition instructs the analyzer to use a specific provider and one of its capabilities. In general, it follows the <code class="literal">&lt;provider_name&gt;.&lt;capability&gt;</code> pattern.
+			</p><pre class="programlisting language-terminal">when:
+  &lt;provider_name&gt;.&lt;capability&gt;
+    &lt;input_fields&gt;</pre><p>
+				The analyzer currently supports the following <code class="literal">provider</code> conditions:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<code class="literal">builtin</code>
+					</li><li class="listitem">
+						<code class="literal">java</code>
+					</li><li class="listitem">
+						<code class="literal">go</code>
+					</li><li class="listitem">
+						<code class="literal">nodejs</code>
+					</li><li class="listitem">
+						<code class="literal">python</code>
+					</li><li class="listitem">
+						<code class="literal">C#</code>
+					</li></ul></div><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+					csharp, python, and nodejs providers are Developer Preview features only. Developer Preview features are not supported by Red Hat in any way and are not functionally complete or production-ready. Do not use Developer Preview features for production or business-critical workloads. Developer Preview features provide early access to upcoming product features in advance of their possible inclusion in a Red Hat product offering, enabling customers to test functionality and provide feedback during the development process. These features might not have any documentation, are subject to change or removal at any time, and testing is limited. Red Hat might provide ways to submit feedback on Developer Preview features without an associated SLA.
+				</p></div></div><div class="informaltable" id="table-Supported-providers-and-rule-conditions"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 50%; " class="col_1"/><col style="width: 50%; " class="col_2"/></colgroup><thead><tr><th align="left" valign="top" id="idm46086929777424" scope="col">Provider rule conditions</th><th align="left" valign="top" id="idm46086929776368" scope="col">Provider name</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46086929777424">
+							<p>
+								Providers that are fully supported and included in the product
+							</p>
+							</td><td align="left" valign="top" headers="idm46086929776368">
+							<p>
+								<code class="literal">java</code>
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086929777424">
+							<p>
+								Providers that have rules already defined in the product
+							</p>
+							</td><td align="left" valign="top" headers="idm46086929776368">
+							<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+										<code class="literal">java</code>
+									</li></ul></div>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086929777424">
+							<p>
+								Providers that require custom rulesets for analysis
+							</p>
+							</td><td align="left" valign="top" headers="idm46086929776368">
+							<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+										<code class="literal">go</code>
+									</li><li class="listitem">
+										<code class="literal">python</code>
+									</li><li class="listitem">
+										<code class="literal">nodejs</code>
+									</li><li class="listitem">
+										<code class="literal">C#</code>
+									</li></ul></div>
+							</td></tr></tbody></table></div><p>
+				The following table summarizes all the providers and their capabilities:
+			</p><div class="table" id="idm46086928946944"><p class="title"><strong>Table 3.1. Summary of providers and their capabilities</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 15%; " class="col_1"/><col style="width: 25%; " class="col_2"/><col style="width: 60%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm46086928940480" scope="col">Provider Name</th><th align="left" valign="top" id="idm46086928939392" scope="col">Capabilities</th><th align="left" valign="top" id="idm46086928938304" scope="col">Description</th></tr></thead><tbody><tr><td rowspan="2" align="left" valign="top" headers="idm46086928940480">
+							<p>
+								<code class="literal">java</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								referenced
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Find references of a pattern with an optional code location for detailed searches. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								dependency
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Check whether the application has a given dependency. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.dependency:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td rowspan="5" align="left" valign="top" headers="idm46086928940480">
+							<p>
+								<code class="literal">builtin</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								xml
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Search XML files using xpath queries.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								json
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Search JSON files using <code class="literal">jsonpath</code> queries. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.json:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								filecontent
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Search content in regular files using regular expression patterns. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.filecontent:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								file
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Find files with names matching a given pattern. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.file:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								hasTags
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Check whether a tag is created for the application using a tagging rule. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.hasTags:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td rowspan="2" align="left" valign="top" headers="idm46086928940480">
+							<p>
+								<code class="literal">go</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								referenced
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Find references to a pattern. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  go.referenced:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								dependency
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Check whether the application has a given dependency. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  go.dependency:
+    &lt;fields&gt;</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086928940480">
+							<p>
+								<code class="literal">C#</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928939392">
+							<p>
+								referenced
+							</p>
+							</td><td align="left" valign="top" headers="idm46086928938304">
+							<p>
+								Find references to a pattern. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  csharp.referenced:
+    &lt;fields&gt;</pre>
+							</td></tr></tbody></table></div></div><p>
+				Following the example in the previous table, you can create the first part of the condition that does not contain any of the condition fields.
+			</p><div class="formalpara"><p class="title"><strong>Example</strong></p><p>
+					To create a <code class="literal">java</code> provider condition that uses the <code class="literal">referenced</code> capability:
+				</p></div><pre class="programlisting language-yaml">when:
+  java.referenced:
+    &lt;fields&gt;</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					Depending on the <span class="emphasis"><em>provider</em></span> and the <span class="emphasis"><em>capability</em></span>, there will be different <code class="literal">&lt;fields&gt;</code> in the condition.
+				</p></div></div><p>
+				The following table summarizes available providers, their capabilities and all of their fields:
+			</p><div class="table" id="idm46086932070112"><p class="title"><strong>Table 3.2. Summary of providers, their capabilities, and their fields</strong></p><div class="table-contents"><table class="gt-4-cols lt-7-rows"><colgroup><col style="width: 10%; " class="col_1"/><col style="width: 10%; " class="col_2"/><col style="width: 10%; " class="col_3"/><col style="width: 10%; " class="col_4"/><col style="width: 60%; " class="col_5"/></colgroup><thead><tr><th align="left" valign="top" id="idm46086930535008" scope="col">Provider</th><th align="left" valign="top" id="idm46086930533920" scope="col">Capability</th><th align="left" valign="top" id="idm46086930532832" scope="col">Fields</th><th align="left" valign="top" id="idm46086930531744" scope="col">Required</th><th align="left" valign="top" id="idm46086932229072" scope="col">Description</th></tr></thead><tbody><tr><td rowspan="7" align="left" valign="top" headers="idm46086930535008">
+							<p>
+								<a class="link" href="#yaml-java-provider_rules-prov-cond" title="3.4. Java provider">java</a>
+							</p>
+							</td><td rowspan="3" align="left" valign="top" headers="idm46086930533920">
+							<p>
+								referenced
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								pattern
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Regular expression pattern. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: PACKAGE
+    pattern: org.jboss.*</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								location
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Source code location. See <a class="link" href="#yaml-java-locations_java-conditions-capabilities" title="4.1. Java locations">Java locations</a>. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    pattern: org.kubernetes*
+    location: IMPORT</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								annotated
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Additional query to inspect annotations. See <a class="link" href="#yaml-annotation-inspection_java-conditions-capabilities" title="4.2. Annotation inspection">Annotation inspection</a>. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: ANNOTATION
+    pattern: javax.ejb.Singleton</pre>
+							</td></tr><tr><td rowspan="4" align="left" valign="top" headers="idm46086930533920">
+							<p>
+								dependency
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								name
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Name of the dependency. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.dependency:
+    name: junit.junit</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								nameregex
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Regular expression pattern to match the name.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								upperbound
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Match versions lower than or equal to. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.dependency:
+    name: junit.junit
+    upperbound: 4.12.2</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								lowerbound
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Match versions greater than or equal to. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.dependency:
+    name: junit.junit
+    upperbound: 4.12.2
+    lowerbound: 4.4.0</pre>
+							</td></tr><tr><td rowspan="9" align="left" valign="top" headers="idm46086930535008">
+							<p>
+								<a class="link" href="#yaml-builtin-provider_rules-prov-cond" title="3.3. The builtin provider">builtin</a>
+							</p>
+							</td><td rowspan="3" align="left" valign="top" headers="idm46086930533920">
+							<p>
+								xml
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								xpath
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Xpath query
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.xml:
+    xpath: "//dependencies/dependency"</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								namespaces
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								A map to scope down query to namespaces.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.xml:
+    filepaths:
+     - beans.xml
+    namespaces:
+        b: http://xmlns.jcp.org/xml/ns/javaee
+    xpath: /b:beans</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								filepaths
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Optional list of files to scope down search.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+    or:
+    - builtin.xml:
+        xpath: "//dependencies/dependency"
+        filepaths: "{{poms.filepaths}}"
+      from: poms
+    - builtin.file:
+        pattern: pom.xml
+      as: poms
+      ignore: true</pre>
+							</td></tr><tr><td rowspan="2" align="left" valign="top" headers="idm46086930533920">
+							<p>
+								json
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								xpath
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Xpath query For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+    and:
+    - builtin.json:
+        xpath: //inclusionTestNode</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								filepaths
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Optional list of files to scope down search. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+    and:
+    - builtin.json:
+        xpath: //inclusionTestNode
+        filepaths: "{{incTest.filepaths}}"</pre>
+							</td></tr><tr><td rowspan="2" align="left" valign="top" headers="idm46086930533920">
+							<p>
+								filecontent
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								pattern
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Regular expression pattern to match in content. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.filecontent:
+    pattern: "import.*React"</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								filePattern
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Only search in files with names matching this pattern. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  builtin.filecontent:
+    pattern: "import.*React"
+    filePattern: "\\.tsx$"</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930533920">
+							<p>
+								file
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								pattern
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Find files with names matching this pattern. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+    builtin.file:
+      pattern: "*.go"</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930533920">
+							<p>
+								hasTags
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832"> </td><td align="left" valign="top" headers="idm46086930531744"> </td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								This is an inline list of string tags. See <a class="link" href="#yaml-tag-actions_rule-yaml-actions" title="6.1. Tag actions">Tag action</a> For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  or:
+   - builtin.hasTags:
+     - Golang
+     - Kubernetes</pre>
+							</td></tr><tr><td rowspan="5" align="left" valign="top" headers="idm46086930535008">
+							<p>
+								<a class="link" href="#yaml-go-provider_rules-prov-cond" title="3.5. Go provider">go</a>
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930533920">
+							<p>
+								referenced
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								pattern
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Regular expression pattern. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  go.referenced:
+    pattern: "v1beta1.CustomResourceDefinition"</pre>
+							</td></tr><tr><td rowspan="4" align="left" valign="top" headers="idm46086930533920">
+							<p>
+								dependency
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								name
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Name of the dependency. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  - go.dependency:
+      name: sigs.k8s.io/structured-merge-diff/v4</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								nameregex
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Regular expression pattern to match the name.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								upperbound
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Match versions lower than or equal to. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  - go.dependency:
+      name: sigs.k8s.io/structured-merge-diff/v4
+      upperbound: v4.2.2</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								lowerbound
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								No
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Match versions greater than or equal to. For example,
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  - go.dependency:
+      name: sigs.k8s.io/structured-merge-diff/v4
+      lowerbound: v4.2.0</pre>
+							</td></tr><tr><td rowspan="2" align="left" valign="top" headers="idm46086930535008">
+							<p>
+								<a class="link" href="#yaml-dotnet-provider_rules-prov-cond" title="3.6. C# provider">C#</a>
+							</p>
+							</td><td rowspan="2" align="left" valign="top" headers="idm46086930533920">
+							<p>
+								referenced
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								pattern
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Regular expression to match a reference in the source code. For example, <code class="literal">System.Web.Mvc.*</code>.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086930532832">
+							<p>
+								location
+							</p>
+							</td><td align="left" valign="top" headers="idm46086930531744">
+							<p>
+								Yes
+							</p>
+							</td><td align="left" valign="top" headers="idm46086932229072">
+							<p>
+								Specify one of the following for which MTA runs a search query:
+							</p>
+							<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+										Type reference including classes, interfaces and structure types (struct). For example:
+									</p><pre class="literallayout">[subs="+quotes"]
+----
+when:
+  csharp.referenced:
+    location: CLASS
+    pattern: System.Web.Http.ApiController.*
+----</pre><pre class="literallayout">[subs="+quotes"]
+----
+when:
+  csharp.referenced:
+    location: ALL
+    pattern: "System.Console.Print*"
+----</pre></li><li class="listitem"><p class="simpara">
+										Method calls and definitions. For example:
+									</p><pre class="literallayout">[subs="+quotes"]
+----
+when:
+  csharp.referenced:
+    location: METHOD
+    pattern: "*.AppDomain.Unload"
+----</pre></li><li class="listitem"><p class="simpara">
+										Field usages and declaration. For example:
+									</p><pre class="literallayout">[subs="+quotes"]
+----
+when:
+  csharp.referenced:
+    location: FIELD
+    pattern: "DotNetOpenAuth.AspNet.AuthenticationResult.Provider"
+----</pre></li><li class="listitem"><p class="simpara">
+										Namespace imports and usages. For example:
+									</p><pre class="literallayout">[subs="+quotes"]
+----
+when:
+  csharp.referenced:
+    location: ALL
+    pattern: "System.Windows.Forms"
+----</pre></li><li class="listitem">
+										<code class="literal">ALL</code> - You can also specify <code class="literal">ALL</code> as <code class="literal">location</code> to run a search query on any location in the code, including namespaces, structure types, and interfaces.
+									</li></ul></div>
+							</td></tr></tbody></table></div></div></section><section class="section" id="yaml-builtin-provider_rules-prov-cond"><div class="titlepage"><div><div><h2 class="title">3.3. The builtin provider</h2></div></div></div><p class="_abstract _abstract">
+				The <code class="literal">builtin</code> is an internal provider that can analyze various files and internal metadata generated by the engine.
+			</p><p>
+				The <code class="literal">builtin</code> provider has the following capabilities:
+			</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">file</code></span></dt><dd><p class="simpara">
+							By using the <code class="literal">file</code> capability, the provider searches for files in the source code that match a given pattern.
+						</p><pre class="programlisting language-yaml">when:
+  builtin.file:
+    pattern: "&lt;regular_expression_to_match_filenames&gt;"</pre></dd><dt><span class="term"><code class="literal">filecontent</code></span></dt><dd><p class="simpara">
+							By using the <code class="literal">filecontent</code> capability, the provider searches for content that matches a given pattern.
+						</p><pre class="programlisting language-yaml">when:
+  builtin.filecontent:
+    filePattern: "&lt;regular_expression_to_match_filenames_to_scope_search&gt;"
+    pattern: "&lt;regular_expression_to_match_content_in_the_matching_files&gt;"</pre></dd><dt><span class="term"><code class="literal">xml</code></span></dt><dd><p class="simpara">
+							The <code class="literal">xml</code> capability enables the provider to query XPath expressions on a list of provided XML files. This capability takes 2 input parameters, <code class="literal">xpath</code> and <code class="literal">filepaths</code>.
+						</p><pre class="programlisting language-yaml">when:
+  builtin.xml:
+    xpath: "&lt;xpath_expressions&gt;"
+    filepaths:
+      - "/src/file1.xml"
+      - "/src/file2.xml"
+    namespaces:
+        var: http://www.springframework.org/schema/beans
+        xpath: //*/var:bean/@class[matches(self::node(), 'org.apache.camel.util.toolbox.XsltAggregationStrategy')]</pre><p class="simpara">
+							where:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									<code class="literal">xpath</code> must be a valid XPath expression.
+								</li><li class="listitem">
+									<code class="literal">filepaths</code> is a list of files to apply the XPath query to.
+								</li><li class="listitem">
+									<code class="literal">namespaces</code> define namespaces and assign them to variables. You can use the variable in the <code class="literal">xpath</code>.
+								</li></ul></div></dd><dt><span class="term"><code class="literal">json</code></span></dt><dd><p class="simpara">
+							By using the <code class="literal">json</code> capability, the provider queries XPath expressions on a list of provided JSON files. Currently, <code class="literal">json</code> only takes XPath as input and performs the search on all JSON files in the codebase.
+						</p><pre class="programlisting language-yaml">when:
+  builtin.json:
+    xpath: "&lt;xpath_expressions&gt;"</pre><p class="simpara">
+							where <code class="literal">xpath</code> must be a valid XPath expression.
+						</p></dd><dt><span class="term"><code class="literal">hasTags</code></span></dt><dd><p class="simpara">
+							By using the <code class="literal">hasTags</code> capability, the provider queries application tags. It queries the internal data structure to check whether the application has the given tags.
+						</p><pre class="programlisting language-yaml">when:
+  # when more than one tag is given, a logical AND is implied
+  hasTags:
+    - "tag1"
+    - "tag2"</pre></dd></dl></div></section><section class="section" id="yaml-java-provider_rules-prov-cond"><div class="titlepage"><div><div><h2 class="title">3.4. Java provider</h2></div></div></div><p class="_abstract _abstract">
+				The <code class="literal">java</code> provider analyzes Java source code.
+			</p><p>
+				This provider has the following capabilities:
+			</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">referenced</code></span></dt><dd><p class="simpara">
+							By using the <code class="literal">referenced</code> capability, the provider finds references in the source code. This capability takes three input parameters: <code class="literal">pattern</code>, <code class="literal">location</code>, and <code class="literal">annotated</code>:
+						</p><pre class="programlisting language-terminal">when:
+  java.referenced:
+    pattern: "&lt;pattern&gt;"
+    location: "&lt;location&gt;"
+    annotated: "&lt;annotated&gt;"</pre><p class="simpara">
+							where:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									<code class="literal">pattern</code> is a regular expression pattern to match.
+								</li><li class="listitem">
+									<code class="literal">location</code> is the exact location where the pattern needs to be matched, for example, <code class="literal">IMPORT</code>.
+								</li><li class="listitem"><p class="simpara">
+									<code class="literal">annotated</code> checks for specific annotations and their elements, such as name and value, in the Java code by using a query. For example, the following query matches the <code class="literal">Bean</code> (URL = “http://www.example.com”) annotation in the method.
+								</p><pre class="programlisting language-yaml"> annotated:
+      pattern: org.framework.Bean
+      elements:
+      - name: url
+        value: "http://www.example.com"</pre></li></ul></div></dd><dt><span class="term"><code class="literal">dependency</code></span></dt><dd><p class="simpara">
+							The Java provider has <code class="literal">dependency</code> capability. The <code class="literal">dependency</code> capability enables the provider to generate a list of dependencies for a given application.
+						</p><p class="simpara">
+							You can use a <code class="literal">dependency</code> condition to query this list and check whether a certain dependency, with a version range, exists for the application. The dependency can be internal or external or open source. For example, to check if a Java application has a certain dependency, you create a <code class="literal">java.dependency</code> condition:
+						</p><pre class="programlisting language-yaml">when:
+  java.dependency:
+    name: junit.junit
+    upperbound: 4.12.2
+    lowerbound: 4.4.0</pre><p class="simpara">
+							You can use the <code class="literal">dependency</code> capability to check if a Java application has Fabric8 Kubernetes client of version 5.0.100 or lower:
+						</p><pre class="programlisting language-yaml">- java.dependency:
+    name: io.fabric8.kubernetes-client
+    lowerbound: 5.0.100</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+								When you use the <code class="literal">java</code> provider for an analysis, the analysis results have lower precision for projects that cannot be built. For example, when MTA is unable to build a <code class="literal">Maven</code> project, it falls back to parsing the <code class="literal">pom</code> file to get the list of dependencies.
+							</p></div></div></dd></dl></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="#java-conditions-capabilities" title="Chapter 4. Java condition and capabilities">Java condition and capabilities</a>
+					</li></ul></div></section><section class="section" id="yaml-go-provider_rules-prov-cond"><div class="titlepage"><div><div><h2 class="title">3.5. Go provider</h2></div></div></div><p class="_abstract _abstract">
+				The <code class="literal">go</code> provider analyzes <code class="literal">Go</code> source code. This provider’s capabilities are <code class="literal">referenced</code> and <code class="literal">dependency</code>.
+			</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">referenced</code></span></dt><dd><p class="simpara">
+							By using the <code class="literal">referenced</code> capability, the provider finds references in the source code.
+						</p><pre class="programlisting language-yaml">when:
+  go.referenced: "&lt;regex_to_find_reference&gt;"</pre></dd><dt><span class="term"><code class="literal">dependency</code></span></dt><dd><p class="simpara">
+							By using the <code class="literal">dependency</code> capability, the provider finds dependencies for a <code class="literal">Go</code> application.
+						</p><pre class="programlisting language-yaml">when:
+  go.dependency:
+    name: "&lt;dependency_name&gt;"
+    upperbound: "&lt;version_string&gt;"
+    lowerbound: "&lt;version_string&gt;"</pre><p class="simpara">
+							where:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									<code class="literal">name</code> is a name of the dependency to search for.
+								</li><li class="listitem">
+									<code class="literal">upperbound</code> is an upper bound on the version of the dependency.
+								</li><li class="listitem">
+									<code class="literal">lowerbound</code> is a lower bound on the version of the dependency.
+								</li></ul></div></dd></dl></div></section><section class="section" id="yaml-dotnet-provider_rules-prov-cond"><div class="titlepage"><div><div><h2 class="title">3.6. C# provider</h2></div></div></div><p class="_abstract _abstract">
+				The <code class="literal">C#</code> provider is an external provider used to analyze <code class="literal">.NET Core</code> and <code class="literal">C#</code> source code. Currently, the provider supports the <code class="literal">referenced</code> capability.
+			</p><p>
+				The <code class="literal">C#</code> provider uses a gRPC interface to perform a semantic analysis of an application source code in the <code class="literal">source-only</code> mode. The provider parses the source code by using tree-sitter and uses stack graph for the analysis to find references to types, methods, classes, and fields. Based on the <code class="literal">C#</code> custom rule definition, the analyzer identifies violations in your code that you must resolve before the application migration.
+			</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">referenced</code></span></dt><dd><p class="simpara">
+							The <code class="literal">C#</code> provider supports <code class="literal">referenced</code> capability in rules to define fields such as <code class="literal">pattern</code> and <code class="literal">location</code> based on which the provider searches the code for violations.
+						</p><pre class="programlisting language-yaml">when:
+  csharp.referenced:
+    pattern: "&lt;pattern&gt;"
+    location: CLASS</pre><p class="simpara">
+							where:
+						</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+									<code class="literal">pattern</code> is a regular expression pattern to match the required reference, for example, <code class="literal">HttpNotFound</code>.
+								</li><li class="listitem">
+									<code class="literal">namespace</code> specifies the namespace to search within, for example, <code class="literal">System.Web.Mvc</code>.
+								</li></ul></div></dd></dl></div></section></section><section class="chapter" id="java-conditions-capabilities"><div class="titlepage"><div><div><h1 class="title">Chapter 4. Java condition and capabilities</h1></div></div></div><p class="_abstract _abstract">
+			The <code class="literal">java.referenced</code> capability in the when condition for Java rules can define search queries for the following fields in the source code:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Locations - such as the classes, methods, packages and so on
+				</li><li class="listitem">
+					Annotations
+				</li><li class="listitem">
+					Patterns
+				</li></ul></div><p>
+			You can refer to this section for a detailed explanation on the Locations, Annotations, and Patterns.
+		</p><section class="section" id="yaml-java-locations_java-conditions-capabilities"><div class="titlepage"><div><div><h2 class="title">4.1. Java locations</h2></div></div></div><p class="_abstract _abstract">
+				The <code class="literal">java</code> provider allows scoping the search down to certain source code locations.
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<span class="strong strong"><strong>IMPORT</strong></span>: IMPORT allows for searches on class imports. It can either be used with Fully Qualified Names (FQNs) or an asterisk to allow for wider matches:
+					</li></ul></div><pre class="programlisting language-yaml">java.referenced:
+  pattern: org.apache.lucene.search.*
+  location: IMPORT</pre><p>
+				would match on each of these imports:
+			</p><pre class="programlisting language-java">import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<span class="strong strong"><strong>PACKAGE</strong></span>: the <code class="literal">PACKAGE</code> location matches on any usage of a package, be it in an import or used as part of an FQN in the code:
+					</li></ul></div><pre class="programlisting language-yaml">java.referenced:
+  pattern: org.apache.lucene.search.*
+  location: PACKAGE</pre><p>
+				would match on each of the following imports and the FQN usage:
+			</p><pre class="programlisting language-java">import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;</pre><pre class="programlisting language-java">public class Test {
+  private org.apache.lucene.search.Query query;
+}</pre><div class="table" id="idm46086934840368"><p class="title"><strong>Table 4.1. Supported Java locations</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 25%; " class="col_1"/><col style="width: 25%; " class="col_2"/><col style="width: 50%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm46086931944064" scope="col">Location</th><th align="left" valign="top" id="idm46086931942976" scope="col">Description</th><th align="left" valign="top" id="idm46086931941888" scope="col">Rule condition example</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								TYPE
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against all types, including classes, interfaces, enums, and annotation types that appear anywhere.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example looks for occurrences of <code class="literal">java.util.List</code>.
+							</p>
+							
+<pre class="programlisting language-yaml"> when:
+  java.referenced:
+   location: TYPE
+   pattern: java.util.List</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								ANNOTATION
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against annotations.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example matches the <code class="literal">@org.framework.Bean(url = "http://www.example.com")</code> annotation in the source code.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: ANNOTATION
+    pattern: org.framework.Bean
+    annotated:
+      elements:
+        - name: url
+          value: "http://www.example.com"</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								IMPLEMENTS_TYPE
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against any type implementing the given type.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example looks for a class that implements <code class="literal">java.util.ArrayList</code>.
+							</p>
+							
+<pre class="programlisting language-yaml"> when:
+  java.referenced:
+   location: IMPLEMENTS_TYPE
+   pattern: java.util.ArrayList</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								RETURN_TYPE
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against a type being returned by a method.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example searches for <code class="literal">@PersistenceContext</code> annotation for injecting data sources and <code class="literal">@Produces</code> annotation on the <code class="literal">EntityManager</code>. These annotations are not required when you target migrating the source code to <code class="literal">Quarkus</code>.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: RETURN_TYPE
+      pattern: javax.persistence.EntityManager
+      annotated:
+        pattern: javax.enterprise.inject.Produces</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								VARIABLE_DECLARATION
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against a type being declared as a variable
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example searches for <code class="literal">QueueConnectionFactory</code> that was used to obtain a connection to JMS queues appearing as a variable declaration. Replace the string <code class="literal">QueueConnectionFactory</code> with <code class="literal">ConnectionFactory</code>.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  - java.referenced:
+      location: VARIABLE_DECLARATION
+      pattern: javax.jms.QueueConnectionFactory</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								FIELD
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against a type appearing in a field declaration. It can be coupled with an annotation match happening on the field. See <a class="link" href="#yaml-annotation-inspection_java-conditions-capabilities" title="4.2. Annotation inspection">Annotation inspection</a>
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example searches if <code class="literal">QueueConnectionFactory</code> appears in a field declaration and is used to obtain connection to JMS queues. Replace the string <code class="literal">QueueConnectionFactory</code> with <code class="literal">ConnectionFactory</code>.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  - java.referenced:
+      location: FIELD_DECLARATION
+      pattern: javax.jms.QueueConnectionFactory</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								METHOD
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against a given method declaration. It can be coupled with an annotation match. See <a class="link" href="#yaml-annotation-inspection_java-conditions-capabilities" title="4.2. Annotation inspection">Annotation inspection</a>
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example finds declarations of methods named <code class="literal">method</code> that accept <code class="literal">java.lang.String</code> and return <code class="literal">org.konveyor.ExtendedString</code>.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+ java.referenced:
+   location: METHOD
+   pattern: 'method(java.lang.String) org.konveyor.ExtendedString'</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								METHOD_CALL
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against the method call in the source code.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example matches the <code class="literal">getConnection</code> method call of the <code class="literal">java.sql.DriverManager</code> class with three parameters of type <code class="literal">String</code>.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: METHOD_CALL
+    pattern: java.sql.DriverManager.getConnection(java.lang.String, java.lang.String, java.lang.String)</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								CLASS (declaration)
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against a given method declaration. Can be coupled with an annotation match. See <a class="link" href="#yaml-annotation-inspection_java-conditions-capabilities" title="4.2. Annotation inspection">Annotation inspection</a>.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example locates all classes under the <code class="literal">javax.xml</code> package occurring in all locations of the source code.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+ java.referenced:
+  pattern: javax.xml.*</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								CONSTRUCTOR_CALL
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against constructor calls in the source code.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example matches the <code class="literal">FileOutputStream</code> constructor call that takes a String and a boolean value as input parameters.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: CONSTRUCTOR_CALL
+    pattern: java.io.FileOutputStream(java.lang.String, boolean)</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								IMPORT
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against class imports. You can use it with FQNs or an asterisk (*) to allow for wider matches.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example matches with the imports of <code class="literal">org.apache.lucene.search</code> package and subpackages in the source code.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+ java.referenced:
+   pattern: org.apache.lucene.search.*
+   location: IMPORT</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								PACKAGE
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches on any usage of a package, be it in an import or used as part of a fully qualified name in the code.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example matches all occurrences of <code class="literal">org.jboss</code> package and its subpackages in the source code.
+							</p>
+							
+<pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: PACKAGE
+    pattern: org.jboss.*</pre>
+							</td></tr><tr><td align="left" valign="top" headers="idm46086931944064">
+							<p>
+								INHERITANCE
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931942976">
+							<p>
+								Matches against a class inheriting from a given type.
+							</p>
+							</td><td align="left" valign="top" headers="idm46086931941888">
+							<p>
+								The following example searches for interfaces that extend the <code class="literal">org.jboss.system.ServiceMBeanSupport</code> class.
+							</p>
+							
+<pre class="programlisting language-yaml"> when:
+  java.referenced:
+    pattern: 'org.jboss.system.ServiceMBeanSupport'
+    location: INHERITANCE</pre>
+							</td></tr></tbody></table></div></div></section><section class="section" id="yaml-annotation-inspection_java-conditions-capabilities"><div class="titlepage"><div><div><h2 class="title">4.2. Annotation inspection</h2></div></div></div><p class="_abstract _abstract">
+				You can add a query to match against specific annotations and their elements, for example:
+			</p><pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: METHOD
+    pattern: org.package.MyApplication.runApplication(java.lang.String)
+    annotated:
+      pattern: org.framework.Bean
+      elements:
+      - name: url
+        value: "http://www.example.com"</pre><p>
+				This would match against the <code class="literal">runApplication</code> method in the following Java code:
+			</p><pre class="programlisting language-java">package org.package
+
+import org.framework.Bean;
+
+class MyApplication {
+
+    @Bean(url = "http://www.example.com")
+    public String runApplication(String str) {
+        // ...
+    }
+}</pre><p>
+				The structure of the <code class="literal">annotated</code> YAML element is:
+			</p><pre class="programlisting language-yaml">annotated:
+  pattern: a Java regular expression to match the fully qualified name of the annotation (optional)
+  elements: an array of elements to match within the annotation (optional)
+  - name: the exact name of the element to match against
+    value: a Java regular expression to match the value of the element</pre><p>
+				It is also possible to match an annotation with specific elements without having to specify the symbol it annotates. The following example would also match on the <code class="literal">@Bean</code> annotation in the same code as the previous example:
+			</p><pre class="programlisting language-yaml">when:
+  java.referenced:
+    location: ANNOTATION
+    pattern: org.framework.Bean
+    annotated:
+      elements:
+        - name: url
+          value: "http://www.example.com"</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					The only element specified with a <code class="literal">pattern</code> is the annotation itself.
+				</p></div></div></section><section class="section" id="yaml-condition-patterns_java-conditions-capabilities"><div class="titlepage"><div><div><h2 class="title">4.3. Condition patterns</h2></div></div></div><p class="_abstract _abstract">
+				The Language Server used by the Java provider is Eclipse’s JDTLS. Internally, the JDTLS uses the Eclipse Java Development Toolkit, which includes utilities for searching code in projects.
+			</p><p>
+				In the <code class="literal">pattern</code> element of a <code class="literal">java.referenced</code> condition, you can search through application code by using these utilities. For more details, see <a class="link" href="https://help.eclipse.org/latest/index.jsp?topic=%2Forg.eclipse.jdt.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fjdt%2Fcore%2Fsearch%2FSearchPattern.html&amp;anchor=createPattern">Class SearchPattern</a>, which contains all the information for building these patterns for <code class="literal">createPattern(String, int, int, int)</code>.
+			</p><p>
+				Review the following examples of condition patterns:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+						Search for any class under the <code class="literal">javax.xml</code> package, occurring in any location:
+					</p><pre class="programlisting language-yaml">java.referenced:
+  pattern: javax.xml.*</pre></li><li class="listitem"><p class="simpara">
+						Search for method declarations that return <code class="literal">java.lang.String</code>:
+					</p><pre class="programlisting language-yaml">java.referenced:
+  location: METHOD
+  pattern: '* java.lang.String'</pre></li><li class="listitem"><p class="simpara">
+						Search for a method named “method” declared on <code class="literal">org.konveyor.MyClass</code> that returns a <code class="literal">List</code> of a type that extends <code class="literal">java.lang.String</code>:
+					</p><pre class="programlisting language-yaml">java.referenced:
+  location: METHOD
+  pattern: 'org.konveyor.Myclass.method(*) java.util.List&lt;? extends java.lang.String&gt;'</pre></li><li class="listitem"><p class="simpara">
+						Search for a class that implements <code class="literal">java.util.List</code>:
+					</p><pre class="programlisting language-yaml">java.referenced:
+  location: IMPLEMENTS_TYPE
+  pattern: java.util.List</pre></li></ul></div></section></section><section class="chapter" id="logical-chaining-custom-variables"><div class="titlepage"><div><div><h1 class="title">Chapter 5. Logical conditions, condition chaining, and custom variables</h1></div></div></div><p class="_abstract _abstract">
+			You can create complex conditions in rules by using the following:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Logical conditions inform the provider how to handle more than one condition in a when block. You can aggregate or filter conditions using logical operations.
+				</li><li class="listitem">
+					Condition chaining uses the output of one condition as the input in another condition of the when block. Assign the output to a variable in one condition and reuse it in other conditions in the when block.
+				</li><li class="listitem">
+					Nested conditions to create conditions that depend on the evaluation of other conditions.
+				</li><li class="listitem">
+					Custom variables to capture specific information from the code that is evaluated by a rule. You can use the custom variable in the message displayed for the code if it contains a violation defined by the rule.
+				</li></ul></div><section class="section" id="yaml-logical-conditions_logical-chaining-custom-variables"><div class="titlepage"><div><div><h2 class="title">5.1. Logical conditions</h2></div></div></div><p class="_abstract _abstract">
+				The analyzer provides two basic logical conditions, <code class="literal">and</code> and <code class="literal">or</code>, which you can use to aggregate results of other conditions.
+			</p></section><section class="section" id="yaml-and-condition_logical-chaining-custom-variables"><div class="titlepage"><div><div><h2 class="title">5.2. AND condition</h2></div></div></div><p class="_abstract _abstract">
+				The <code class="literal">and</code> condition performs a logical AND operation on the results of an array of conditions.
+			</p><p>
+				The <code class="literal">and</code> condition matches when <span class="emphasis"><em>all</em></span> of its child conditions match, for example:
+			</p><pre class="programlisting language-yaml">when:
+  and:
+    - &lt;condition1&gt;
+    - &lt;condition2&gt;</pre><div class="formalpara"><p class="title"><strong>Example</strong></p><p>
+					
+<pre class="programlisting language-yaml">when:
+  and:
+    - java.dependency:
+        name: junit.junit
+        upperbound: 4.12.2
+        lowerbound: 4.4.0
+    - java.referenced:
+        location: IMPORT
+        pattern: junit.junit</pre>
+				</p></div></section><section class="section" id="yaml-or-condition_logical-chaining-custom-variables"><div class="titlepage"><div><div><h2 class="title">5.3. OR condition</h2></div></div></div><p class="_abstract _abstract">
+				The <code class="literal">or</code> condition performs a logical OR operation on the results of an array of conditions.
+			</p><p>
+				The <code class="literal">or</code> condition matches when <span class="emphasis"><em>any</em></span> of its child conditions match, for example:
+			</p><pre class="programlisting language-yaml">when:
+  or:
+    - &lt;condition1&gt;
+    - &lt;condition2&gt;</pre><div class="formalpara"><p class="title"><strong>Example</strong></p><p>
+					
+<pre class="programlisting language-yaml">when:
+  or:
+  - java.dependency:
+      name: junit.junit
+      upperbound: 4.12.2
+      lowerbound: 4.4.0
+  - java.referenced:
+      location: IMPORT
+      pattern: junit.junit</pre>
+				</p></div></section><section class="section" id="yaml-chaining-condition-variables_logical-chaining-custom-variables"><div class="titlepage"><div><div><h2 class="title">5.4. Chaining Condition Variables</h2></div></div></div><p class="_abstract _abstract">
+				You can use the output of one condition as the input for filtering another one in the <code class="literal">and</code> and <code class="literal">or</code> conditions. This is called <span class="strong strong"><strong>condition chaining</strong></span>.
+			</p><pre class="programlisting language-yaml">when:
+ or:
+  - builtin.xml:
+      xpath: "//dependencies/dependency"
+      filepaths: "{{poms.filepaths}}"
+    from: poms
+  - builtin.file:
+      pattern: pom.xml
+    as: poms
+    ignore: true</pre><p>
+				In the above example, the output of the <code class="literal">builtin.file</code> condition is saved as <code class="literal">poms</code>:
+			</p><pre class="programlisting language-yaml">[...]
+      as: poms
+[...]</pre><p>
+				The variables of <code class="literal">builtin.file</code> can then be used in the <code class="literal">builtin.xml</code> condition, by writing <code class="literal">from</code> and then using <a class="link" href="https://mustache.github.io/mustache.5.html">mustache templates</a> in the <code class="literal">provider_ condition</code> block.
+			</p><p>
+				This is how this particular condition knows how to use the variable set to the name <code class="literal">poms</code>.
+			</p><pre class="programlisting language-yaml">[...]
+    from: poms
+[...]</pre><p>
+				Then you can use the variables by setting them as mustached templates in any of the inputs to the <span class="emphasis"><em>provider</em></span> condition.
+			</p><pre class="programlisting language-yaml">[...]
+      filepaths: "{{poms.filepaths}}"
+[...]</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					If you only want to use the values of a condition as a chain, you can set <code class="literal">ignore: true</code>.
+				</p><p>
+					This will tell the engine not to use this condition to determine whether the rule has been violated or not:
+				</p><pre class="programlisting language-yaml">[...]
+    ignore: true
+[...]</pre></div></div></section><section class="section" id="yaml-chaining-java-provider_logical-chaining-custom-variables"><div class="titlepage"><div><div><h2 class="title">5.5. Chaining in the Java provider</h2></div></div></div><p class="_abstract _abstract">
+				In the <code class="literal">java</code> provider, the <code class="literal">filepaths</code> variable must be uppercased, for example:
+			</p><pre class="programlisting language-yaml">  when:
+    and:
+      - java.referenced:
+          pattern: org.springframework.web.bind.annotation.RequestMapping
+          location: ANNOTATION
+        as: annotation
+      - java.referenced:
+          pattern: org.springframework.stereotype.Controller
+          location: ANNOTATION
+          filepaths: "{{annotation.Filepaths}}"</pre></section><section class="section" id="yaml-nested-condition_logical-chaining-custom-variables"><div class="titlepage"><div><div><h2 class="title">5.6. Nested conditions</h2></div></div></div><p class="_abstract _abstract">
+				Conditions can also be nested within other conditions.
+			</p><pre class="programlisting language-yaml">when:
+  and:
+  - and:
+    - go.referenced: "*CustomResourceDefinition*"
+    - java.referenced:
+        pattern: "*CustomResourceDefinition*"
+  - go.referenced: "*CustomResourceDefinition*"</pre></section><section class="section" id="yaml-custom-variables_logical-chaining-custom-variables"><div class="titlepage"><div><div><h2 class="title">5.7. Custom variables</h2></div></div></div><p class="_abstract _abstract">
+				Provider conditions can have associated custom variables. You can use custom variables to capture relevant information from the matched line in the source code. The values of these variables are interpolated with data matched in the source code. These values can be used to generate detailed template messages in a rule’s action (see <a class="link" href="#yaml-message-actions_rule-yaml-actions" title="6.2. Message action">Message actions</a>). They can be added to a rule in the <code class="literal">customVariables</code> field:
+			</p><pre class="programlisting language-yaml">- ruleID: lang-ref-004
+   customVariables:
+   - pattern: '([A-z]+)\.get\(\)'
+      name: VariableName
+    message: "Found generic call - {{ VariableName }}"
+  when:
+      java.referenced:
+          location: METHOD_CALL
+          pattern: com.example.apps.GenericClass.get</pre><p>
+				where:
+			</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">pattern</code> </span></dt><dd>
+							A regular expression pattern that is matched on the source code line when a match is found.
+						</dd><dt><span class="term"><code class="literal">name</code> </span></dt><dd>
+							The name of the variable that can be used in templates.
+						</dd><dt><span class="term"><code class="literal">message</code> </span></dt><dd>
+							A template for a message by using a custom variable.
+						</dd></dl></div></section></section><section class="chapter" id="rule-yaml-actions"><div class="titlepage"><div><div><h1 class="title">Chapter 6. Rule actions</h1></div></div></div><p class="_abstract _abstract">
+			You can use rule actions to generate information about the source code. The rule action information can be included in a violation or used to categorize the source code.
+		</p><p>
+			Rules can include the following types of actions:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					<code class="literal">Message</code>: use message action to display an informative message in the static report that contains the violation triggered by the rule.
+				</li><li class="listitem">
+					<code class="literal">Tag</code>: use tags to categorize parts of the source code. For example, Backend=Java, where Backend is the key and Java is the value.
+				</li></ul></div><p>
+			Each rule includes either one of them or both of them.
+		</p><section class="section" id="yaml-tag-actions_rule-yaml-actions"><div class="titlepage"><div><div><h2 class="title">6.1. Tag actions</h2></div></div></div><p class="_abstract _abstract">
+				A tag action instructs the analyzer to generate one or more tags for the application when a match is found. Each string in the <code class="literal">tag</code> field can be a comma-separated list of tags. Optionally, you can assign categories to tags.
+			</p><pre class="programlisting language-yaml">tag:
+  - "tag1,tag2,tag3"
+  - "Category=tag4,tag5"</pre><p>
+				<span class="emphasis"><em>Example</em></span>
+			</p><pre class="programlisting language-yaml">- ruleID: test-rule
+  when:
+    &lt;CONDITION&gt;
+  tag:
+  - Language=Golang
+  - Env=production
+  - Source Code</pre><p>
+				A tag can be a string or a <code class="literal">key=val</code> pair, where the key is treated as a tag category in MTA. Any rule that has a tag action is referred to as a “tagging rule” in this document.
+			</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+					Issues are not created for rules that contain only tag actions.
+				</p></div></div></section><section class="section" id="yaml-message-actions_rule-yaml-actions"><div class="titlepage"><div><div><h2 class="title">6.2. Message action</h2></div></div></div><p class="_abstract _abstract">
+				A message action is used to generate an issue with the specified message when a rule condition matches the source code, for example:
+			</p><pre class="programlisting language-yaml">- ruleID: test-rule
+  message: Test rule matched. Please resolve this migration issue.
+  when:
+    &lt;CONDITION&gt;</pre><p>
+				Optionally, a message can include hyperlinks to external URLs that provide relevant information about the issue or a quick fix.
+			</p><pre class="programlisting language-yaml">links:
+  - url: "konveyor.io"
+    title: "Short title for the link"</pre><p>
+				You can also create a template message to include information about the match that has been interpolated through <a class="link" href="#yaml-custom-variables_logical-chaining-custom-variables" title="5.7. Custom variables">custom variables</a> on the rule.
+			</p><pre class="programlisting language-yaml">- ruleID: lang-ref-004
+   customVariables:
+   - pattern: '([A-z]+)\.get\(\)'
+      name: VariableName
+    message: "Found generic call - {{ VariableName }}"
+  when:
+    &lt;CONDITION&gt;</pre></section><section class="section" id="yaml-rule-hyperlinks_rule-yaml-actions"><div class="titlepage"><div><div><h2 class="title">6.3. Hyperlinks</h2></div></div></div><p class="_abstract _abstract">
+				Hyperlinks can be provided along with a <code class="literal">message</code> or <code class="literal">tag</code> action to provide relevant information about the issue that has been discovered:
+			</p><pre class="programlisting language-yaml"># links point to external hyperlinks
+# rule authors are expected to provide
+# relevant hyperlinks for quick fixes, docs, and so on.
+links:
+  - url: "konveyor.io"
+    title: "short title for the link"</pre></section></section><section class="chapter" id="creating-rule"><div class="titlepage"><div><div><h1 class="title">Chapter 7. Creating custom rules</h1></div></div></div><p class="_abstract _abstract">
+			You can refer to example rules that describe how to create a YAML rule. This assumes that you already have MTA installed. See the MTA CLI Guide for installation instructions.
+		</p><section class="section" id="create-basic-yaml-rule-template_creating-rule"><div class="titlepage"><div><div><h2 class="title">7.1. Creating a YAML rule template</h2></div></div></div><p class="_abstract _abstract">
+				MTA YAML-based rules have the following basic structure:
+			</p><pre class="programlisting language-terminal">when(condition)
+ message(message)
+ tag(tags)</pre><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+						Create a file containing the basic syntax for YAML rules as follows:
+					</p><pre class="programlisting language-terminal">- category: mandatory
+  description:
+   &lt;DESCRIPTION TITLE&gt;
+   &lt;DESCRIPTION TEXT&gt;
+  effort: &lt;EFFORT&gt;
+  labels:
+  - konveyor.io/source=&lt;SOURCE_TECH&gt;
+  - konveyor.io/target=&lt;TARGET_TECH&gt;
+  links:
+ - url: &lt;HYPERLINK&gt;
+   title: &lt;HYPERLINK_TITLE&gt;
+  message: &lt;MESSAGE&gt;
+  tag:
+  - &lt;TAG1&gt;
+  - &lt;TAG2&gt;
+  ruleID: &lt;RULE_ID&gt;
+  when:
+   &lt;CONDITIONS&gt;</pre></li></ol></div></section><section class="section" id="create-first-yaml-rule_creating-rule"><div class="titlepage"><div><div><h2 class="title">7.2. Creating a YAML rule</h2></div></div></div><p class="_abstract _abstract">
+				You can create and test your first MTA YAML-based rule by completing the following procedure. This assumes that you have already installed MTA. See <a class="link" href="https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/8.1/html-single/using_the_mta_command-line_interface_to_analyze_applications/index/index#installing_and_running_the_cli">Installing and running the CLI</a> in the <span class="emphasis"><em>CLI Guide</em></span> for installation instructions.
+			</p><p>
+				In this example, you will create a rule to discover instances where an application defines a <code class="literal">jboss-web.xml</code> file containing a <code class="literal">&lt;class-loading&gt;</code> element and to provide a link to the documentation that describes how to migrate the code.
+			</p><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+						Create a YAML file for the rule. In the following example, the rule is created in your <code class="literal">$HOME</code> directory.
+					</p><pre class="screen">$ mkdir /home/&lt;USER&gt;/rule.yaml</pre></li><li class="listitem"><p class="simpara">
+						Create <code class="literal">jboss-web.xml</code> and <code class="literal">pom.xml</code> files in a directory:
+					</p><pre class="screen">mkdir /home/&lt;USER&gt;/data/
+touch /home/&lt;USER&gt;/data/jboss-web.xml
+touch /home/&lt;USER&gt;/data/pom.xml</pre></li><li class="listitem"><p class="simpara">
+						In the <code class="literal">jboss-web.xml</code> file you created, paste the following content:
+					</p><pre class="screen">&lt;!DOCTYPE jboss-web PUBLIC "-//JBoss//DTD Web Application 4.2//EN" "http://www.jboss.org/j2ee/dtd/jboss-web_4_2.dtd"&gt;
+&lt;jboss-web&gt;
+    &lt;class-loading java2ClassLoadingCompliance="false"&gt;
+        &lt;loader-repository&gt;
+            seam.jboss.org:loader=@projectName@
+            &lt;loader-repository-config&gt;java2ParentDelegation=false&lt;/loader-repository-config&gt;
+        &lt;/loader-repository&gt;
+    &lt;/class-loading&gt;
+&lt;/jboss-web&gt;</pre></li><li class="listitem"><p class="simpara">
+						In the <code class="literal">pom.xml</code> file you created, paste the following content:
+					</p><pre class="screen">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+  &lt;groupId&gt;test&lt;/groupId&gt;
+  &lt;artifactId&gt;test&lt;/artifactId&gt;
+  &lt;version&gt;1.1.0-SNAPSHOT&lt;/version&gt;
+
+  &lt;properties&gt;
+	&lt;maven.compiler.source&gt;1.7&lt;/maven.compiler.source&gt;
+	&lt;maven.compiler.target&gt;1.7&lt;/maven.compiler.target&gt;
+  &lt;/properties&gt;
+
+  &lt;dependencies&gt;
+  &lt;/dependencies&gt;
+&lt;/project&gt;</pre></li><li class="listitem"><p class="simpara">
+						In the <code class="literal">rule.yaml</code> file you created, paste the following contents:
+					</p><pre class="screen">- ruleID: &lt;UNIQUE_RULE_ID&gt;
+  description: &lt;DESCRIPTION&gt;
+  when:
+    &lt;CONDITION(S)&gt;
+  message: &lt;MESSAGE&gt;
+  labels: &lt;LABELS&gt;
+  effort: &lt;EFFORT&gt;
+  links:
+  - &lt;LINKS&gt;</pre><p class="simpara">
+						where:
+					</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">ruleID</code> </span></dt><dd>
+									Unique ID for your rule. For example, <code class="literal">jboss5-web-class-loading</code>.
+								</dd><dt><span class="term"><code class="literal">description</code> </span></dt><dd>
+									Text description of the rule.
+								</dd><dt><span class="term"><code class="literal">when</code> </span></dt><dd><p class="simpara">
+									Complete the <code class="literal">when</code> block specifying one or more conditions:
+								</p><div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem"><p class="simpara">
+											Use the <code class="literal">builtin</code> provider’s XML capability because this rule checks for a match in an XML file.
+										</p><pre class="screen">when:
+  builtin.xml:
+    xpath: /jboss-web/class-loading</pre></li></ol></div></dd><dt><span class="term"><code class="literal">message</code> </span></dt><dd>
+									Helpful message explaining the migration issue. The message is generated in the report when the rule matches. For example:
+								</dd></dl></div></li></ol></div><pre class="screen">message: The class-loading element is no longer valid in the jboss-web.xml file.</pre><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">labels</code> </span></dt><dd>
+							List of string labels for the rule.
+						</dd><dt><span class="term"><code class="literal">effort</code> </span></dt><dd>
+							Number of expected story points to resolve this issue.
+						</dd><dt><span class="term"><code class="literal">links</code> </span></dt><dd>
+							One or more hyperlinks pointing to documentation around the migration issues that you find.
+						</dd></dl></div><pre class="screen">  links:
+    - url: https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6.4/html-single/Migration_Guide/index.html#Create_or_Modify_Files_That_Control_Class_Loading_in_JBoss_Enterprise_Application_Platform_6
+  title: Create or Modify Files That Control Class Loading in JBoss EAP 6</pre><p>
+				The rule is now complete and looks similar to the following:
+			</p><pre class="screen">- ruleID: jboss5-web-class-loading
+  description: Find class loading element in JBoss XML file.
+  when:
+    builtin.xml:
+      xpath: /jboss-web/class-loading
+  message: The class-loading element is no longer valid in the jboss-web.xml file.
+  effort: 3
+  links:
+  - url: https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Application_Platform/6.4/html-single/Migration_Guide/index.html#Create_or_Modify_Files_That_Control_Class_Loading_in_JBoss_Enterprise_Application_Platform_6
+    title: Create or Modify Files That Control Class Loading in JBoss EAP 6</pre><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+						Point the CLI to the rule file you created :
+					</p><pre class="screen">–rules /home/&lt;USER&gt;/rules.yaml</pre></li><li class="listitem"><p class="simpara">
+						To test the rule, point the input to the test data you created and pass the rule using the rules option in MTA CLI:
+					</p><pre class="screen">mta-cli analyze --input /home/&lt;USER&gt;/data/ --output /home/&lt;USER&gt;/output/ --rules /home/&lt;USER&gt;/rules.yaml</pre></li><li class="listitem"><p class="simpara">
+						Review the report to be sure that it provides the expected results.
+					</p><p class="simpara">
+						Once the analysis is complete, the command outputs the path to the HTML report:
+					</p><pre class="screen">INFO[0066] Static report created. Access it at this URL:  URL="file:/home/&lt;USER&gt;/output/static-report/index.html"</pre><p class="simpara">
+						Open <code class="literal">/home/&lt;USER_NAME&gt;/output/static-report/index.html</code> in a web browser.
+					</p></li><li class="listitem">
+						Navigate to the <span class="strong strong"><strong>Issues</strong></span> tab in the left menu.
+					</li><li class="listitem"><p class="simpara">
+						Verify that the rule is executed:
+					</p><div class="orderedlist"><ol class="orderedlist" type="a"><li class="listitem">
+								In the <span class="strong strong"><strong>Issues</strong></span> table, type <code class="literal">JBoss XML</code> in the search bar.
+							</li><li class="listitem">
+								Verify that the issue with the title <code class="literal">Find class loading element in JBoss XML file</code> is present in the table.
+							</li></ol></div></li><li class="listitem">
+						Click the <span class="strong strong"><strong>jboss-web.xml</strong></span> link to open the affected file.
+					</li></ol></div></section><section class="section" id="create-go-custom-rule_creating-rule"><div class="titlepage"><div><div><h2 class="title">7.3. Creating a custom Go rule</h2></div></div></div><p class="_abstract _abstract">
+				You can create custom rules for Golang (Go) applications based on the following example.
+			</p><p>
+				You can use the following custom rule to check if MTA triggers an incident when it detects the <code class="literal">v1beta1.CustomResourceDefinition</code> pattern in the <code class="literal">go</code> file.
+			</p><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+						Create a <code class="literal">go-rule-001.yml</code> file in a directory.
+					</li><li class="listitem"><p class="simpara">
+						Copy the following rule in the <code class="literal">yaml</code> file:
+					</p><pre class="programlisting language-yaml">- message: golang apiextensions/v1/customresourcedefinitions found
+  description: "golang apiextensions/v1/customresourcedefinitions found"
+  ruleID: go-lang-ref-001
+  effort: 1
+  when:
+    go.referenced:
+      pattern: "v1beta1.CustomResourceDefinition"</pre></li><li class="listitem">
+						Create a test <code class="literal">go</code> file named <span class="strong strong"><strong>example.go</strong></span> in your <code class="literal">Home</code> directory.
+					</li><li class="listitem"><p class="simpara">
+						Paste the following code in the <span class="strong strong"><strong>example.go</strong></span> file:
+					</p><pre class="programlisting language-go">package main
+
+import (
+	"fmt"
+
+	"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+)
+
+func main() {
+	fmt.Println(v1beta1.CustomResourceDefinition{})
+
+}</pre></li><li class="listitem"><p class="simpara">
+						Run the following command in the MTA CLI:
+					</p><pre class="programlisting language-terminal">$ ./mta-cli analyze -i _&lt;path-to-Go-project&gt;_ \
+-o _&lt;path-to-report-directory&gt;_ --run-local=false --rules \
+_&lt;path-to-go-rule-001.yml&gt;_</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+							Add the <code class="literal">--overwrite</code> option if you want to use the same directory for the report when you run subsequent tests. MTA overwrites the current report with the result of the latest analysis that you run.
+						</p></div></div></li><li class="listitem">
+						Open the static report at <code class="literal">/home/&lt;USER&gt;/output/static-report/</code> in your browser.
+					</li><li class="listitem">
+						Navigate to the issues to verify the <code class="literal">golang apiextensions/v1/customresourcedefinitions found</code> issue.
+					</li></ol></div></section><section class="section" id="create-nodejs-custom-rule_creating-rule"><div class="titlepage"><div><div><h2 class="title">7.4. Creating a custom Node.js rule</h2></div></div></div><p class="_abstract _abstract">
+				You must create custom rules to analyze <code class="literal">Node.js</code> applications by using MTA. A <code class="literal">Node.js</code> rule contains the <code class="literal">nodejs.referenced</code> capability that supports the <code class="literal">pattern</code> field.
+			</p><p>
+				The following example uses a custom rule to check if a <code class="literal">.tsx</code> file in the <code class="literal">Node.js</code> project imports the <code class="literal">React</code> framework.
+			</p><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+						Create the <code class="literal">test-nodejs</code> directory.
+					</p><pre class="programlisting language-terminal">$ mkdir -p ~/test-nodejs</pre></li><li class="listitem"><p class="simpara">
+						Save the following rule as <code class="literal">nodejs-rule-001.yml</code> in the <code class="literal">test-nodejs</code> directory:
+					</p><pre class="programlisting language-yaml">- ruleID: test-tsx-support-00000
+  description: Found React import in .tsx file
+  message: Found React import in .tsx file
+  effort: 1
+  when:
+    nodejs.referenced:
+     pattern: "React"</pre></li><li class="listitem"><p class="simpara">
+						Create the following test application in the <code class="literal">Component.tsx</code> file:
+					</p><pre class="programlisting language-node.js">import React from 'react';
+ export const MyComponent: React.FC = () =&gt; &lt;div&gt;Hello&lt;/div&gt;;</pre></li><li class="listitem"><p class="simpara">
+						Run the following command in the MTA CLI:
+					</p><pre class="programlisting language-terminal">$ ./mta-cli analyze -i ~/test-nodejs/ -o \
+~/test-nodejs/report --run-local=false \
+--rules ~/test-nodejs/nodejs-rule-001.yml</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+							Add the <code class="literal">--overwrite</code> option if you want to use the same directory for the report when you run subsequent tests. MTA overwrites the current report with the result of the latest analysis that you run.
+						</p></div></div></li><li class="listitem">
+						Open the static report at <code class="literal">~/test-nodejs/report/static-report/index.html</code> in your browser.
+					</li><li class="listitem">
+						Click the <span class="emphasis"><em>&lt;application_name&gt;</em></span> to open the Dashboard.
+					</li><li class="listitem">
+						Review the incidents in the <span class="strong strong"><strong>Issues</strong></span> tab.
+					</li></ol></div></section><section class="section" id="create-python-custom-rule_creating-rule"><div class="titlepage"><div><div><h2 class="title">7.5. Creating custom Python rules</h2></div></div></div><p class="_abstract _abstract">
+				You must create custom rules to analyze <code class="literal">Python</code> applications by using MTA. A <code class="literal">Python</code> rule contains the <code class="literal">python.referenced</code> capability with the supported fields.
+			</p><p>
+				The following example uses two custom rules:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						The first rule checks if <code class="literal">bad_method</code> is specified
+					</li><li class="listitem">
+						The second rule checks if <code class="literal">hello_world</code> is specified in <code class="literal">file_a.py</code> in your project.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+						Create the directory <code class="literal">test-python</code>.
+					</p><pre class="programlisting language-terminal">$ mkdir -p ~/test-python</pre></li><li class="listitem"><p class="simpara">
+						Create a <code class="literal">python-rule-001.yml</code> file in the directory and add the following rule:
+					</p><pre class="programlisting language-yaml">- category: mandatory
+  ruleID: python-rule-001
+  effort: 1
+  description: "Bad method"
+  when:
+    python.referenced:
+      pattern: "bad_method"</pre></li><li class="listitem"><p class="simpara">
+						Create a <code class="literal">python-rule-002.yml</code> file in the directory and add the following rule:
+					</p><pre class="programlisting language-yaml">  - category: mandatory
+    ruleID: python-rule-002
+    effort: 1
+    message: "Found a python"
+    when:
+      python.referenced:
+        pattern: "hello_world"</pre></li><li class="listitem"><p class="simpara">
+						Save the following <code class="literal">Python</code> code as <code class="literal">file_b.py</code>.
+					</p><pre class="programlisting language-python">import deprecated
+def hello_world():
+          return "Hello, world!"
+@deprecated.deprecated("This method is bad!")
+def bad_method():
+         return "I'm a bad method!"</pre></li><li class="listitem"><p class="simpara">
+						Save the following code as a second file, <code class="literal">file_a.py</code>.
+					</p><pre class="programlisting language-python">import file_b
+print(file_b.hello_world())
+print(file_b.bad_method())</pre></li><li class="listitem"><p class="simpara">
+						Run the following command in the MTA CLI:
+					</p><pre class="programlisting language-terminal">$ ./mta-cli analyze -i ~/test-python/ -o \
+~/test-python/report --run-local=false \
+--rules ~/test-python/python-rule-001. \
+--rules ~/test-python/python-rule-002.yml</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+							Add the <code class="literal">--overwrite</code> option if you want to use the same directory for the report when you run subsequent tests. MTA overwrites the current report with the result of the latest analysis that you run.
+						</p></div></div></li><li class="listitem">
+						Open the static report at <code class="literal">~/test-python/report/static-report/index.html</code> in your browser.
+					</li><li class="listitem">
+						Click the <span class="emphasis"><em>&lt;application_name&gt;</em></span> to open the Dashboard.
+					</li><li class="listitem">
+						Review the incidents in the <span class="strong strong"><strong>Issues</strong></span> tab.
+					</li></ol></div></section><section class="section" id="create-csharp-custom-rule_creating-rule"><div class="titlepage"><div><div><h2 class="title">7.6. Creating a custom C# rule</h2></div></div></div><p class="_abstract _abstract">
+				You can create custom rules to analyze <code class="literal">C#</code> applications by using the MTA CLI, user interface, or IDE extension. The following example shows how to run a CLI analysis for a C# application.
+			</p><p>
+				You can use a custom rule to check if MTA triggers an incident when it detects the <code class="literal">WebMatrix.WebData.WebSecurity</code> class in a <code class="literal">C#</code> example project.
+			</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						You installed the <code class="literal">ilspycmd</code> and <code class="literal">paket</code> dependencies.
+					</li><li class="listitem">
+						You installed the <code class="literal">dotnet tools</code> and exported the <code class="literal">dotnet tools</code> path by using the <code class="literal">export PATH="$PATH:&lt;path/to/.dotnet/tools"</code> command.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+						Create a <code class="literal">csharp-rule.yaml</code> file in your <code class="literal">Home</code> directory.
+					</li><li class="listitem"><p class="simpara">
+						Copy the following rule in the <code class="literal">csharp-rule.yaml</code> file:
+					</p><pre class="programlisting language-yaml">- category: mandatory
+  customVariables: []
+  description: WebMatrix.WebData.WebSecurity is not available in .NET Core
+  effort: 8
+  labels:
+  - konveyor.io/source=dotnet
+  - konveyor.io/target=dotnet-core
+  links:
+  - title: Introduction to Identity on ASP.NET Core
+    url: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity
+  - title: Migrate Authentication and Identity to ASP.NET Core
+    url: https://learn.microsoft.com/en-us/aspnet/core/migration/identity
+  message: |
+    WebMatrix.WebData.WebSecurity is not available in .NET Core and must be replaced with ASP.NET Core Identity.
+
+    Migration actions:
+    - Add Microsoft.AspNetCore.Identity.EntityFrameworkCore NuGet package
+    - Create ApplicationUser class inheriting from IdentityUser
+    - Update DbContext to inherit from IdentityDbContext&lt;ApplicationUser&gt;
+    - Replace WebSecurity.Login with SignInManager.PasswordSignInAsync
+    - Replace WebSecurity.Logout with SignInManager.SignOutAsync
+    - Replace WebSecurity.CreateUserAndAccount with UserManager.CreateAsync
+    - Replace WebSecurity.ChangePassword with UserManager.ChangePasswordAsync
+    - Configure Identity in Startup.ConfigureServices with AddIdentity or AddDefaultIdentity
+  ruleID: dotnet-core-websecurity-01
+  when:
+    csharp.referenced:
+      location: ALL
+      pattern: WebMatrix.WebData.WebSecurity</pre></li><li class="listitem">
+						Open a C# project that has the <code class="literal">WebMatrix.WebData.WebSecurity</code> class.
+					</li><li class="listitem"><p class="simpara">
+						Run an analysis with the following command in the MTA CLI:
+					</p><pre class="programlisting language-terminal">$ ./mta-cli analyze -i _path_to_C#_app_ -o _path_to_report_ --overwrite --run-local=false --enable-default-rulesets=false --mode source-only --rules ~/csharp-rule.yaml</pre><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+							Add the <code class="literal">--overwrite</code> option if you want to use the same directory for the report when you run subsequent tests. MTA overwrites the current report with the result of the latest analysis that you ran.
+						</p></div></div></li><li class="listitem">
+						Open the static report at <span class="emphasis"><em>path_to_report</em></span> in your browser.
+					</li><li class="listitem">
+						Navigate to the issues to verify the <span class="strong strong"><strong><code class="literal">WebMatrix.WebData.WebSecurity</code> is not available in <code class="literal">.NET Core</code></strong></span> issue.
+					</li></ol></div></section></section><section class="chapter" id="rule-rulesets"><div class="titlepage"><div><div><h1 class="title">Chapter 8. Rulesets</h1></div></div></div><p class="_abstract _abstract">
+			A set of rules forms a ruleset. MTA does not require every rule file to belong to a ruleset, but you can use rulesets to group multiple rules that achieve a common goal and to pass the rules to the rules engine.
+		</p><p>
+			To use multiple rule files, you can either:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Place the rule files in a directory and add a ruleset.yaml file. MTA treats the directory as a ruleset, and you can pass the directory path as input to the <code class="literal">--rules</code> option.
+				</li><li class="listitem">
+					Specify multiple rules files by using the <code class="literal">--rules</code> option when you run an analysis.
+				</li></ul></div><section class="section" id="yaml-rulesets_rule-rulesets"><div class="titlepage"><div><div><h2 class="title">8.1. Creating and using a custom ruleset</h2></div></div></div><p class="_abstract _abstract">
+				You can create a ruleset by placing one or more custom rules in a directory and creating a <code class="literal">ruleset.yaml</code> file at the directory root. When you perform an analysis, you pass this directory as input to the MTA CLI by using the <code class="literal">--rules</code> option. All rules in this directory are treated as a part of the ruleset defined by the <code class="literal">ruleset.yaml</code> file.
+			</p><p>
+				The <code class="literal">ruleset.yaml</code> file stores the metadata of the ruleset. You can group multiple similar custom rules and create a ruleset for them. When you pass this directory as input to the MTA CLI using the <code class="literal">--rules</code> option, MTA treats all the files in the directory as belonging to the ruleset defined in the <code class="literal">ruleset.yaml</code> file.
+			</p><pre class="programlisting language-yaml">name: "Name of the ruleset"
+description: "Description of the ruleset"
+labels:
+  - key=val</pre><p>
+				where:
+			</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">name</code> </span></dt><dd>
+							The name must be unique within the provided rulesets.
+						</dd><dt><span class="term"><code class="literal">labels</code> </span></dt><dd>
+							Ruleset labels are inherited by all rules that belong to the ruleset.
+						</dd></dl></div><p>
+				To perform any application analysis, enter:
+			</p><pre class="programlisting language-terminal">$ mta-cli analyze --input=&lt;application_to_analyze&gt; --output=&lt;output_dir&gt; --rules=&lt;custom_rule_dir&gt; --enable-default-rulesets=false</pre><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						Replace <code class="literal">&lt;application_to_analyze&gt;</code> with the name of your application.
+					</li><li class="listitem">
+						Replace <code class="literal">&lt;output_dir&gt;</code> with the directory of your choice.
+					</li><li class="listitem">
+						Replace <code class="literal">&lt;custom_rule_dir&gt;</code> with the custom rule file.
+					</li><li class="listitem"><p class="simpara">
+						To use multiple rule files, you need to place them in a directory and to add a <code class="literal">ruleset.yaml</code> file. Then the directory is treated as a <span class="emphasis"><em>ruleset</em></span>, and you can pass it as input to the <code class="literal">--rules</code> option.
+					</p><p class="simpara">
+						Note that if you want to use the <code class="literal">--target</code> or <code class="literal">--source</code> option in the CLI, the engine will only select rules that match the label for that target. Therefore, make sure that you have added target or source labels on your rules.
+					</p></li></ul></div><div class="itemizedlist _additional-resources"><p class="title"><strong>Additional resources</strong></p><ul class="itemizedlist _additional-resources" type="disc"><li class="listitem">
+						<a class="link" href="#reserved-label_rule-yaml-metadata" title="Reserved labels">Reserved labels</a>
+					</li></ul></div></section></section><section class="chapter" id="additional_resources"><div class="titlepage"><div><div><h1 class="title">Chapter 9. Additional resources</h1></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					<a class="link" href="https://issues.redhat.com/projects/MTA/issues">MTA Jira issue tracker</a>
+				</li><li class="listitem">
+					<a class="link" href="mailto:windup-eng@redhat.com">MTA mailing list</a>
+				</li></ul></div></section><div><div xml:lang="en-US" class="legalnotice" id="idm46086933676560"><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"/>© 2026 Red Hat, Inc.
+	</div><div class="para">
+		The text of and illustrations in this document are licensed by Red Hat under a Creative Commons Attribution–Share Alike 3.0 Unported license ("CC-BY-SA"). An explanation of CC-BY-SA is available at <a class="uri" href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>. In accordance with CC-BY-SA, if you distribute this document or an adaptation of it, you must provide the URL for the original version.
+	</div><div class="para">
+		Red Hat, as the licensor of this document, waives the right to enforce, and agrees not to assert, Section 4d of CC-BY-SA to the fullest extent permitted by applicable law.
+	</div><div class="para">
+		Red Hat, Red Hat Enterprise Linux, the Shadowman logo, the Red Hat logo, JBoss, OpenShift, Fedora, the Infinity logo, and RHCE are trademarks of Red Hat, Inc., registered in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Linux</span>® is the registered trademark of Linus Torvalds in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Java</span>® is a registered trademark of Oracle and/or its affiliates.
+	</div><div class="para">
+		<span class="trademark">XFS</span>® is a trademark of Silicon Graphics International Corp. or its subsidiaries in the United States and/or other countries.
+	</div><div class="para">
+		<span class="trademark">MySQL</span>® is a registered trademark of MySQL AB in the United States, the European Union and other countries.
+	</div><div class="para">
+		<span class="trademark">Node.js</span>® is an official trademark of Joyent. Red Hat is not formally related to or endorsed by the official Joyent Node.js open source or commercial project.
+	</div><div class="para">
+		The <span class="trademark">OpenStack</span>® Word Mark and OpenStack logo are either registered trademarks/service marks or trademarks/service marks of the OpenStack Foundation, in the United States and other countries and are used with the OpenStack Foundation's permission. We are not affiliated with, endorsed or sponsored by the OpenStack Foundation, or the OpenStack community.
+	</div><div class="para">
+		All other trademarks are the property of their respective owners.
+	</div></div></div></div></div></div><script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            initSwitchery();
+                            jQuery('pre[class*="language-"]').each(function(i, block){hljs.highlightBlock(block);});
+                        });
+                    </script></body></html>
