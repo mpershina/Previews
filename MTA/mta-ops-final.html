@@ -1,0 +1,847 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="chrometwo"><head><title>Migrating stateless workloads by using the mta-ops CLI</title><link rel="stylesheet" type="text/css" href="Common_Content/css/default.css"/><meta name="generator" content="publican v4.3.2"/><meta name="description" content="You can safely move applications across environments by migrating your stateless workloads with the mta-ops command-line interface. The multi-stage pipeline helps you extract, clean, render, and validate your Red Hat OpenShift manifests locally. This workflow ensures target cluster API compatibility before you manually deploy your applications."/><link rel="next" href="#introduction-to-the-mta-ops-cli_mta-ops-title" title="Chapter 1. Introduction to the mta-ops CLI"/><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><script type="text/javascript" src="Common_Content/scripts/jquery-1.7.1.min.js"> </script><script type="text/javascript" src="Common_Content/scripts/utils.js"> </script><script type="text/javascript" src="Common_Content/scripts/highlight.js/highlight.pack.js"> </script></head><body><div id="chrometwo"><div id="main"><div xml:lang="en-US" class="book" id="idm45186279158384"><div class="titlepage"><div><div class="producttitle"><span class="productname">migration toolkit for applications</span> <span class="productnumber">8.1</span></div><div><h1 class="title">Migrating stateless workloads by using the mta-ops CLI</h1></div><div><h2 class="subtitle">Exporting, transforming, rendering, and validating stateless application manifests for deployment on a target Red Hat OpenShift cluster</h2></div><div><div xml:lang="en-US" class="authorgroup"><span class="orgname">Red Hat Customer Content Services</span></div></div><div><a href="#idm45186276941792">Legal Notice</a></div><div><div class="abstract"><p class="title"><strong>Abstract</strong></p><div class="para">
+				You can safely move applications across environments by migrating your stateless workloads with the mta-ops command-line interface. The multi-stage pipeline helps you extract, clean, render, and validate your Red Hat OpenShift manifests locally. This workflow ensures target cluster API compatibility before you manually deploy your applications.
+			</div></div></div></div><hr/></div><div class="toc"><ul class="toc"><li><span class="chapter"><a href="#introduction-to-the-mta-ops-cli_mta-ops-title">1. Introduction to the mta-ops CLI</a></span></li><li><span class="chapter"><a href="#supported-migration-paths-and-api-compatibility_mta-ops-title">2. Supported migration paths and API compatibility</a></span><ul><li><span class="section"><a href="#stateless-migration-limitations_supported-migration-paths-and-api-compatibility">2.1. Stateless migration limitations</a></span></li><li><span class="section"><a href="#resource-and-api-compatibility_supported-migration-paths-and-api-compatibility">2.2. Resource and API compatibility</a></span></li></ul></li><li><span class="chapter"><a href="#installing-the-mta-ops-cli_mta-ops-title">3. Installing the mta-ops CLI</a></span><ul><li><span class="section"><a href="#mta-ops-cli-standalone-architecture_installing-the-mta-ops-cli">3.1. The mta-ops CLI standalone architecture</a></span></li><li><span class="section"><a href="#downloading-and-extracting-the-mta-ops-cli_installing-the-mta-ops-cli">3.2. Downloading and extracting the mta-ops CLI</a></span></li></ul></li><li><span class="chapter"><a href="#migrating-stateless-workloads_mta-ops-title">4. Migrating stateless workloads</a></span><ul><li><span class="section"><a href="#executing-a-stateless-migration-quickstart_migrating-stateless-workloads">4.1. Executing a stateless migration quick start</a></span></li><li><span class="section"><a href="#configuring-cluster-access-for-migration_migrating-stateless-workloads">4.2. Configuring cluster access for migration</a></span><ul><li><span class="section"><a href="#cluster-context-management_configuring-cluster-access-for-migration">4.2.1. Cluster context management</a></span></li><li><span class="section"><a href="#configuring-source-and-target-cluster-contexts_configuring-cluster-access-for-migration">4.2.2. Configuring source and target cluster contexts</a></span></li></ul></li><li><span class="section"><a href="#exporting-workload-manifests_migrating-stateless-workloads">4.3. Exporting workload manifests</a></span><ul><li><span class="section"><a href="#workload-manifest-export_exporting-workload-manifests">4.3.1. Workload manifest export</a></span></li><li><span class="section"><a href="#exporting-manifests-from-the-source-cluster_exporting-workload-manifests">4.3.2. Exporting manifests from the source cluster</a></span></li><li><span class="section"><a href="#additional_resources">4.3.3. Additional resources</a></span></li></ul></li><li><span class="section"><a href="#transforming-workload-manifests-by-using-a-multi-stage-pipeline_migrating-stateless-workloads">4.4. Transforming workload manifests by using a multi-stage pipeline</a></span><ul><li><span class="section"><a href="#transformation-plugin-management_transforming-workload-manifests-by-using-a-multi-stage-pipeline">4.4.1. Transformation plugin management</a></span></li><li><span class="section"><a href="#multi-stage-transformation-pipeline_transforming-workload-manifests-by-using-a-multi-stage-pipeline">4.4.2. Multi-stage transformation pipeline</a></span></li><li><span class="section"><a href="#executing-a-multi-stage-workload-transformation_transforming-workload-manifests-by-using-a-multi-stage-pipeline">4.4.3. Executing a multi-stage workload transformation</a></span></li><li><span class="section"><a href="#transforming-manifests-with-an-instructions-file_transforming-workload-manifests-by-using-a-multi-stage-pipeline">4.4.4. Transforming manifests with an instructions file</a></span></li><li><span class="section"><a href="#adding-a-custom-transformation-stage_transforming-workload-manifests-by-using-a-multi-stage-pipeline">4.4.5. Adding a custom transformation stage</a></span></li><li><span class="section"><a href="#additional_resources_2">4.4.6. Additional resources</a></span></li></ul></li><li><span class="section"><a href="#generating-final-deployable-manifests_migrating-stateless-workloads">4.5. Generating final deployable manifests</a></span><ul><li><span class="section"><a href="#local-manifest-generation_generating-final-deployable-manifests">4.5.1. Local manifest generation</a></span></li><li><span class="section"><a href="#generating-final-manifests-locally_generating-final-deployable-manifests">4.5.2. Generating final manifests locally</a></span></li><li><span class="section"><a href="#generating-ordered-manifests-locally_generating-final-deployable-manifests">4.5.3. Generating ordered manifests locally</a></span></li><li><span class="section"><a href="#additional_resources_3">4.5.4. Additional resources</a></span></li></ul></li><li><span class="section"><a href="#validating-target-cluster-compatibility_migrating-stateless-workloads">4.6. Validating target cluster compatibility</a></span><ul><li><span class="section"><a href="#manifest-compatibility-validation_validating-target-cluster-compatibility">4.6.1. Manifest compatibility validation</a></span></li><li><span class="section"><a href="#validating-workload-manifests-against-a-live-cluster_validating-target-cluster-compatibility">4.6.2. Validating workload manifests against a live cluster</a></span></li><li><span class="section"><a href="#additional_resources_4">4.6.3. Additional resources</a></span></li></ul></li><li><span class="section"><a href="#deploying-the-migrated-workloads_migrating-stateless-workloads">4.7. Deploying the migrated workloads</a></span><ul><li><span class="section"><a href="#workload-deployment_deploying-the-migrated-workloads">4.7.1. Workload deployment</a></span></li><li><span class="section"><a href="#deploying-workloads-to-the-target-cluster-as-an-administrator_deploying-the-migrated-workloads">4.7.2. Deploying workloads to the target cluster as an administrator</a></span></li><li><span class="section"><a href="#deploying-workloads-to-the-target-cluster-as-a-non-administrator_deploying-the-migrated-workloads">4.7.3. Deploying workloads to the target cluster as a non-administrator</a></span></li></ul></li></ul></li><li><span class="chapter"><a href="#troubleshooting-the-mta-ops-pipeline_mta-ops-title">5. Troubleshooting the mta-ops pipeline</a></span><ul><li><span class="section"><a href="#mta-ops-pipeline-troubleshooting_troubleshooting-the-mta-ops-pipeline">5.1. mta-ops pipeline troubleshooting</a></span></li><li><span class="section"><a href="#enabling-verbose-logging-for-mta-ops_troubleshooting-the-mta-ops-pipeline">5.2. Enabling verbose logging for mta-ops</a></span></li><li><span class="section"><a href="#common-migration-pipeline-errors_troubleshooting-the-mta-ops-pipeline">5.3. Common migration pipeline errors</a></span></li><li><span class="section"><a href="#resolving-validation-failures_troubleshooting-the-mta-ops-pipeline">5.4. Resolving validation failures</a></span></li><li><span class="section"><a href="#resolving-transformation-conflicts_troubleshooting-the-mta-ops-pipeline">5.5. Resolving transformation conflicts</a></span></li></ul></li><li><span class="appendix"><a href="#mta-ops-command-options">A. mta-ops command options</a></span><ul><li><span class="section"><a href="#mta-ops-export-command-options_mta-ops-command-options">A.1. mta-ops export command options</a></span></li><li><span class="section"><a href="#mta-ops-transform-command-options_mta-ops-command-options">A.2. mta-ops transform command options</a></span></li><li><span class="section"><a href="#mta-ops-apply-command-options_mta-ops-command-options">A.3. mta-ops apply command options</a></span></li><li><span class="section"><a href="#mta-ops-validate-command-options_mta-ops-command-options">A.4. mta-ops validate command options</a></span></li></ul></li><li><span class="appendix"><a href="#developer-and-architecture-guides">B. Developer and architecture guides</a></span></li></ul></div><section class="chapter" id="introduction-to-the-mta-ops-cli_mta-ops-title"><div class="titlepage"><div><div><h1 class="title">Chapter 1. Introduction to the mta-ops CLI</h1></div></div></div><p class="_abstract _abstract">
+			As a platform engineer or a cluster administrator, you can use the <code class="literal">mta-ops</code> command-line interface (CLI) to safely extract, clean, and validate stateless applications before deployment.
+		</p><p>
+			The <code class="literal">mta-ops</code> tool provides a non-destructive, repeatable, and GitOps-ready migration workflow for Red Hat OpenShift workloads.
+		</p><p>
+			The migration pipeline consists of the following stages in a strict order:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					The export stage captures a read-only snapshot of the source namespace.
+				</li><li class="listitem">
+					The transformation stage cleans cluster-specific metadata and applies additional transformations, if needed.
+				</li><li class="listitem">
+					The application stage renders final deployable manifests locally.
+				</li><li class="listitem">
+					The validation stage is an optional but recommended step that checks target cluster application programming interface (API) compatibility.
+				</li><li class="listitem">
+					The deployment stage applies the workloads to the destination cluster.
+				</li></ul></div><p>
+			The export, transformation, application, and validation stages output directly to your local disk. The deployment stage applies workloads to the target cluster.
+		</p><p>
+			The tool migrates stateless workloads and their associated cluster-scoped dependencies. These dependencies include role-based access control (RBAC), custom resource definitions (CRDs), and security context constraints (SCCs).
+		</p><div class="admonition important"><div class="admonition_header">Important</div><div><p>
+				<code class="literal">mta-ops</code> does not support stateful migrations that involve the transfer of persistent volume claims (PVCs) and underlying data.
+			</p></div></div></section><section class="chapter" id="supported-migration-paths-and-api-compatibility_mta-ops-title"><div class="titlepage"><div><div><h1 class="title">Chapter 2. Supported migration paths and API compatibility</h1></div></div></div><p class="_abstract _abstract">
+			Before you migrate workloads, review the supported migration paths and application programming interface (API) compatibility. The <code class="literal">mta-ops</code> command-line interface (CLI) handles resources based on their scope and compatibility.
+		</p><section class="section" id="stateless-migration-limitations_supported-migration-paths-and-api-compatibility"><div class="titlepage"><div><div><h2 class="title">2.1. Stateless migration limitations</h2></div></div></div><p class="_abstract _abstract">
+				When you plan application migrations, understand the supported paths to create a successful modernization strategy.
+			</p><p>
+				The current <code class="literal">mta-ops</code> version supports migration paths strictly from Red Hat OpenShift 4.x to 4.x.
+			</p><p>
+				The current version of the <code class="literal">mta-ops</code> CLI supports only stateless application migrations.
+			</p><p>
+				You cannot transfer persistent volume claims (PVCs) or underlying volume data.
+			</p><p>
+				The <code class="literal">mta-ops</code> pipeline supports cross-cluster migrations. It requires distinct source and target cluster contexts to validate and deploy resources successfully.
+			</p></section><section class="section" id="resource-and-api-compatibility_supported-migration-paths-and-api-compatibility"><div class="titlepage"><div><div><h2 class="title">2.2. Resource and API compatibility</h2></div></div></div><p class="_abstract _abstract">
+				When you prepare for deployment, understand how the pipeline handles application programming interface (API) versions to prevent deployment failures.
+			</p><p>
+				The <code class="literal">mta-ops</code> tool operates in Red Hat OpenShift 4.x environments but does not enforce a strict minor version matrix. Instead, it relies on the validate stage to ensure API compatibility.
+			</p><p>
+				The <code class="literal">mta-ops</code> command performs strict group, version, and kind (GVK) matching against the target cluster.
+			</p><p>
+				Namespace-scoped resources are fully supported and extracted by default.
+			</p><p>
+				Cluster-scoped resources are conditionally supported. The tool extracts custom resource definitions (CRDs), security context constraints (SCCs), and role-based access control (RBAC) objects if you have cluster-admin permissions. If you lack cluster-admin permissions, the tool safely skips them and logs a warning. <code class="literal">mta-ops</code> automatically skips operator-managed CRDs. This prevents creating orphaned resources on the target cluster.
+			</p></section></section><section class="chapter" id="installing-the-mta-ops-cli_mta-ops-title"><div class="titlepage"><div><div><h1 class="title">Chapter 3. Installing the mta-ops CLI</h1></div></div></div><p class="_abstract _abstract">
+			To begin migrating your workloads, you must install the <code class="literal">mta-ops</code> command-line interface (CLI) on your local machine.
+		</p><section class="section" id="mta-ops-cli-standalone-architecture_installing-the-mta-ops-cli"><div class="titlepage"><div><div><h2 class="title">3.1. The mta-ops CLI standalone architecture</h2></div></div></div><p class="_abstract _abstract">
+				When you prepare your local workstation, understand the standalone nature of the <code class="literal">mta-ops</code> CLI to avoid installation conflicts.
+			</p><p>
+				The <code class="literal">mta-ops</code> CLI is a standalone tool that operates independently of the standard migration toolkit for applications (MTA) CLI (<code class="literal">mta-cli</code>). You do not need to install the standard MTA CLI to use the <code class="literal">mta-ops</code> pipeline.
+			</p><p>
+				You can install the tool by downloading the pre-compiled <code class="literal">mta-ops</code> archive from the Red Hat Developer portal, then extracting the binary.
+			</p></section><section class="section" id="downloading-and-extracting-the-mta-ops-cli_installing-the-mta-ops-cli"><div class="titlepage"><div><div><h2 class="title">3.2. Downloading and extracting the mta-ops CLI</h2></div></div></div><p class="_abstract _abstract">
+				To configure your migration environment, download and extract the pre-compiled <code class="literal">mta-ops</code> archive.
+			</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						You have a compatible local operating system.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+						Log in to the <a class="link" href="https://developers.redhat.com/">Red Hat Developer Portal</a>.
+					</li><li class="listitem">
+						Navigate to the <a class="link" href="https://developers.redhat.com/products/mta/download">migration toolkit for applications downloads page</a>.
+					</li><li class="listitem">
+						Download the <code class="literal">mta-ops</code> CLI <code class="literal">.zip</code> archive for your operating system.
+					</li><li class="listitem">
+						Extract the downloaded <code class="literal">.zip</code> archive to a local directory.
+					</li><li class="listitem"><p class="simpara">
+						Move the extracted <code class="literal">mta-ops</code> binary to a directory that is included in your <code class="literal">$PATH</code> environment variable. For example:
+					</p><pre class="screen">$ <span class="strong strong"><strong>sudo mv mta-ops /usr/local/bin/</strong></span></pre></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+						Verify the installation by checking the tool version:
+					</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops version</strong></span></pre></li></ul></div></section></section><section class="chapter" id="migrating-stateless-workloads_mta-ops-title"><div class="titlepage"><div><div><h1 class="title">Chapter 4. Migrating stateless workloads</h1></div></div></div><p class="_abstract _abstract">
+			Migrate your Red Hat OpenShift workloads from a source cluster to a new cluster by using the <code class="literal">mta-ops</code> pipeline. Extract, clean up, and validate stateless applications before deployment.
+		</p><p>
+			A complete migration pipeline includes the following stages in a strict order:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					Export: Capture the source cluster manifests.
+				</li><li class="listitem">
+					Transform: Clean up and adapt the manifests.
+				</li><li class="listitem">
+					Apply: Render the final deployable YAML manifests.
+				</li><li class="listitem">
+					Validate (optional): Check target cluster application programming interface (API) compatibility.
+				</li><li class="listitem">
+					Deploy: Apply the workloads to the destination.
+				</li></ul></div><section class="section" id="executing-a-stateless-migration-quickstart_migrating-stateless-workloads"><div class="titlepage"><div><div><h2 class="title">4.1. Executing a stateless migration quick start</h2></div></div></div><p class="_abstract _abstract">
+				To quickly test the tool, run a basic stateless migration scenario for a single application. This end-to-end pipeline demonstrates the default workflow.
+			</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						You have active contexts for your source and target clusters.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+						Export the source application:
+					</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops export --context <span class="emphasis"><em>&lt;source_context&gt;</em></span> -n <span class="emphasis"><em>&lt;namespace&gt;</em></span> -e export --overwrite</strong></span></pre></li><li class="listitem"><p class="simpara">
+						Clean the exported manifests by using the default transformation pipeline:
+					</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops transform -e export -t transform</strong></span></pre></li><li class="listitem"><p class="simpara">
+						Render the deployable manifests locally:
+					</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops apply -t transform -o output --overwrite</strong></span></pre></li><li class="listitem"><p class="simpara">
+						Optional: Validate the generated manifests against the target cluster:
+					</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops validate --context <span class="emphasis"><em>&lt;target_context&gt;</em></span> -i output --overwrite</strong></span></pre></li><li class="listitem"><p class="simpara">
+						Deploy the application to the target cluster:
+					</p><pre class="screen">$ <span class="strong strong"><strong>oc apply -f output/output.yaml</strong></span></pre></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						Verify the application rollout on the target cluster.
+					</li></ul></div></section><section class="section" id="configuring-cluster-access-for-migration_migrating-stateless-workloads"><div class="titlepage"><div><div><h2 class="title">4.2. Configuring cluster access for migration</h2></div></div></div><p class="_abstract _abstract">
+				Before you can migrate workloads, you must establish communication with your environments. To enable the access, you must use your local cluster contexts.
+			</p><section class="section" id="cluster-context-management_configuring-cluster-access-for-migration"><div class="titlepage"><div><div><h3 class="title">4.2.1. Cluster context management</h3></div></div></div><p class="_abstract _abstract">
+					Understand how the <code class="literal">mta-ops</code> CLI connects to your environments to ensure your migration commands route to the correct destinations.
+				</p><p>
+					The <code class="literal">mta-ops</code> CLI operates entirely locally. It does not require a centralized web console or an intermediate authentication hub. The tool uses your local <code class="literal">kubeconfig</code> file to authenticate and communicate directly with clusters.
+				</p><p>
+					Because the pipeline extracts data from one environment and validates against another environment, your <code class="literal">kubeconfig</code> file must contain active contexts for both clusters simultaneously. <code class="literal">mta-ops</code> uses the <code class="literal">--context</code> flag to route operations. This design securely uses your existing role-based access control (RBAC) permissions without requiring secondary credentials.
+				</p></section><section class="section" id="configuring-source-and-target-cluster-contexts_configuring-cluster-access-for-migration"><div class="titlepage"><div><div><h3 class="title">4.2.2. Configuring source and target cluster contexts</h3></div></div></div><p class="_abstract _abstract">
+					To enable the <code class="literal">mta-ops</code> CLI to communicate with your environments, configure your local cluster contexts. You perform this by logging into both the source and target clusters.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have installed the Red Hat OpenShift CLI (<code class="literal">oc</code>).
+						</li><li class="listitem">
+							You have credentials for both the source and target Red Hat OpenShift clusters.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Log in to the source Red Hat OpenShift cluster:
+						</p><pre class="screen">$ <span class="strong strong"><strong>oc login <span class="emphasis"><em>&lt;source_cluster_url&gt;</em></span> -u <span class="emphasis"><em>&lt;username&gt;</em></span> -p <span class="emphasis"><em>&lt;password&gt;</em></span></strong></span></pre></li><li class="listitem"><p class="simpara">
+							Log in to the target Red Hat OpenShift cluster:
+						</p><pre class="screen">$ <span class="strong strong"><strong>oc login <span class="emphasis"><em>&lt;target_cluster_url&gt;</em></span> -u <span class="emphasis"><em>&lt;username&gt;</em></span> -p <span class="emphasis"><em>&lt;password&gt;</em></span></strong></span></pre></li><li class="listitem"><p class="simpara">
+							List your configured contexts to verify they are active:
+						</p><pre class="screen">$ <span class="strong strong"><strong>oc config get-contexts</strong></span></pre></li><li class="listitem">
+							Identify and record the names of the source and target contexts. You use these exact names with the <code class="literal">--context</code> flag in subsequent pipeline commands.
+						</li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify that the command output displays both cluster contexts and that no authentication errors occurred.
+						</li></ul></div></section></section><section class="section" id="exporting-workload-manifests_migrating-stateless-workloads"><div class="titlepage"><div><div><h2 class="title">4.3. Exporting workload manifests</h2></div></div></div><p class="_abstract _abstract">
+				When you plan a migration, capture a snapshot of your source cluster resources. This ensures you have the required manifests for local transformation.
+			</p><section class="section" id="workload-manifest-export_exporting-workload-manifests"><div class="titlepage"><div><div><h3 class="title">4.3.1. Workload manifest export</h3></div></div></div><p class="_abstract _abstract">
+					When you extract workloads, understanding the read-only export process helps you to capture the required resource manifests.
+				</p><p>
+					The export process is read-only and does not affect running applications. The <code class="literal">mta-ops</code> CLI operates completely independently of the migration toolkit for applications Hub.
+				</p><p>
+					The tool does not require a Personal Access Token (PAT). It authenticates directly to the clusters by using your local <code class="literal">kubeconfig</code> file.
+				</p><p>
+					If you do not have cluster-level permissions, the command logs a warning. It records inaccessible resources in a dedicated <code class="literal">failures/</code> directory.
+				</p><p>
+					To identify skipped cluster-scoped resources during a partial export, you must inspect the <code class="literal">failures/</code> directory. The tool generates a YAML artifact for each inaccessible resource. These files contain the raw application programming interface (API) error.
+				</p><p>
+					The <code class="literal">export</code> command exits with a non-zero status code under one of the following conditions:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							All requested resource types return a <code class="literal">Forbidden</code> error.
+						</li><li class="listitem">
+							A resource type returns a timeout error.
+						</li></ul></div></section><section class="section" id="exporting-manifests-from-the-source-cluster_exporting-workload-manifests"><div class="titlepage"><div><div><h3 class="title">4.3.2. Exporting manifests from the source cluster</h3></div></div></div><p class="_abstract _abstract">
+					To capture your application’s deployment configuration, export the manifests to a local directory. You can use role impersonation if you do not have direct access.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have installed the <code class="literal">mta-ops</code> CLI on your system.
+						</li><li class="listitem">
+							You have active <code class="literal">kubeconfig</code> access to the source Red Hat OpenShift cluster.
+						</li><li class="listitem"><p class="simpara">
+							Optional: You have <code class="literal">cluster-admin</code> privileges to export all cluster-scoped dependencies.
+						</p><div class="admonition warning"><div class="admonition_header">Warning</div><div><p>
+								If you lack <code class="literal">cluster-admin</code> privileges, the export process generates warnings and extracts only the resources you have permission to access.
+							</p></div></div></li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Export manifests and cluster-level dependencies:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops export --context <span class="emphasis"><em>&lt;source_context&gt;</em></span> -n <span class="emphasis"><em>&lt;namespace&gt;</em></span> -e export</strong></span></pre></li><li class="listitem"><p class="simpara">
+							Optional: To perform service account-based migrations by using role impersonation, append the <code class="literal">--as</code> and <code class="literal">--as-group</code> flags:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops export --context <span class="emphasis"><em>&lt;source_context&gt;</em></span> -n <span class="emphasis"><em>&lt;namespace&gt;</em></span> -e export --as <span class="emphasis"><em>&lt;service_account_name&gt;</em></span> --as-group <span class="emphasis"><em>&lt;group_name&gt;</em></span></strong></span></pre></li><li class="listitem">
+							Review the generated YAML files in the <code class="literal">export/resources/<span class="emphasis"><em>&lt;namespace&gt;</em></span>/</code> directory.
+						</li></ol></div><div class="orderedlist"><p class="title"><strong>Verification</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Verify that the output directory contains the exported manifests and the <code class="literal">_cluster/</code> subdirectory.
+						</li><li class="listitem">
+							If you lack <code class="literal">cluster-admin</code> privileges, inspect the <code class="literal">failures/</code> directory to identify any skipped resources.
+						</li></ol></div></section><section class="section _additional-resources" id="additional_resources"><div class="titlepage"><div><div><h3 class="title">4.3.3. Additional resources</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<a class="link" href="#mta-ops-export-command-options_mta-ops-command-options" title="A.1. mta-ops export command options">The <code class="literal">mta-ops export</code> command options</a>
+						</li></ul></div></section></section><section class="section" id="transforming-workload-manifests-by-using-a-multi-stage-pipeline_migrating-stateless-workloads"><div class="titlepage"><div><div><h2 class="title">4.4. Transforming workload manifests by using a multi-stage pipeline</h2></div></div></div><p class="_abstract _abstract">
+				To clean the exported workload manifests and prevent conflicts on the target cluster, transform the manifests by using a multi-stage pipeline.
+			</p><section class="section" id="transformation-plugin-management_transforming-workload-manifests-by-using-a-multi-stage-pipeline"><div class="titlepage"><div><div><h3 class="title">4.4.1. Transformation plugin management</h3></div></div></div><p class="_abstract _abstract">
+					When you adapt complex applications, you can manage transformation plugins to control the pipeline. This ensures the tool cleans specific metadata and applies additional transformations, if needed.
+				</p><p>
+					The <code class="literal">mta-ops</code> CLI automatically discovers plugins from the <code class="literal">~/.local/share/crane/plugins/</code> default path. You can view available plugins by using the <code class="literal">list-plugins</code> subcommand. Custom plugins discovered on your file system can be arbitrary applications. In this version, <code class="literal">mta-ops</code> does not apply additional restrictions or sandboxing during plugin execution. Therefore, ensure that you trust these plugins.
+				</p><p>
+					During the transform stage, you can use the <code class="literal">--skip-plugins</code> flag to omit specific plugins.
+				</p><p>
+					To drive the transformation behavior by using specific user-defined rules, you can append the <code class="literal">--instructions-file</code> flag. This supplies a declarative YAML file to the pipeline.
+				</p></section><section class="section" id="multi-stage-transformation-pipeline_transforming-workload-manifests-by-using-a-multi-stage-pipeline"><div class="titlepage"><div><div><h3 class="title">4.4.2. Multi-stage transformation pipeline</h3></div></div></div><p class="_abstract _abstract">
+					Understand how the multi-stage transformation pipeline produces Kustomize-native output. This allows you to accurately trace modifications.
+				</p><p>
+					The <code class="literal">mta-ops transform</code> command processes exported manifests through sequential plugin stages. The pipeline produces a standard Kustomize layout.
+				</p><div class="example" id="idm45186274150576"><p class="title"><strong>Example 4.1. Example output directory structure</strong></p><div class="example-contents"><pre class="screen">transform/
+├── 10_KubernetesPlugin/
+│   ├── input/
+│   ├── output/
+│   ├── patches/
+│   └── kustomization.yaml
+├── 15_OpenShiftPlugin/
+│   ├── input/
+│   ├── output/
+│   ├── patches/
+│   └── kustomization.yaml
+└── 50_CustomModifications/
+    ├── input/
+    ├── output/
+    ├── patches/
+    └── kustomization.yaml</pre></div></div><p>
+					The directory structure uses the following components:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+							<span class="strong strong"><strong>Isolated stage directories</strong></span>: Each plugin processes within a dedicated, numbered directory. This isolation ensures you can trace which tool caused a specific modification.
+						</p><div class="admonition note"><div class="admonition_header">Note</div><div><p>
+								You can append manual transformation stages to the pipeline to apply declarative patches directly to your application.
+							</p></div></div></li><li class="listitem">
+							<span class="strong strong"><strong>Input and output folders</strong></span>: The pipeline merges the working state into the main directories. These folders show the exact manifest state before and after execution.
+						</li><li class="listitem">
+							<span class="strong strong"><strong>Patches directory</strong></span>: This directory contains the generated overlays. The files use predictable, deterministic naming conventions and sorting.
+						</li><li class="listitem">
+							<span class="strong strong"><strong>Kustomization file</strong></span>: The <code class="literal">kustomization.yaml</code> file acts as the standard entry point. You can manually edit this file in custom stages to apply declarative overrides.
+						</li></ul></div><p>
+					Plugin stages safely regenerate upon execution. However, custom stages require manual forced overwrites to protect your edits.
+				</p></section><section class="section" id="executing-a-multi-stage-workload-transformation_transforming-workload-manifests-by-using-a-multi-stage-pipeline"><div class="titlepage"><div><div><h3 class="title">4.4.3. Executing a multi-stage workload transformation</h3></div></div></div><p class="_abstract _abstract">
+					Transform your exported manifests to remove cluster-specific metadata. This prevents conflicts on the target Red Hat OpenShift cluster.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have exported the workload manifests from the source cluster to a local directory.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Navigate to the directory containing your exported manifests.
+						</li><li class="listitem"><p class="simpara">
+							Transform the manifests:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops transform -e export -t transform</strong></span></pre></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify that the generated stage directories contain the expected <code class="literal">kustomization.yaml</code> files and descriptive folders.
+						</li></ul></div></section><section class="section" id="transforming-manifests-with-an-instructions-file_transforming-workload-manifests-by-using-a-multi-stage-pipeline"><div class="titlepage"><div><div><h3 class="title">4.4.4. Transforming manifests with an instructions file</h3></div></div></div><p class="_abstract _abstract">
+					When you need specific rules during the cleanup process, use an instructions file. This declarative file controls the pipeline execution.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You successfully exported your workload manifests.
+						</li><li class="listitem">
+							You created a YAML instructions file containing your custom transformation rules.
+						</li></ul></div><div class="itemizedlist"><p class="title"><strong>Procedure</strong></p><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+							Transform the manifests by applying specific rules:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops transform -e export -t transform --instructions-file <span class="emphasis"><em>&lt;path_to_file.yaml&gt;</em></span></strong></span></pre></li></ul></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify that the tool applied your specific rules to the generated stage directories.
+						</li></ul></div></section><section class="section" id="adding-a-custom-transformation-stage_transforming-workload-manifests-by-using-a-multi-stage-pipeline"><div class="titlepage"><div><div><h3 class="title">4.4.5. Adding a custom transformation stage</h3></div></div></div><p class="_abstract _abstract">
+					To adapt migrated resources to new environment standards, add a custom transformation stage. You can layer declarative patches directly on your application.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have exported and successfully transformed the workload manifests.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Navigate to your generated <code class="literal">transform/</code> directory.
+						</li><li class="listitem"><p class="simpara">
+							Create a new directory for your custom stage. Do not use the <code class="literal">Plugin</code> suffix in the name.
+						</p><pre class="screen">$ <span class="strong strong"><strong>mkdir 50_CustomModifications</strong></span></pre></li><li class="listitem">
+							Create a <code class="literal">kustomization.yaml</code> file inside your new custom stage directory.
+						</li><li class="listitem"><p class="simpara">
+							Define your custom modifications in the <code class="literal">kustomization.yaml</code> file. For example, to override the target namespace and add migration labels, use the following code:
+						</p><pre class="screen">namespace: <span class="emphasis"><em>&lt;target_namespace&gt;</em></span>
+commonLabels:
+  migration-run: <span class="emphasis"><em>&lt;migration_id&gt;</em></span></pre></li><li class="listitem"><p class="simpara">
+							Apply your custom stage:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops transform <span class="emphasis"><em>&lt;custom_stage_directory&gt;</em></span> -e export -t transform --force</strong></span></pre><p class="simpara">
+							The <code class="literal">--force</code> flag is mandatory to safely overwrite your modified custom stage directory.
+						</p></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify that the <code class="literal">output/</code> directory inside your custom stage contains the expected resource changes.
+						</li></ul></div></section><section class="section _additional-resources" id="additional_resources_2"><div class="titlepage"><div><div><h3 class="title">4.4.6. Additional resources</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<a class="link" href="#mta-ops-transform-command-options_mta-ops-command-options" title="A.2. mta-ops transform command options">The <code class="literal">mta-ops transform</code> command options</a>
+						</li></ul></div></section></section><section class="section" id="generating-final-deployable-manifests_migrating-stateless-workloads"><div class="titlepage"><div><div><h2 class="title">4.5. Generating final deployable manifests</h2></div></div></div><p class="_abstract _abstract">
+				To render the final YAML from the transform pipeline, generate the manifests. The <code class="literal">mta-ops apply</code> command produces local deployable files without modifying clusters.
+			</p><section class="section" id="local-manifest-generation_generating-final-deployable-manifests"><div class="titlepage"><div><div><h3 class="title">4.5.1. Local manifest generation</h3></div></div></div><p class="_abstract _abstract">
+					Understand how the <code class="literal">mta-ops apply</code> command renders your transformed manifests locally. This ensures your final YAML is ready for deployment.
+				</p><p>
+					The <code class="literal">mta-ops apply</code> command runs Kustomize on the final transform stage. It evaluates patches internally by using the embedded krusty application programming interface (API). This embedded rendering removes the runtime dependency on the <code class="literal">kubectl</code> or <code class="literal">oc</code> binaries.
+				</p><p>
+					The command produces clean, deployable manifests on your local disk. It does not deploy resources to any cluster. The output includes individual resource files and a consolidated <code class="literal">output.yaml</code> file.
+				</p><p>
+					The <code class="literal">mta-ops</code> tool orders resources in the consolidated file to satisfy cluster dependencies. For example, it places custom resource definitions (CRDs) before namespace-scoped resources. You can exclude cluster-scoped resources by appending the <code class="literal">--skip-cluster-scoped</code> flag. This supports split-responsibility workflows between administrators and non-administrators.
+				</p></section><section class="section" id="generating-final-manifests-locally_generating-final-deployable-manifests"><div class="titlepage"><div><div><h3 class="title">4.5.2. Generating final manifests locally</h3></div></div></div><p class="_abstract _abstract">
+					To produce clean YAML files, generate your final manifests. You use the <code class="literal">mta-ops apply</code> command to render the Kustomize output locally.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have successfully exported and transformed your workload manifests.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Generate the final manifests:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops apply -t transform -o output</strong></span></pre></li><li class="listitem">
+							Review the generated <code class="literal">output/output.yaml</code> file on your local disk. Check the replicas, namespaces, images, labels, and role-based access control (RBAC) configurations.
+						</li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify that the output directory contains the final YAML files and the namespace subdirectories.
+						</li></ul></div></section><section class="section" id="generating-ordered-manifests-locally_generating-final-deployable-manifests"><div class="titlepage"><div><div><h3 class="title">4.5.3. Generating ordered manifests locally</h3></div></div></div><p class="_abstract _abstract">
+					When you render your final YAML, you can generate ordered individual resource files. This ensures you apply resources in the correct dependency order.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have successfully exported and transformed your workload manifests.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Generate the final manifests by appending the <code class="literal">--ordered</code> flag:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops apply -t transform -o output --ordered</strong></span></pre></li><li class="listitem">
+							Review the generated files in the <code class="literal">output/resources/<span class="emphasis"><em>&lt;namespace&gt;</em></span>/</code> directory. The <code class="literal">--ordered</code> flag prefixes the filenames with 3-digit order numbers.
+						</li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify that the resource filenames begin with a 3-digit number.
+						</li></ul></div></section><section class="section _additional-resources" id="additional_resources_3"><div class="titlepage"><div><div><h3 class="title">4.5.4. Additional resources</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<a class="link" href="#mta-ops-apply-command-options_mta-ops-command-options" title="A.3. mta-ops apply command options">The <code class="literal">mta-ops apply</code> command options</a>
+						</li></ul></div></section></section><section class="section" id="validating-target-cluster-compatibility_migrating-stateless-workloads"><div class="titlepage"><div><div><h2 class="title">4.6. Validating target cluster compatibility</h2></div></div></div><p class="_abstract _abstract">
+				To ensure your generated manifests are compatible with a target cluster, run the validation check. Validating target cluster compatibility is an optional step. Validate runs after the apply stage on the final output.
+			</p><section class="section" id="manifest-compatibility-validation_validating-target-cluster-compatibility"><div class="titlepage"><div><div><h3 class="title">4.6.1. Manifest compatibility validation</h3></div></div></div><p class="_abstract _abstract">
+					Validation is a read-only optional check for your final workload manifests before their deployment on a target cluster. It prevents deployment failures by identifying API incompatibilities.
+				</p><p>
+					You can use the <code class="literal">mta-ops validate</code> command to evaluate your generated manifests against the target Red Hat OpenShift cluster’s application programming interface (API) surface. The command performs strict group, version, and kind (GVK) matching. The tool reads the API discovery information without modifying the cluster.
+				</p><p>
+					The validation command generates a report identifying incompatible resources. It saves the detailed results to a specified validation directory. If incompatibilities are found, the tool logs the failing artifacts in a <code class="literal">failures/</code> subdirectory.
+				</p><p>
+					The validation process supports the following modes:
+				</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<span class="strong strong"><strong>Live mode</strong></span>: The <code class="literal">mta-ops</code> tool connects directly to the target cluster to read the current API surface.
+						</li><li class="listitem">
+							<span class="strong strong"><strong>Offline mode</strong></span>: The <code class="literal">mta-ops</code> tool reads a previously captured API surface file. This is useful for disconnected environments or automated pipelines.
+						</li></ul></div></section><section class="section" id="validating-workload-manifests-against-a-live-cluster_validating-target-cluster-compatibility"><div class="titlepage"><div><div><h3 class="title">4.6.2. Validating workload manifests against a live cluster</h3></div></div></div><p class="_abstract _abstract">
+					To verify application programming interface (API) compatibility before deployment, validate your transformed manifests against a live target Red Hat OpenShift cluster.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have generated the final manifests.
+						</li><li class="listitem">
+							You have active access to the target Red Hat OpenShift cluster.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+							Set your CLI context to the target Red Hat OpenShift cluster.
+						</li><li class="listitem"><p class="simpara">
+							Validate the transformed manifests:
+						</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops validate --context <span class="emphasis"><em>&lt;target_cluster_context&gt;</em></span> -i output</strong></span></pre><pre class="programlisting language-json">{
+  "mode": "live",
+  "clusterContext": "tgt-cluster",
+  "results": [
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "namespace": "target-namespace",
+      "resourcePlural": "deployments",
+      "status": "OK"
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Secret",
+      "namespace": "target-namespace",
+      "resourcePlural": "secrets",
+      "status": "OK"
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "namespace": "target-namespace",
+      "resourcePlural": "services",
+      "status": "OK"
+    }
+  ],
+  "totalScanned": 3,
+  "compatible": 3,
+  "incompatible": 0
+}</pre></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify that the command returns a <code class="literal">PASSED</code> summary result.
+						</li></ul></div></section><section class="section _additional-resources" id="additional_resources_4"><div class="titlepage"><div><div><h3 class="title">4.6.3. Additional resources</h3></div></div></div><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+							<a class="link" href="#mta-ops-validate-command-options_mta-ops-command-options" title="A.4. mta-ops validate command options">The <code class="literal">mta-ops</code> validate command options</a>
+						</li></ul></div></section></section><section class="section" id="deploying-the-migrated-workloads_migrating-stateless-workloads"><div class="titlepage"><div><div><h2 class="title">4.7. Deploying the migrated workloads</h2></div></div></div><p class="_abstract _abstract">
+				After you generate and validate the final manifests, deploy them. Because the tool does not modify clusters, use standard deployment tools.
+			</p><section class="section" id="workload-deployment_deploying-the-migrated-workloads"><div class="titlepage"><div><div><h3 class="title">4.7.1. Workload deployment</h3></div></div></div><p class="_abstract _abstract">
+					Understand the final step of the stateless workload migration pipeline and deploy the validated manifests to the target cluster.
+				</p><p>
+					The <code class="literal">mta-ops</code> pipeline produces ready-to-use YAML artifacts on your local disk. It deliberately does not connect to the target cluster. This non-destructive architecture ensures that the target cluster remains untouched until manual deployment.
+				</p><p>
+					Because the pipeline outputs standard Kubernetes manifests, it is fully GitOps-ready. You can commit the final YAML to a repository.
+				</p><p>
+					Applying the consolidated <code class="literal">output.yaml</code> file resolves dependency ordering issues during deployment. Applying the entire directory can cause deployment failures if roles execute before role bindings.
+				</p></section><section class="section" id="deploying-workloads-to-the-target-cluster-as-an-administrator_deploying-the-migrated-workloads"><div class="titlepage"><div><div><h3 class="title">4.7.2. Deploying workloads to the target cluster as an administrator</h3></div></div></div><p class="_abstract _abstract">
+					To finalize your migration, deploy the validated workloads by applying the generated manifests to the target Red Hat OpenShift cluster.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Optional: You have validated your workload manifests.
+						</li><li class="listitem">
+							You have <code class="literal">cluster-admin</code> privileges on the target Red Hat OpenShift cluster.
+						</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem"><p class="simpara">
+							Deploy the workloads by using the Red Hat OpenShift CLI and applying the consolidated file:
+						</p><pre class="screen">$ <span class="strong strong"><strong>oc apply -f output/output.yaml</strong></span></pre></li><li class="listitem">
+							Optional: Commit the <code class="literal">output/</code> directory to your repository to use a GitOps deployment workflow.
+						</li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify the rollout, service endpoints, and application health on the target cluster.
+						</li></ul></div></section><section class="section" id="deploying-workloads-to-the-target-cluster-as-a-non-administrator_deploying-the-migrated-workloads"><div class="titlepage"><div><div><h3 class="title">4.7.3. Deploying workloads to the target cluster as a non-administrator</h3></div></div></div><p class="_abstract _abstract">
+					When you lack <code class="literal">cluster-admin</code> privileges, deploy your workloads as a non-administrator. This allows you to apply namespace-scoped resources safely.
+				</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							You have a <code class="literal">PASSED</code> validation report for your output directory.
+						</li><li class="listitem">
+							You generated your manifests using the <code class="literal">--skip-cluster-scoped</code> flag during the <code class="literal">apply</code> stage.
+						</li></ul></div><div class="itemizedlist"><p class="title"><strong>Procedure</strong></p><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+							Deploy the workloads by using the Red Hat OpenShift CLI:
+						</p><pre class="screen">$ <span class="strong strong"><strong>oc apply -f output/output.yaml</strong></span></pre></li></ul></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+							Verify the rollout and application health on the target namespace.
+						</li></ul></div></section></section></section><section class="chapter" id="troubleshooting-the-mta-ops-pipeline_mta-ops-title"><div class="titlepage"><div><div><h1 class="title">Chapter 5. Troubleshooting the mta-ops pipeline</h1></div></div></div><p class="_abstract _abstract">
+			If a migration step fails, you can debug the pipeline to resolve errors. You can extract logs, review failures, and isolate transformations.
+		</p><section class="section" id="mta-ops-pipeline-troubleshooting_troubleshooting-the-mta-ops-pipeline"><div class="titlepage"><div><div><h2 class="title">5.1. mta-ops pipeline troubleshooting</h2></div></div></div><p class="_abstract _abstract">
+				Understand how the <code class="literal">mta-ops</code> CLI isolates failures to help you quickly identify migration blockers.
+			</p><p>
+				Because the pipeline operates locally, troubleshooting does not require active target cluster intervention. The tool provides three primary diagnostic mechanisms:
+			</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+						<span class="strong strong"><strong>Global debug logging</strong></span>: You can append a global debug flag to any command to print detailed diagnostic output to your terminal.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Failure artifacts</strong></span>: The <code class="literal">export</code> and <code class="literal">validate</code> commands isolate problematic resources into dedicated <code class="literal">failures/</code> subdirectories. This prevents a single incompatible resource from stopping the entire pipeline.
+					</li><li class="listitem">
+						<span class="strong strong"><strong>Stage isolation</strong></span>: The <code class="literal">transform</code> pipeline produces distinct <code class="literal">input/</code> and <code class="literal">output/</code> directories for each plugin stage. This allows you to pinpoint exactly where a resource modification failed.
+					</li></ul></div></section><section class="section" id="enabling-verbose-logging-for-mta-ops_troubleshooting-the-mta-ops-pipeline"><div class="titlepage"><div><div><h2 class="title">5.2. Enabling verbose logging for mta-ops</h2></div></div></div><p class="_abstract _abstract">
+				When you investigate pipeline failures, extract detailed diagnostic output by appending the verbose logging flag to your command.
+			</p><div class="itemizedlist"><p class="title"><strong>Procedure</strong></p><ul class="itemizedlist" type="disc"><li class="listitem"><p class="simpara">
+						Append the <code class="literal">--debug</code> flag to any <code class="literal">mta-ops</code> command. For example, to debug a validation failure, enter:
+					</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops validate --context <span class="emphasis"><em>&lt;target_cluster_context&gt;</em></span> -i output --debug</strong></span></pre></li></ul></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						Verify that your terminal output includes expanded diagnostic information and debug-level messages.
+					</li></ul></div></section><section class="section" id="common-migration-pipeline-errors_troubleshooting-the-mta-ops-pipeline"><div class="titlepage"><div><div><h2 class="title">5.3. Common migration pipeline errors</h2></div></div></div><p class="_abstract _abstract">
+				When you encounter pipeline failures, review the common errors tables. This helps you diagnose issues and resume your migration work.
+			</p><div class="table" id="idm45186273821744"><p class="title"><strong>Table 5.1. Export and transform errors</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 20%; " class="col_1"/><col style="width: 30%; " class="col_2"/><col style="width: 50%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm45186274179552" scope="col">Error message</th><th align="left" valign="top" id="idm45186274178576" scope="col">Cause</th><th align="left" valign="top" id="idm45186274177488" scope="col">Solution</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm45186274179552">
+							<p>
+								<code class="literal">Forbidden</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186274178576">
+							<p>
+								You lack role-based access control (RBAC) permissions to export a resource.
+							</p>
+							</td><td align="left" valign="top" headers="idm45186274177488">
+							<p>
+								Inspect the <code class="literal">failures/</code> directory for skipped dependencies. Use role impersonation flags such as <code class="literal">--as</code> and <code class="literal">--as-group</code>.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186274179552">
+							<p>
+								<code class="literal">Patch evaluation error</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186274178576">
+							<p>
+								A custom stage contains malformed YAML or missing parent objects.
+							</p>
+							</td><td align="left" valign="top" headers="idm45186274177488">
+							<p>
+								Isolate the stage by passing the directory name as a positional argument. Rerun the command with the <code class="literal">--force</code> flag.
+							</p>
+							</td></tr></tbody></table></div></div><div class="table" id="idm45186275969280"><p class="title"><strong>Table 5.2. Apply and validate errors</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 20%; " class="col_1"/><col style="width: 30%; " class="col_2"/><col style="width: 50%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm45186277267024" scope="col">Error message</th><th align="left" valign="top" id="idm45186277265936" scope="col">Cause</th><th align="left" valign="top" id="idm45186277264848" scope="col">Solution</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm45186277267024">
+							<p>
+								<code class="literal">Dependency order failure</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186277265936">
+							<p>
+								The deployment command executed manifest files out of their required dependency order.
+							</p>
+							</td><td align="left" valign="top" headers="idm45186277264848">
+							<p>
+								Rerun the <code class="literal">mta-ops apply</code> command with the <code class="literal">--ordered</code> flag.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186277267024">
+							<p>
+								<code class="literal">Unknown resource type</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186277265936">
+							<p>
+								A required custom resource definition (CRD) is missing.
+							</p>
+							</td><td align="left" valign="top" headers="idm45186277264848">
+							<p>
+								Install the required Operator on the target cluster.
+							</p>
+							</td></tr></tbody></table></div></div></section><section class="section" id="resolving-validation-failures_troubleshooting-the-mta-ops-pipeline"><div class="titlepage"><div><div><h2 class="title">5.4. Resolving validation failures</h2></div></div></div><p class="_abstract _abstract">
+				To fix incompatibilities with your target cluster, review your validation artifacts. You must resolve missing custom resource definitions (CRDs) manually.
+			</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						You ran the <code class="literal">mta-ops validate</code> command and received a <code class="literal">FAILED</code> result.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+						Navigate to your specified validation output directory.
+					</li><li class="listitem">
+						Open the <code class="literal">failures/</code> subdirectory.
+					</li><li class="listitem"><p class="simpara">
+						Inspect the generated YAML files. The file names indicate the specific group, version, and kind (GVK) that failed compatibility checks.
+					</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+								If a resource failed because a CRD is missing on the target cluster, install the required Operator on the target cluster.
+							</li><li class="listitem">
+								If a resource failed because an API version is deprecated, create a custom transformation stage to rewrite the <code class="literal">apiVersion</code> field.
+							</li></ul></div></li><li class="listitem">
+						Rerun the <code class="literal">mta-ops validate</code> command.
+					</li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						Verify that the <code class="literal">mta-ops validate</code> command returns a <code class="literal">PASSED</code> summary result.
+					</li></ul></div></section><section class="section" id="resolving-transformation-conflicts_troubleshooting-the-mta-ops-pipeline"><div class="titlepage"><div><div><h2 class="title">5.5. Resolving transformation conflicts</h2></div></div></div><p class="_abstract _abstract">
+				To fix malformed Kustomize patches, isolate your transformation stages. You can inspect the exact input and output of a specific plugin.
+			</p><div class="itemizedlist"><p class="title"><strong>Prerequisites</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						You ran the <code class="literal">mta-ops transform</code> command and encountered a patch evaluation error.
+					</li></ul></div><div class="orderedlist"><p class="title"><strong>Procedure</strong></p><ol class="orderedlist" type="1"><li class="listitem">
+						Navigate to your generated <code class="literal">transform/</code> directory.
+					</li><li class="listitem">
+						Identify the specific numbered stage directory where the failure occurred.
+					</li><li class="listitem">
+						Compare the contents of the <code class="literal">input/</code> directory against the <code class="literal">output/</code> directory for that stage.
+					</li><li class="listitem">
+						If the failure occurred in a custom stage, modify your <code class="literal">kustomization.yaml</code> file to correct the syntax error.
+					</li><li class="listitem"><p class="simpara">
+						Rerun the isolated custom stage:
+					</p><pre class="screen">$ <span class="strong strong"><strong>mta-ops transform <span class="emphasis"><em>&lt;custom_stage_directory&gt;</em></span> -e export -t transform --force</strong></span></pre></li></ol></div><div class="itemizedlist"><p class="title"><strong>Verification</strong></p><ul class="itemizedlist" type="disc"><li class="listitem">
+						Verify that the isolated stage executes successfully and produces the expected YAML in the <code class="literal">output/</code> directory.
+					</li></ul></div></section></section><section class="appendix" id="mta-ops-command-options"><div class="titlepage"><div><div><h1 class="title">Appendix A. mta-ops command options</h1></div></div></div><p class="_abstract _abstract">
+			Review the commands and flags available in the <code class="literal">mta-ops</code> command-line interface (CLI). You use these commands to extract, clean, render, and validate workloads.
+		</p><section class="section" id="mta-ops-export-command-options_mta-ops-command-options"><div class="titlepage"><div><div><h2 class="title">A.1. mta-ops export command options</h2></div></div></div><p class="_abstract _abstract">
+				When you capture a source cluster snapshot, review the available command flags. This helps you customize the extraction process.
+			</p><div class="table" id="idm45186274227680"><p class="title"><strong>Table A.1. <code class="literal">mta-ops export</code> flags</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 30%; " class="col_1"/><col style="width: 20%; " class="col_2"/><col style="width: 50%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm45186279667280" scope="col">Option</th><th align="left" valign="top" id="idm45186279666192" scope="col">Shorthand</th><th align="left" valign="top" id="idm45186279665104" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--context</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								The local kubeconfig context of the source cluster.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--namespace</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192">
+							<p>
+								<code class="literal">-n</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								The target namespace to export workloads from.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--export-dir</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192">
+							<p>
+								<code class="literal">-e</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								The directory path to save the exported resources.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--label-selector</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192">
+							<p>
+								<code class="literal">-l</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Selection of resources to export based on matching labels.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--as</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Username to impersonate for the export operation.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--as-group</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Group to impersonate for the export operation.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--as-extras</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Impersonation extras to use for the export request.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--crd-skip-group</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Omission of CRDs that match the specified API group.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--crd-include-group</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Inclusion of CRDs that match the specified API group.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--qps</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Queries per second allowed for the Kubernetes API connection.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--burst</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Allowed extra queries to accumulate for the API connection.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186279667280">
+							<p>
+								<code class="literal">--overwrite</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279666192"> </td><td align="left" valign="top" headers="idm45186279665104">
+							<p>
+								Overwrite of the export directory if it already exists.
+							</p>
+							</td></tr></tbody></table></div></div></section><section class="section" id="mta-ops-transform-command-options_mta-ops-command-options"><div class="titlepage"><div><div><h2 class="title">A.2. mta-ops transform command options</h2></div></div></div><p class="_abstract _abstract">
+				When you process exported manifests, review the available command flags. This helps you control the Kustomize plugin stages.
+			</p><div class="table" id="idm45186275818288"><p class="title"><strong>Table A.2. <code class="literal">mta-ops transform</code> flags</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 30%; " class="col_1"/><col style="width: 20%; " class="col_2"/><col style="width: 50%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm45186275812208" scope="col">Option</th><th align="left" valign="top" id="idm45186275811120" scope="col">Shorthand</th><th align="left" valign="top" id="idm45186275810032" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm45186275812208">
+							<p>
+								<code class="literal">--export-dir</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275811120">
+							<p>
+								<code class="literal">-e</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275810032">
+							<p>
+								The directory path containing the exported resources to be processed.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275812208">
+							<p>
+								<code class="literal">--transform-dir</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275811120">
+							<p>
+								<code class="literal">-t</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275810032">
+							<p>
+								The directory path to create the isolated transform stages.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275812208">
+							<p>
+								<code class="literal">--force</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275811120"> </td><td align="left" valign="top" headers="idm45186275810032">
+							<p>
+								A flag to overwrite modified custom stage directories. This is mandatory for re-running custom stages.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275812208">
+							<p>
+								<code class="literal">--skip-plugins</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275811120"> </td><td align="left" valign="top" headers="idm45186275810032">
+							<p>
+								A comma-separated list of built-in plugins to skip, such as OpenShiftPlugin.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275812208">
+							<p>
+								<code class="literal">--instructions-file</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275811120"> </td><td align="left" valign="top" headers="idm45186275810032">
+							<p>
+								A path to a declarative YAML file to steer the transformation execution rules.
+							</p>
+							</td></tr></tbody></table></div></div></section><section class="section" id="mta-ops-apply-command-options_mta-ops-command-options"><div class="titlepage"><div><div><h2 class="title">A.3. mta-ops apply command options</h2></div></div></div><p class="_abstract _abstract">
+				When you render your final YAML, review the available command flags. This helps you customize the output generation.
+			</p><div class="table" id="idm45186277573136"><p class="title"><strong>Table A.3. <code class="literal">mta-ops</code> apply flags</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 30%; " class="col_1"/><col style="width: 20%; " class="col_2"/><col style="width: 50%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm45186277567056" scope="col">Option</th><th align="left" valign="top" id="idm45186279084832" scope="col">Shorthand</th><th align="left" valign="top" id="idm45186279083744" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm45186277567056">
+							<p>
+								<code class="literal">--transform-dir</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279084832">
+							<p>
+								<code class="literal">-t</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279083744">
+							<p>
+								The directory path containing the completed transform stages.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186277567056">
+							<p>
+								<code class="literal">--output-dir</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279084832">
+							<p>
+								<code class="literal">-o</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279083744">
+							<p>
+								The directory path to write the final deployable manifests.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186277567056">
+							<p>
+								<code class="literal">--kustomize-args</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279084832"> </td><td align="left" valign="top" headers="idm45186279083744">
+							<p>
+								Additional arguments for the embedded Kustomize engine.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186277567056">
+							<p>
+								<code class="literal">--skip-cluster-scoped</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279084832"> </td><td align="left" valign="top" headers="idm45186279083744">
+							<p>
+								A flag to exclude cluster-scoped resources from the output.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186277567056">
+							<p>
+								<code class="literal">--ordered</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279084832"> </td><td align="left" valign="top" headers="idm45186279083744">
+							<p>
+								Prefixes the generated resource filenames with 3-digit order numbers to ensure correct dependency ordering.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186277567056">
+							<p>
+								<code class="literal">--overwrite</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186279084832"> </td><td align="left" valign="top" headers="idm45186279083744">
+							<p>
+								Overwrite of the output directory if it already exists.
+							</p>
+							</td></tr></tbody></table></div></div></section><section class="section" id="mta-ops-validate-command-options_mta-ops-command-options"><div class="titlepage"><div><div><h2 class="title">A.4. mta-ops validate command options</h2></div></div></div><p class="_abstract _abstract">
+				When you check target cluster application programming interface (API) compatibility, review the available command flags. This helps you configure your live or offline validation run.
+			</p><div class="table" id="idm45186276482016"><p class="title"><strong>Table A.4. <code class="literal">mta-ops</code> validate flags</strong></p><div class="table-contents"><table class="lt-4-cols lt-7-rows"><colgroup><col style="width: 30%; " class="col_1"/><col style="width: 20%; " class="col_2"/><col style="width: 50%; " class="col_3"/></colgroup><thead><tr><th align="left" valign="top" id="idm45186275635472" scope="col">Option</th><th align="left" valign="top" id="idm45186275634384" scope="col">Shorthand</th><th align="left" valign="top" id="idm45186275633296" scope="col">Description</th></tr></thead><tbody><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--input-dir</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384">
+							<p>
+								<code class="literal">-i</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The directory path containing the final rendered manifests to validate.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--context</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The local kubeconfig context of the target cluster.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--kubeconfig</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The path to the kubeconfig file for the target cluster.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--api-resources</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The path to a captured API surface JSON file for offline validation. This flag is mutually exclusive with the following live cluster flags:
+							</p>
+							<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+										<code class="literal">--context</code>
+									</li><li class="listitem">
+										<code class="literal">--kubeconfig</code>
+									</li><li class="listitem">
+										<code class="literal">--server</code>
+									</li><li class="listitem">
+										<code class="literal">--token</code>
+									</li><li class="listitem">
+										<code class="literal">--cluster</code>
+									</li><li class="listitem">
+										<code class="literal">--user</code>
+									</li></ul></div>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--validate-dir</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The directory path to save validation reports and failure artifacts.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--output</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384">
+							<p>
+								<code class="literal">-o</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The format of the generated report file. Valid options are <code class="literal">json</code> or <code class="literal">yaml</code>.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--overwrite</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								Overwrite of the validation directory if it already exists.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--server</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384">
+							<p>
+								<code class="literal">-s</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The address and port of the Kubernetes API server for the target cluster.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--token</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								Bearer token for authentication to the target cluster API server.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--cluster</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The name of the <code class="literal">kubeconfig</code> cluster to use.
+							</p>
+							</td></tr><tr><td align="left" valign="top" headers="idm45186275635472">
+							<p>
+								<code class="literal">--user</code>
+							</p>
+							</td><td align="left" valign="top" headers="idm45186275634384"> </td><td align="left" valign="top" headers="idm45186275633296">
+							<p>
+								The name of the <code class="literal">kubeconfig</code> user to use.
+							</p>
+							</td></tr></tbody></table></div></div></section></section><section class="appendix" id="developer-and-architecture-guides"><div class="titlepage"><div><div><h1 class="title">Appendix B. Developer and architecture guides</h1></div></div></div><p class="_abstract _abstract">
+			When you want to extend the <code class="literal">mta-ops</code> command-line interface (CLI) or understand its internal mechanics, review the upstream developer guides. This helps you build custom plugins or contribute to the project.
+		</p><p>
+			The <code class="literal">mta-ops</code> repository contains comprehensive documentation for developers:
+		</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+					<code class="literal">CONTRIBUTING.md</code>: Located at the root of the repository, detailing the GitHub integration and contributor onboarding workflow.
+				</li><li class="listitem">
+					Development guides (<code class="literal">docs/development/</code>): Contains dedicated documents for local environment setup, unit and end-to-end (E2E) testing conventions, and end-to-end pipeline architecture.
+				</li><li class="listitem">
+					Plugin development: Comprehensive instructions on creating custom transformation plugins using Go or Bash.
+				</li></ul></div></section><div><div xml:lang="en-US" class="legalnotice" id="idm45186276941792"><h1 class="legalnotice">Legal Notice</h1><div class="para">
+		Copyright <span class="trademark"/>© 2026 Red Hat, Inc.
+	</div><div class="para">
+		The text of and illustrations in this document are licensed by Red Hat under a Creative Commons Attribution–Share Alike 3.0 Unported license ("CC-BY-SA"). An explanation of CC-BY-SA is available at <a class="uri" href="http://creativecommons.org/licenses/by-sa/3.0/">http://creativecommons.org/licenses/by-sa/3.0/</a>. In accordance with CC-BY-SA, if you distribute this document or an adaptation of it, you must provide the URL for the original version.
+	</div><div class="para">
+		Red Hat, as the licensor of this document, waives the right to enforce, and agrees not to assert, Section 4d of CC-BY-SA to the fullest extent permitted by applicable law.
+	</div><div class="para">
+		Red Hat, Red Hat Enterprise Linux, the Shadowman logo, the Red Hat logo, JBoss, OpenShift, Fedora, the Infinity logo, and RHCE are trademarks of Red Hat, Inc., registered in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Linux</span>® is the registered trademark of Linus Torvalds in the United States and other countries.
+	</div><div class="para">
+		<span class="trademark">Java</span>® is a registered trademark of Oracle and/or its affiliates.
+	</div><div class="para">
+		<span class="trademark">XFS</span>® is a trademark of Silicon Graphics International Corp. or its subsidiaries in the United States and/or other countries.
+	</div><div class="para">
+		<span class="trademark">MySQL</span>® is a registered trademark of MySQL AB in the United States, the European Union and other countries.
+	</div><div class="para">
+		<span class="trademark">Node.js</span>® is an official trademark of Joyent. Red Hat is not formally related to or endorsed by the official Joyent Node.js open source or commercial project.
+	</div><div class="para">
+		The <span class="trademark">OpenStack</span>® Word Mark and OpenStack logo are either registered trademarks/service marks or trademarks/service marks of the OpenStack Foundation, in the United States and other countries and are used with the OpenStack Foundation's permission. We are not affiliated with, endorsed or sponsored by the OpenStack Foundation, or the OpenStack community.
+	</div><div class="para">
+		All other trademarks are the property of their respective owners.
+	</div></div></div></div></div></div><script type="text/javascript">
+                        jQuery(document).ready(function() {
+                            initSwitchery();
+                            jQuery('pre[class*="language-"]').each(function(i, block){hljs.highlightBlock(block);});
+                        });
+                    </script></body></html>
